@@ -21,7 +21,8 @@ export const Wrapper: React.FC<AppProps> = ({ children }) => {
   const [theme, setTheme] = React.useState<Theme | null>(null);
 
   useEffect(() => {
-    setTheme(localStorage.getItem('themeData'));
+    const theme = localStorage.getItem('themeData') ?? DARK;
+    setTheme(theme);
   }, []);
 
   const isDark = theme === DARK;

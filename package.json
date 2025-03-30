@@ -19,6 +19,7 @@
     "@gravity-ui/navigation": "^3.1.1",
     "@gravity-ui/uikit": "^7.4.0",
     "@uidotdev/usehooks": "^2.4.1",
+    "@vercel/speed-insights": "^1.2.0",
     "bem-cn-lite": "^4.1.0",
     "eslint-plugin-import": "^2.31.0",
     "next": "^15.0.4",

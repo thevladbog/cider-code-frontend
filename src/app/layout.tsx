@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
 
 import { App, DEFAULT_BODY_CLASSNAME } from '@/components/App';
-import React from 'react';
 import '@gravity-ui/uikit/styles/fonts.css';
 import '@gravity-ui/uikit/styles/styles.css';
 
 import '../styles/styles.scss';
+
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import React from 'react';
+
 import '../styles/globals.scss';
 
 export const metadata: Metadata = {
@@ -18,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={DEFAULT_BODY_CLASSNAME}>
         <App>{children}</App>
+        <SpeedInsights />
       </body>
     </html>
   );

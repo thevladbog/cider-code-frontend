@@ -1,5 +1,6 @@
-import {InfoButtons} from '@/components/InfoButtons';
+import React from 'react';
+import { InfoButtons } from '@/components/InfoButtons';
 
 export default function Home() {
-    return <InfoButtons />;
+  return <InfoButtons />;
 }

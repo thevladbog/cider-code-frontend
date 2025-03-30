@@ -1,11 +1,20 @@
 {
     "extends": [
-        "@gravity-ui/eslint-config",
-        "@gravity-ui/eslint-config/prettier"
+        "plugin:@next/next/recommended",
+        "next/core-web-vitals",
+        "next/typescript",
+        "next",
+        "prettier",
+        "eslint:recommended",
+        "plugin:react/recommended"
     ],
     "root": true,
     "env": {
         "node": true,
         "jest": true
-    }
+    },
+    "ignorePatterns": [
+        "out",
+        "public/static"
+    ]
 }

@@ -2,9 +2,9 @@
 
 import { FooterWrapper } from '@/components/Footer';
 import { Moon, Sun } from '@gravity-ui/icons';
-import { Button, Icon, type Theme, ThemeProvider } from '@gravity-ui/uikit';
+import { Button, Icon, type Theme } from '@gravity-ui/uikit';
 import block from 'bem-cn-lite';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import './Wrapper.scss';
 
@@ -12,44 +12,45 @@ const b = block('wrapper');
 
 const DARK = 'dark';
 const LIGHT = 'light';
-const DEFAULT_THEME = DARK;
-
-export const DEFAULT_BODY_CLASSNAME = `g-root g-root_theme_${DEFAULT_THEME}`;
 
 export type AppProps = {
   children: React.ReactNode;
 };
 
 export const Wrapper: React.FC<AppProps> = ({ children }) => {
-  const [theme, setTheme] = React.useState<Theme>(DEFAULT_THEME);
+  const [theme, setTheme] = React.useState<Theme | null>(null);
+
+  useEffect(() => {
+    setTheme(localStorage.getItem('themeData'));
+  }, []);
 
   const isDark = theme === DARK;
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className={b()}>
-        <div className={b('theme-button')}>
-          <Button
-            size="l"
-            view="outlined"
-            onClick={() => {
-              setTheme(isDark ? LIGHT : DARK);
-            }}
-          >
-            <Icon data={isDark ? Sun : Moon} />
-          </Button>
-        </div>
-        <div className={b('layout')}>
-          <div className={b('header')}>
-            <div className={b('logo')}>
-              <div className={b('gravity-logo', { dark: isDark })} />
-              <div className={b('next-logo', { dark: isDark })} />
-            </div>
-          </div>
-          <div className={b('content')}>{children}</div>
-        </div>
-        <FooterWrapper />
+    <div className={b()}>
+      <div className={b('theme-button')}>
+        <Button
+          size="l"
+          view="outlined"
+          onClick={() => {
+            setTheme(isDark ? LIGHT : DARK);
+            localStorage.setItem('themeData', isDark ? LIGHT : DARK);
+            window.dispatchEvent(new Event('storage'));
+          }}
+        >
+          <Icon data={isDark ? Sun : Moon} />
+        </Button>
       </div>
-    </ThemeProvider>
+      <div className={b('layout')}>
+        <div className={b('header')}>
+          <div className={b('logo')}>
+            <div className={b('gravity-logo', { dark: isDark })} />
+            <div className={b('next-logo', { dark: isDark })} />
+          </div>
+        </div>
+        <div className={b('content')}>{children}</div>
+      </div>
+      <FooterWrapper />
+    </div>
   );
 };

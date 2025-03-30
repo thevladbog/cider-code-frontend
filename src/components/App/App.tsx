@@ -13,7 +13,7 @@ interface AppProps {
 
 const DARK = 'dark';
 
-export let DEFAULT_BODY_CLASSNAME = `g-root`;
+export let DEFAULT_BODY_CLASSNAME = `g-root g-root_theme_${DARK}`;
 
 export const App: React.FC<AppProps> = ({ children }) => {
   const [compact, setCompact] = useState<boolean>(true);

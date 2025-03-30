@@ -1,13 +1,13 @@
 'use client';
 
-import React from 'react';
-import block from 'bem-cn-lite';
-import { Button, Icon } from '@gravity-ui/uikit';
 import { BookOpen, CopyTransparent, ListCheck, ListUl, LogoTelegram } from '@gravity-ui/icons';
-import Storybook from '../../assets/icons/storybook.svg';
+import { Button, Icon } from '@gravity-ui/uikit';
+import block from 'bem-cn-lite';
+import React from 'react';
+
 import Figma from '../../assets/icons/figma.svg';
 import GitHub from '../../assets/icons/github.svg';
-
+import Storybook from '../../assets/icons/storybook.svg';
 import './InfoButtons.scss';
 
 const b = block('info-buttons');

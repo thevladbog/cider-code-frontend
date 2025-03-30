@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
-import block from 'bem-cn-lite';
-import { Button, Icon, Theme, ThemeProvider } from '@gravity-ui/uikit';
+import { FooterWrapper } from '@/components/Footer';
 import { Moon, Sun } from '@gravity-ui/icons';
+import { Button, Icon, type Theme, ThemeProvider } from '@gravity-ui/uikit';
+import block from 'bem-cn-lite';
+import React from 'react';
 
 import './Wrapper.scss';
 
@@ -47,6 +48,7 @@ export const Wrapper: React.FC<AppProps> = ({ children }) => {
           </div>
           <div className={b('content')}>{children}</div>
         </div>
+        <FooterWrapper />
       </div>
     </ThemeProvider>
   );

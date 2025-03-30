@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
 import { Link } from '@gravity-ui/uikit';
+import React from 'react';
 
 export default function NotFound() {
   return (

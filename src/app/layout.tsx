@@ -1,22 +1,19 @@
-import type { Metadata } from "next";
-import { DEFAULT_BODY_CLASSNAME } from "@/components/Wrapper";
-import { App } from "@/components/App";
+import type { Metadata } from 'next';
 
-import "@gravity-ui/uikit/styles/fonts.css";
-import "@gravity-ui/uikit/styles/styles.css";
-import "../styles/globals.scss";
-import React from "react";
+import { App } from '@/components/App';
+import { DEFAULT_BODY_CLASSNAME } from '@/components/Wrapper';
+import React from 'react';
+import '@gravity-ui/uikit/styles/fonts.css';
+import '@gravity-ui/uikit/styles/styles.css';
+
+import '../styles/globals.scss';
 
 export const metadata: Metadata = {
-  title: "CIDER [CODE] | Учет продукции с маркировкой на производстве",
-  description: "Приложение для учета продукции с маркировкой на производстве",
+  description: 'Приложение для учета продукции с маркировкой на производстве',
+  title: 'CIDER [CODE] | Учет продукции с маркировкой на производстве',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={DEFAULT_BODY_CLASSNAME}>

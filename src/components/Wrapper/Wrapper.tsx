@@ -1,47 +1,34 @@
 'use client';
 
+import { useThemeSwitcher } from '@/app/lib/ThemeProvider';
 import { FooterWrapper } from '@/components/Footer';
-import { Moon, Sun } from '@gravity-ui/icons';
-import { Button, Icon, type Theme } from '@gravity-ui/uikit';
+import { Button, Icon } from '@gravity-ui/uikit';
 import block from 'bem-cn-lite';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import './Wrapper.scss';
 
 const b = block('wrapper');
 
 const DARK = 'dark';
-const LIGHT = 'light';
 
 export type AppProps = {
   children: React.ReactNode;
 };
 
 export const Wrapper: React.FC<AppProps> = ({ children }) => {
-  const [theme, setTheme] = React.useState<Theme | null>(null);
-
-  useEffect(() => {
-    const theme = localStorage.getItem('themeData') ?? DARK;
-    setTheme(theme);
-  }, []);
+  const { toggleTheme, theme, themeIcon } = useThemeSwitcher();
 
   const isDark = theme === DARK;
 
   return (
     <div className={b()}>
       <div className={b('theme-button')}>
-        <Button
-          size="l"
-          view="outlined"
-          onClick={() => {
-            setTheme(isDark ? LIGHT : DARK);
-            localStorage.setItem('themeData', isDark ? LIGHT : DARK);
-            window.dispatchEvent(new Event('storage'));
-          }}
-        >
-          <Icon data={isDark ? Sun : Moon} />
+        <Button size="l" view="outlined" onClick={() => toggleTheme()}>
+          <Icon data={themeIcon} />
         </Button>
       </div>
+
       <div className={b('layout')}>
         <div className={b('header')}>
           <div className={b('logo')}>
@@ -51,6 +38,7 @@ export const Wrapper: React.FC<AppProps> = ({ children }) => {
         </div>
         <div className={b('content')}>{children}</div>
       </div>
+
       <FooterWrapper />
     </div>
   );

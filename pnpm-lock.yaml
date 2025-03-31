@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@eslint/compat':
-        specifier: ^1.2.7
-        version: 1.2.7(eslint@9.23.0)
       '@gravity-ui/icons':
         specifier: ^2.13.0
         version: 2.13.0(react@18.3.1)
@@ -45,6 +42,9 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
     devDependencies:
+      '@eslint/compat':
+        specifier: ^1.2.7
+        version: 1.2.7(eslint@9.23.0)
       '@eslint/eslintrc':
         specifier: ^3.3.1
         version: 3.3.1
@@ -90,12 +90,18 @@ importers:
       eslint-config-prettier:
         specifier: ^10.1.1
         version: 10.1.1(eslint@9.23.0)
+      eslint-plugin-example:
+        specifier: ^1.2.0
+        version: 1.2.0(eslint@9.23.0)
       eslint-plugin-perfectionist:
         specifier: ^4.10.1
         version: 4.10.1(eslint@9.23.0)(typescript@5.8.2)
       eslint-plugin-react:
         specifier: ^7.37.4
         version: 7.37.4(eslint@9.23.0)
+      eslint-plugin-react-hooks:
+        specifier: ^5.2.0
+        version: 5.2.0(eslint@9.23.0)
       globals:
         specifier: ^16.0.0
         version: 16.0.0
@@ -2000,6 +2006,11 @@ packages:
         optional: true
       eslint-import-resolver-webpack:
         optional: true
+
+  eslint-plugin-example@1.2.0:
+    resolution: {integrity: sha512-PwpJVHZt6GGjl0Qf6HubI6vdAvQTb03DWxRenawJJlxVqTzPVsFWBhOlnPB8GpEoLYWwz9TnOI8k3/J957pGgA==}
+    peerDependencies:
+      eslint: '>=0.8.0'
 
   eslint-plugin-import@2.31.0:
     resolution: {integrity: sha512-ixmkI62Rbc2/w8Vfxyh1jQRTdRTF52VxwRVHl/ykPAmqG+Nb7/kNn+byLP0LxPgI7zWA16Jt82SybJInmMia3A==}
@@ -5596,6 +5607,10 @@ snapshots:
       eslint-import-resolver-typescript: 3.10.0(eslint-plugin-import@2.31.0)(eslint@9.23.0)
     transitivePeerDependencies:
       - supports-color
+
+  eslint-plugin-example@1.2.0(eslint@9.23.0):
+    dependencies:
+      eslint: 9.23.0
 
   eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.28.0(eslint@9.23.0)(typescript@5.8.2))(eslint-import-resolver-typescript@3.10.0)(eslint@9.23.0):
     dependencies:

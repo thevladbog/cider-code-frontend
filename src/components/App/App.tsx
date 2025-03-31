@@ -1,50 +1,21 @@
 'use client';
 
+import { ThemeProvider } from '@/app/lib/ThemeProvider';
 import { Wrapper } from '@/components/Wrapper';
-import { Clock, Mug, Persons, QrCode } from '@gravity-ui/icons';
+import { Clock, Mug, Persons, Plus, QrCode } from '@gravity-ui/icons';
 import { AsideHeader, MenuItem } from '@gravity-ui/navigation';
-import { type Theme, ThemeProvider } from '@gravity-ui/uikit';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
 interface AppProps {
   children: React.ReactNode;
 }
 
-const DARK = 'dark';
-
-export let DEFAULT_BODY_CLASSNAME = `g-root g-root_theme_${DARK}`;
-
 export const App: React.FC<AppProps> = ({ children }) => {
   const [compact, setCompact] = useState<boolean>(true);
+
   const router = useRouter();
-  const [themeData, setThemeData] = useState<Theme | null>(null);
-
-  useEffect(() => {
-    const theme = localStorage.getItem('themeData') ?? DARK;
-    setThemeData(theme);
-    DEFAULT_BODY_CLASSNAME = `g-root g-root_theme_${theme}`;
-  }, []);
-
-  useEffect(() => {
-    DEFAULT_BODY_CLASSNAME = `g-root g-root_theme_${themeData}`;
-  }, [themeData]);
-
-  useEffect(() => {
-    function checkThemeData() {
-      const item = localStorage.getItem('themeData') as Theme;
-
-      if (item) {
-        setThemeData(item);
-      }
-    }
-
-    window.addEventListener('storage', checkThemeData);
-
-    return () => {
-      window.removeEventListener('storage', checkThemeData);
-    };
-  }, []);
+  const pathname = usePathname();
 
   const toggleCompact = () => {
     setCompact((prevState) => !prevState);
@@ -62,6 +33,7 @@ export const App: React.FC<AppProps> = ({ children }) => {
       icon: Clock,
       link: '/',
       onItemClick: (item, _, event) => handleClick(event, item.link),
+      current: pathname === '/',
     },
     {
       id: 'products',
@@ -69,6 +41,7 @@ export const App: React.FC<AppProps> = ({ children }) => {
       icon: Mug,
       link: '/products',
       onItemClick: (item, _, event) => handleClick(event, item.link),
+      current: pathname === '/products',
     },
     {
       id: 'users',
@@ -76,13 +49,29 @@ export const App: React.FC<AppProps> = ({ children }) => {
       icon: Persons,
       link: '/users',
       onItemClick: (item, _, event) => handleClick(event, item.link),
+      current: pathname === '/users',
+    },
+    {
+      id: 'divider1',
+      title: '-',
+      type: 'divider',
+    },
+    {
+      id: 'createShift',
+      title: 'Новая смена',
+      type: 'action',
+      icon: Plus,
+      afterMoreButton: true,
+      onItemClick({ id, title, current }) {
+        alert(JSON.stringify({ id, title, current }));
+      },
     },
   ];
 
   return (
-    <ThemeProvider theme={themeData ?? undefined}>
+    <ThemeProvider>
       <AsideHeader
-        logo={{ icon: QrCode, text: 'CIDER [CODE]' }}
+        logo={{ icon: QrCode, text: 'CIDER [CODE]', onClick: () => router.push('/'), href: '/' }}
         compact={compact}
         hideCollapseButton={false}
         headerDecoration={true}

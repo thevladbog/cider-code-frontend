@@ -8,9 +8,21 @@ $block: '.wrapper';
   padding: 20px 20px 0;
   box-sizing: border-box;
 
+  &__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
   &__theme-button {
     align-self: flex-end;
-    margin-bottom: 20px;
+  }
+
+  &__breadcrumbs {
+    align-self: center;
   }
 
   &__layout {
@@ -20,12 +32,6 @@ $block: '.wrapper';
     justify-content: center;
     flex: 1;
     margin-bottom: 56px;
-  }
-
-  &__header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 
   &__logo {

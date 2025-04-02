@@ -1,6 +1,6 @@
-import { InfoButtons } from '@/components/InfoButtons';
+import { ShiftTable } from '@/components/ShiftTable';
 import React from 'react';
 
 export default function Home() {
-  return <InfoButtons />;
+  return <ShiftTable />;
 }

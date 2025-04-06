@@ -23,6 +23,7 @@
     "lint:js": "eslint --ext .js,.jsx,.ts,.tsx .",
     "lint:js:fix": "eslint --ext .js,.jsx,.ts,.tsx . --fix",
     "lint:styles": "stylelint '{styles,src}/**/*.scss'",
+    "lint:styles:fix": "stylelint '{styles,src}/**/*.scss' --fix",
     "lint:prettier": "prettier --check '**/*.md'",
     "lint": "npm run lint:js && npm run lint:styles && npm run lint:prettier",
     "test": "exit 0"

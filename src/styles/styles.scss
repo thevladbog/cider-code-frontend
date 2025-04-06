@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 
 .g-root_theme_light {
   --g-border-radius-xs: 10px;
@@ -8,8 +8,11 @@
   --g-border-radius-l: 18px;
   --g-border-radius-xl: 22px;
 
-  --g-font-family-sans: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-  --g-font-family-monospace: 'Roboto Mono', 'Menlo', 'Monaco', 'Consolas', 'Ubuntu Mono', 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New', 'Courier', monospace;
+  --g-font-family-sans:
+    "Inter", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  --g-font-family-monospace:
+    "Roboto Mono", "Menlo", "Monaco", "Consolas", "Ubuntu Mono",
+    "Liberation Mono", "DejaVu Sans Mono", "Courier New", "Courier", monospace;
 
   --g-color-private-brand-50: rgba(91, 181, 87, 0.1);
   --g-color-private-brand-100: rgba(91, 181, 87, 0.15);
@@ -42,7 +45,6 @@
   --g-color-private-brand-100-solid: rgb(230, 244, 230);
   --g-color-private-brand-50-solid: rgb(239, 248, 238);
 
-
   --g-color-base-brand: rgb(91, 181, 87);
   --g-color-base-background: rgb(255, 255, 255);
   --g-color-base-brand-hover: var(--g-color-private-brand-600-solid);
@@ -57,8 +59,12 @@
   --g-color-text-link-visited: var(--g-color-private-purple-550-solid);
   --g-color-text-link-visited-hover: var(--g-color-private-purple-800-solid);
 
-  --gn-aside-header-decoration-collapsed-background-color: var(--g-color-private-brand-200-solid);
-  --gn-aside-header-decoration-expanded-background-color: var(--g-color-private-brand-200-solid);
+  --gn-aside-header-decoration-collapsed-background-color: var(
+    --g-color-private-brand-200-solid
+  );
+  --gn-aside-header-decoration-expanded-background-color: var(
+    --g-color-private-brand-200-solid
+  );
 }
 
 .g-root_theme_dark {
@@ -68,8 +74,11 @@
   --g-border-radius-l: 18px;
   --g-border-radius-xl: 22px;
 
-  --g-font-family-sans: 'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-  --g-font-family-monospace: 'Roboto Mono', 'Menlo', 'Monaco', 'Consolas', 'Ubuntu Mono', 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New', 'Courier', monospace;
+  --g-font-family-sans:
+    "Inter", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  --g-font-family-monospace:
+    "Roboto Mono", "Menlo", "Monaco", "Consolas", "Ubuntu Mono",
+    "Liberation Mono", "DejaVu Sans Mono", "Courier New", "Courier", monospace;
 
   --g-color-private-brand-50: rgba(108, 145, 201, 0.1);
   --g-color-private-brand-100: rgba(108, 145, 201, 0.15);
@@ -102,7 +111,6 @@
   --g-color-private-brand-100-solid: rgb(45, 46, 59);
   --g-color-private-brand-50-solid: rgb(41, 41, 51);
 
-
   --g-color-base-brand: rgb(108, 145, 201);
   --g-color-base-background: rgb(34, 29, 34);
   --g-color-base-brand-hover: var(--g-color-private-brand-650-solid);
@@ -117,6 +125,10 @@
   --g-color-text-link-visited: var(--g-color-private-purple-700-solid);
   --g-color-text-link-visited-hover: var(--g-color-private-purple-850-solid);
 
-  --gn-aside-header-decoration-collapsed-background-color: var(--g-color-private-brand-200-solid);
-  --gn-aside-header-decoration-expanded-background-color: var(--g-color-private-brand-200-solid);
+  --gn-aside-header-decoration-collapsed-background-color: var(
+    --g-color-private-brand-200-solid
+  );
+  --gn-aside-header-decoration-expanded-background-color: var(
+    --g-color-private-brand-200-solid
+  );
 }

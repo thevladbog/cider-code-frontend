@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "@gravity-ui/eslint-config",
+    "@gravity-ui/eslint-config/prettier",
+    "plugin:import/typescript"
+  ],
+  "root": true,
+  "parserOptions": {
+    "project": [
+      "./tsconfig.json"
+    ]
+  }
+}

@@ -19,6 +19,7 @@ import { IProduct } from "@/lib/types";
 import { PRODUCTS_MOCK } from "@/lib/mocks";
 import { getColumnConfig } from "@/components/ProductTable/lib/getColumnConfig";
 import { getRowActions } from "@/components/ProductTable/lib/getRowActions";
+import { ModalCreateProduct } from "@/components/ModalCreateProduct";
 
 export const ProductTable = () => {
   const [paginationState, setPaginationState] = React.useState({
@@ -26,6 +27,7 @@ export const ProductTable = () => {
     pageSize: PRODUCTS_MOCK.limit,
   });
   const [search, setSearch] = React.useState("");
+  const [openModal, setOpenModal] = React.useState(false);
 
   const ProductTableWrapper = withTableSorting(
     withTableActions<IProduct>(Table),
@@ -37,7 +39,7 @@ export const ProductTable = () => {
     setPaginationState((prevState) => ({ ...prevState, page, pageSize }));
 
   const createNewProduct = () => {
-    return;
+    setOpenModal(true);
   };
 
   return (
@@ -89,6 +91,10 @@ export const ProductTable = () => {
           qa="product.table.pagination"
         />
       </div>
+      <ModalCreateProduct
+        visible={openModal}
+        onClose={() => setOpenModal(false)}
+      />
     </div>
   );
 };

@@ -1,0 +1,50 @@
+.root {
+  width: 50vw;
+  min-height: 20vh;
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.header {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 16px;
+}
+
+.field {
+  margin-top: 8px;
+}
+
+.fieldWrapper {
+  margin-bottom: 16px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: flex-end;
+}
+
+.hr {
+  width: 100%;
+  margin: 0 0 16px 0;
+  border: 0.5px solid var(--g-color-line-generic-accent);
+}
+
+.hrBottom {
+  width: 100%;
+  margin: 16px 0;
+  border: 0.5px solid var(--g-color-line-generic-accent);
+}

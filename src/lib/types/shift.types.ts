@@ -27,7 +27,7 @@ export const STATUS_MAP: Record<IShiftData["status"], string> = {
   canceled: "Отменена",
 };
 
-type LabelColorsType =
+export type LabelColorsType =
   | "normal"
   | "info"
   | "danger"

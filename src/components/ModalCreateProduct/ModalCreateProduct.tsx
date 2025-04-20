@@ -47,7 +47,7 @@ export const ModalCreateProduct = (props: IModalCreateProductProps) => {
         <div className={s.header}>
           <TextWrapper variant="header-2">Создание нового продукта</TextWrapper>
           <Button onClick={onClose} view="flat" size="l">
-            <Icon data={CircleXmark} size={20} />
+            <Icon data={CircleXmark} size={20} className={s.closeButton} />
           </Button>
         </div>
         <hr className={s.hr} />

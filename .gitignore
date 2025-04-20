@@ -23,6 +23,10 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env.development.local
 
 # typescript
 *.tsbuildinfo
+
+#certs
+.cert

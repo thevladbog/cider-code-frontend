@@ -1,10 +1,11 @@
-import { Clock, Mug, Persons, Plus, QrCode } from "@gravity-ui/icons";
+import { Clock, Mug, Persons, Plus } from "@gravity-ui/icons";
 import { AsideHeader, MenuItem } from "@gravity-ui/navigation";
-import { ThemeProvider } from "@gravity-ui/uikit";
+import { Icon, ThemeProvider } from "@gravity-ui/uikit";
 import { Wrapper } from "@/components/Wrapper";
 import { useThemeStore } from "@/entities/Theme";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import React, { ReactNode, useState } from "react";
+import { Logo, LogoIcon } from "./components/Icons";
 
 interface AppProps {
   children: ReactNode;
@@ -77,8 +78,8 @@ const App = ({ children }: AppProps) => {
     <ThemeProvider theme={theme}>
       <AsideHeader
         logo={{
-          icon: QrCode,
-          text: "CIDER [CODE]",
+          icon: LogoIcon,
+          text: () => <Icon data={Logo} width={80} />,
           onClick: () => navigate({ to: "/" }),
           href: "/",
         }}

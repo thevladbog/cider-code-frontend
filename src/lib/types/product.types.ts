@@ -5,8 +5,9 @@ export interface IProduct {
   id: string;
   fullName: string;
   shortName: string;
-  gtin: string | number;
+  gtin: string;
   volume: number;
+  alcoholCode: string;
   expirationInDays: number;
   pictureUrl?: string;
   status: TProductStatus;

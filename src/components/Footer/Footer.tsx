@@ -9,7 +9,7 @@ export const FooterWrapper = () => {
         className={s.footer}
         withDivider={true}
         moreButtonTitle="Show more"
-        copyright={`@ ${new Date().getFullYear()} "CIDER [CODE]"`}
+        copyright={`@ ${new Date().getFullYear()} "BOTTLE [CODE]"`}
         menuItems={[
           {
             text: "Поддержка",

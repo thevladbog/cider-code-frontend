@@ -18,6 +18,10 @@ export const getCreateeProductSchema = () => {
       .string({ required_error: "Поле обязательно для ввода" })
       .length(14, "GTIN должен быть 14 символов")
       .startsWith("0", "GTIN должен начинаться с 0"),
+    alcoholCode: z
+      .string({ required_error: "Поле обязательно для ввода" })
+      .length(19, "Код продукии должен быть 19 символов")
+      .startsWith("0", "Код продукции должен начинаться с 0"),
     expirationInDays: z
       .number({ required_error: "Поле обязательно для ввода" })
       .min(1, "Срок годности должен быть не меньше 1"),

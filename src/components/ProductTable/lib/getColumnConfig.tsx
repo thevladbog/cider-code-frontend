@@ -28,6 +28,11 @@ export const getColumnConfig = (): TableColumnConfig<IProduct>[] => {
       align: "start",
     },
     {
+      id: "alcoholCode",
+      name: "Код продукции",
+      align: "start",
+    },
+    {
       id: "pictureUrl",
       name: "Изображение",
       align: "start",

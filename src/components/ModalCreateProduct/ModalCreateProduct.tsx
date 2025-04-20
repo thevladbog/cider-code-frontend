@@ -29,6 +29,7 @@ export const ModalCreateProduct = (props: IModalCreateProductProps) => {
       shortName: "",
       volume: 0,
       gtin: "",
+      alcoholCode: "",
       expirationInDays: 0,
       pictureUrl: "",
       status: "",
@@ -204,6 +205,46 @@ export const ModalCreateProduct = (props: IModalCreateProductProps) => {
                       onBlur={field.handleBlur}
                       className={s.field}
                       placeholder="Введите GTIN продукции (0 + EAN-13 со штрих-кода)"
+                      hasClear={true}
+                      qa={`product.modal.${field.name}.field`}
+                      errorMessage={field.state.meta.errors
+                        .map((err) => err?.message)
+                        .join(", ")}
+                      validationState={
+                        field.state.meta.isTouched &&
+                        field.state.meta.errors.length
+                          ? "invalid"
+                          : undefined
+                      }
+                    />
+                  </div>
+                );
+              }}
+            />
+
+            <form.Field
+              name="alcoholCode"
+              children={(field) => {
+                return (
+                  <div className={s.fieldWrapper}>
+                    <label htmlFor={field.name}>
+                      <TextWrapper
+                        variant="body-1"
+                        qa={`product.modal.${field.name}.label`}
+                      >
+                        Код продукции
+                      </TextWrapper>
+                    </label>
+                    <TextInput
+                      size={"l"}
+                      id={field.name}
+                      name={field.name}
+                      type="text"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      onBlur={field.handleBlur}
+                      className={s.field}
+                      placeholder="Введите код продукции (полученный в РАР)"
                       hasClear={true}
                       qa={`product.modal.${field.name}.field`}
                       errorMessage={field.state.meta.errors

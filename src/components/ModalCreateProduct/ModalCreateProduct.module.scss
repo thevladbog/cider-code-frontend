@@ -26,7 +26,7 @@
   margin-top: 8px;
 }
 
-.fieldWrapper {
+.field-wrapper {
   margin-bottom: 16px;
 }
 
@@ -37,13 +37,17 @@
   justify-content: flex-end;
 }
 
+.close-button {
+  color: var(--g-color-private-brand-200);
+}
+
 .hr {
   width: 100%;
   margin: 0 0 16px;
   border: 0.5px solid var(--g-color-line-generic-accent);
 }
 
-.hrBottom {
+.hr-bottom {
   width: 100%;
   margin: 16px 0;
   border: 0.5px solid var(--g-color-line-generic-accent);

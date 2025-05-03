@@ -1,7 +1,7 @@
 import { TableActionConfig } from "@gravity-ui/uikit";
-import { IProduct } from "@/lib/types";
+import { CreateProductDto } from "@/lib/types/openapi";
 
-export const getRowActions = (): TableActionConfig<IProduct>[] => {
+export const getRowActions = (): TableActionConfig<CreateProductDto>[] => {
   return [
     {
       text: "Открыть",

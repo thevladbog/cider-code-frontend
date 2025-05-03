@@ -5,6 +5,7 @@ import "./styles/globals.scss";
 
 // eslint-disable-next-line
 import { createRouter, RouterProvider } from "@tanstack/react-router";
+import { Toaster, ToasterComponent, ToasterProvider } from "@gravity-ui/uikit";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
@@ -13,6 +14,7 @@ import { ThemeStoreProvider } from "@/entities/Theme";
 import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({ routeTree });
+const toaster = new Toaster();
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -27,7 +29,10 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <ThemeStoreProvider>
-        <RouterProvider router={router} />
+        <ToasterProvider toaster={toaster}>
+          <RouterProvider router={router} />
+          <ToasterComponent />
+        </ToasterProvider>
       </ThemeStoreProvider>
     </StrictMode>,
   );

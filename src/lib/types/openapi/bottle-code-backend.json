@@ -1,0 +1,2063 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/product": {
+      "post": {
+        "operationId": "ProductController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Json structure for product object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The record has been successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedProductId"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "tags": [
+          "Product"
+        ]
+      },
+      "get": {
+        "operationId": "ProductController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IProductFindMay"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "tags": [
+          "Product"
+        ]
+      }
+    },
+    "/product/{id}": {
+      "get": {
+        "operationId": "ProductController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SelectProductDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "tags": [
+          "Product"
+        ]
+      },
+      "patch": {
+        "operationId": "ProductController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Json structure for product object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateProductDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "tags": [
+          "Product"
+        ]
+      },
+      "delete": {
+        "operationId": "ProductController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Product"
+        ]
+      }
+    },
+    "/product/{id}/status": {
+      "patch": {
+        "operationId": "ProductController_updateStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Json structure for product status",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateProductDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "tags": [
+          "Product"
+        ]
+      }
+    },
+    "/product/search": {
+      "get": {
+        "operationId": "ProductController_search",
+        "parameters": [
+          {
+            "name": "search",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SelectProductDto"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "tags": [
+          "Product"
+        ]
+      }
+    },
+    "/user": {
+      "post": {
+        "operationId": "UserController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IUserFindOne"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Data isn't unique"
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      },
+      "get": {
+        "operationId": "UserController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IUserFindMay"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "operationId": "UserController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the requested user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IUserFindOne"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User can't be found or something went wrong"
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      },
+      "patch": {
+        "operationId": "UserController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IUserFindOne"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User can't be found or something went wrong"
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      },
+      "delete": {
+        "operationId": "UserController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "404": {
+            "description": "User can't be found or something went wrong"
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/user/auth/sign-in": {
+      "post": {
+        "operationId": "UserController_signIn",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignInDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/user/auth/revoke-token": {
+      "post": {
+        "operationId": "UserController_revokeToken",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/user/me": {
+      "get": {
+        "operationId": "UserController_getMe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IUserFindOne"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/code/individual": {
+      "post": {
+        "operationId": "CodeController_writeIndividualCode",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WriteIndividualCodeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Code successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndividualCodeDataDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Code"
+        ]
+      }
+    },
+    "/code/boxes": {
+      "post": {
+        "operationId": "CodeController_getNextSscc",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WriteBoxesCodeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Code successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoxesCodeDataDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Code"
+        ]
+      }
+    },
+    "/operator": {
+      "post": {
+        "operationId": "OperatorController_createOperator",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOperatorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedOperatorDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Operator"
+        ]
+      },
+      "get": {
+        "operationId": "OperatorController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOperatorFindMay"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Operator"
+        ]
+      }
+    },
+    "/operator/{id}": {
+      "patch": {
+        "operationId": "OperatorController_updateOperator",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOperatorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOperatorFindOne"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Operator not found"
+          }
+        },
+        "tags": [
+          "Operator"
+        ]
+      }
+    },
+    "/operator/login": {
+      "post": {
+        "operationId": "OperatorController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginOperatorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Operator login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Operator"
+        ]
+      }
+    },
+    "/operator/one/{id}": {
+      "get": {
+        "operationId": "OperatorController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the requested user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOperatorFindOne"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User can't be found or something went wrong"
+          }
+        },
+        "tags": [
+          "Operator"
+        ]
+      }
+    },
+    "/operator/me": {
+      "get": {
+        "operationId": "OperatorController_getMe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOperatorFindOne"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Operator"
+        ]
+      }
+    },
+    "/shift": {
+      "post": {
+        "operationId": "ShiftController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateShiftDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Shift successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShiftDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Data isn't unique"
+          }
+        },
+        "tags": [
+          "Shift"
+        ]
+      },
+      "get": {
+        "operationId": "ShiftController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of shifts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IShiftFindMay"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Shift"
+        ]
+      }
+    },
+    "/shift/{id}": {
+      "get": {
+        "operationId": "ShiftController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the requested shift",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IShiftFindOne"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Shift can't be found or something went wrong"
+          }
+        },
+        "tags": [
+          "Shift"
+        ]
+      },
+      "patch": {
+        "operationId": "ShiftController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateShiftDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShiftDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Shift can't be found or something went wrong"
+          }
+        },
+        "tags": [
+          "Shift"
+        ]
+      },
+      "delete": {
+        "operationId": "ShiftController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Shift has been deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IDeletedShift"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Shift can't be found or something went wrong"
+          }
+        },
+        "tags": [
+          "Shift"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "BOTTLE [CODE] Backend",
+    "description": "The Bottle Code API description",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "CreateProductDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the product",
+            "type": "string"
+          },
+          "shortName": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "gtin": {
+            "type": "string"
+          },
+          "alcoholCode": {
+            "type": "string"
+          },
+          "expirationInDays": {
+            "type": "integer"
+          },
+          "volume": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {},
+              {
+                "type": "object",
+                "properties": {
+                  "d": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  },
+                  "e": {
+                    "type": "number"
+                  },
+                  "s": {
+                    "type": "number"
+                  },
+                  "toFixed": {}
+                },
+                "required": [
+                  "d",
+                  "e",
+                  "s",
+                  "toFixed"
+                ]
+              }
+            ]
+          },
+          "pictureUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "PAUSED",
+              "REGISTRATION",
+              "ARCHIVED"
+            ]
+          },
+          "created": {},
+          "modified": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "shortName",
+          "fullName",
+          "gtin",
+          "alcoholCode",
+          "expirationInDays",
+          "volume",
+          "pictureUrl",
+          "modified"
+        ]
+      },
+      "CreatedProductId": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the product",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "SelectProductDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "PAUSED",
+              "REGISTRATION",
+              "ARCHIVED"
+            ]
+          },
+          "id": {
+            "description": "The unique identifier for the product",
+            "type": "string"
+          },
+          "shortName": {
+            "type": "string"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "gtin": {
+            "type": "string"
+          },
+          "alcoholCode": {
+            "type": "string"
+          },
+          "expirationInDays": {
+            "type": "integer"
+          },
+          "volume": {},
+          "pictureUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "created": {},
+          "modified": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "status",
+          "id",
+          "shortName",
+          "fullName",
+          "gtin",
+          "alcoholCode",
+          "expirationInDays",
+          "volume",
+          "pictureUrl",
+          "created",
+          "modified"
+        ]
+      },
+      "IProductFindMay": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SelectProductDto"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "totalPage": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "result",
+          "total",
+          "page",
+          "limit",
+          "totalPage"
+        ]
+      },
+      "UpdateProductDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "oneOf": [
+              {
+                "description": "The unique identifier for the product",
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "set": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          },
+          "shortName": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "set": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          },
+          "fullName": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "set": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          },
+          "gtin": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "set": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          },
+          "alcoholCode": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "set": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          },
+          "expirationInDays": {
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "set": {
+                    "type": "number"
+                  },
+                  "increment": {
+                    "type": "number"
+                  },
+                  "decrement": {
+                    "type": "number"
+                  },
+                  "multiply": {
+                    "type": "number"
+                  },
+                  "divide": {
+                    "type": "number"
+                  }
+                }
+              }
+            ]
+          },
+          "volume": {
+            "oneOf": [
+              {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {},
+                  {
+                    "type": "object",
+                    "properties": {
+                      "d": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        }
+                      },
+                      "e": {
+                        "type": "number"
+                      },
+                      "s": {
+                        "type": "number"
+                      },
+                      "toFixed": {}
+                    },
+                    "required": [
+                      "d",
+                      "e",
+                      "s",
+                      "toFixed"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "set": {
+                    "oneOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "string"
+                      },
+                      {},
+                      {
+                        "type": "object",
+                        "properties": {
+                          "d": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            }
+                          },
+                          "e": {
+                            "type": "number"
+                          },
+                          "s": {
+                            "type": "number"
+                          },
+                          "toFixed": {}
+                        },
+                        "required": [
+                          "d",
+                          "e",
+                          "s",
+                          "toFixed"
+                        ]
+                      }
+                    ]
+                  },
+                  "increment": {
+                    "oneOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "string"
+                      },
+                      {},
+                      {
+                        "type": "object",
+                        "properties": {
+                          "d": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            }
+                          },
+                          "e": {
+                            "type": "number"
+                          },
+                          "s": {
+                            "type": "number"
+                          },
+                          "toFixed": {}
+                        },
+                        "required": [
+                          "d",
+                          "e",
+                          "s",
+                          "toFixed"
+                        ]
+                      }
+                    ]
+                  },
+                  "decrement": {
+                    "oneOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "string"
+                      },
+                      {},
+                      {
+                        "type": "object",
+                        "properties": {
+                          "d": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            }
+                          },
+                          "e": {
+                            "type": "number"
+                          },
+                          "s": {
+                            "type": "number"
+                          },
+                          "toFixed": {}
+                        },
+                        "required": [
+                          "d",
+                          "e",
+                          "s",
+                          "toFixed"
+                        ]
+                      }
+                    ]
+                  },
+                  "multiply": {
+                    "oneOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "string"
+                      },
+                      {},
+                      {
+                        "type": "object",
+                        "properties": {
+                          "d": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            }
+                          },
+                          "e": {
+                            "type": "number"
+                          },
+                          "s": {
+                            "type": "number"
+                          },
+                          "toFixed": {}
+                        },
+                        "required": [
+                          "d",
+                          "e",
+                          "s",
+                          "toFixed"
+                        ]
+                      }
+                    ]
+                  },
+                  "divide": {
+                    "oneOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "string"
+                      },
+                      {},
+                      {
+                        "type": "object",
+                        "properties": {
+                          "d": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            }
+                          },
+                          "e": {
+                            "type": "number"
+                          },
+                          "s": {
+                            "type": "number"
+                          },
+                          "toFixed": {}
+                        },
+                        "required": [
+                          "d",
+                          "e",
+                          "s",
+                          "toFixed"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "pictureUrl": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "set": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "set"
+                ]
+              }
+            ],
+            "nullable": true
+          },
+          "status": {
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE",
+                  "PAUSED",
+                  "REGISTRATION",
+                  "ARCHIVED"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "set": {
+                    "type": "string",
+                    "enum": [
+                      "ACTIVE",
+                      "INACTIVE",
+                      "PAUSED",
+                      "REGISTRATION",
+                      "ARCHIVED"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "created": {
+            "oneOf": [
+              {},
+              {
+                "type": "object",
+                "properties": {
+                  "set": {}
+                }
+              }
+            ]
+          },
+          "modified": {
+            "oneOf": [
+              {},
+              {
+                "type": "object",
+                "properties": {
+                  "set": {
+                    "nullable": true
+                  }
+                },
+                "required": [
+                  "set"
+                ]
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "pictureUrl",
+          "modified"
+        ]
+      },
+      "UpdateProductStatusDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "PAUSED",
+              "REGISTRATION",
+              "ARCHIVED"
+            ],
+            "example": "ACTIVE"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "created": {},
+          "modified": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "email",
+          "firstName",
+          "lastName",
+          "password",
+          "modified"
+        ]
+      },
+      "CreatedUserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "created": {},
+          "modified": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "firstName",
+          "lastName",
+          "created",
+          "modified"
+        ]
+      },
+      "IUserFindOne": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/CreatedUserDto"
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "IUserFindMay": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreatedUserDto"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "totalPage": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "result",
+          "total",
+          "page",
+          "limit",
+          "totalPage"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "SignInDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 1,
+            "format": "email"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "WriteIndividualCodeDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "NEW",
+              "USED"
+            ]
+          },
+          "productId": {
+            "type": "string"
+          },
+          "boxesCodeId": {
+            "type": "number"
+          },
+          "shiftId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "status",
+          "productId"
+        ]
+      },
+      "IndividualCodeDataDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "NEW",
+              "USED"
+            ]
+          },
+          "id": {
+            "type": "integer"
+          },
+          "code": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string"
+          },
+          "created": {},
+          "modified": {
+            "nullable": true
+          },
+          "boxesCodeId": {
+            "type": "integer",
+            "nullable": true
+          },
+          "shiftId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "status",
+          "id",
+          "code",
+          "productId",
+          "created",
+          "modified",
+          "boxesCodeId",
+          "shiftId"
+        ]
+      },
+      "WriteBoxesCodeDto": {
+        "type": "object",
+        "properties": {
+          "gln": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string"
+          },
+          "currentSscc": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "gln",
+          "productId"
+        ]
+      },
+      "BoxesCodeDataDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "gln": {
+            "type": "string"
+          },
+          "counter": {
+            "type": "integer"
+          },
+          "sscc": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string"
+          },
+          "created": {},
+          "modified": {
+            "nullable": true
+          },
+          "shiftId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "gln",
+          "counter",
+          "sscc",
+          "productId",
+          "created",
+          "modified",
+          "shiftId"
+        ]
+      },
+      "CreateOperatorDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "barcode": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "CreatedOperatorDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "barcode": {
+            "type": "string",
+            "nullable": true
+          },
+          "created": {},
+          "modified": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "barcode",
+          "created",
+          "modified"
+        ]
+      },
+      "UpdateOperatorDto": {
+        "type": "object",
+        "properties": {
+          "regenerateBarcode": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "IOperatorFindOne": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/CreatedOperatorDto"
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "LoginOperatorDto": {
+        "type": "object",
+        "properties": {
+          "barcode": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "barcode"
+        ]
+      },
+      "IOperatorFindMay": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreatedOperatorDto"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "totalPage": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "result",
+          "total",
+          "page",
+          "limit",
+          "totalPage"
+        ]
+      },
+      "CreateShiftDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "plannedDate": {},
+          "plannedCount": {
+            "type": "integer",
+            "nullable": true
+          },
+          "factCount": {
+            "type": "integer",
+            "nullable": true
+          },
+          "packing": {
+            "type": "boolean"
+          },
+          "countInBox": {
+            "type": "integer",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PLANNED",
+              "INPROGRESS",
+              "PAUSED",
+              "DONE",
+              "CANCELED"
+            ]
+          },
+          "productId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "plannedCount",
+          "factCount",
+          "countInBox",
+          "productId"
+        ]
+      },
+      "ShiftDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "PLANNED",
+              "INPROGRESS",
+              "PAUSED",
+              "DONE",
+              "CANCELED"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "plannedDate": {},
+          "productId": {
+            "type": "string"
+          },
+          "plannedCount": {
+            "type": "integer",
+            "nullable": true
+          },
+          "factCount": {
+            "type": "integer",
+            "nullable": true
+          },
+          "packing": {
+            "type": "boolean"
+          },
+          "countInBox": {
+            "type": "integer",
+            "nullable": true
+          },
+          "operatorId": {
+            "type": "string",
+            "nullable": true
+          },
+          "created": {},
+          "modified": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "status",
+          "id",
+          "plannedDate",
+          "productId",
+          "plannedCount",
+          "factCount",
+          "packing",
+          "countInBox",
+          "operatorId",
+          "created",
+          "modified"
+        ]
+      },
+      "IShiftFindMay": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShiftDto"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "totalPage": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "result",
+          "total",
+          "page",
+          "limit",
+          "totalPage"
+        ]
+      },
+      "IShiftFindOne": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/ShiftDto"
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "UpdateShiftDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "IDeletedShift": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "message"
+        ]
+      }
+    }
+  }
+}

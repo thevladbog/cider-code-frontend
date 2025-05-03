@@ -27,7 +27,8 @@
     "lint:prettier": "prettier --check '**/*.md'",
     "lint": "npm run lint:js && npm run lint:styles && npm run lint:prettier",
     "test": "exit 0",
-    "cert": "shx rm -rf .cert && shx mkdir -p .cert && mkcert -key-file ./.cert/key.pem -cert-file ./.cert/cert.pem test.in.bottlecode.app"
+    "cert": "shx rm -rf .cert && shx mkdir -p .cert && mkcert -key-file ./.cert/key.pem -cert-file ./.cert/cert.pem test.in.bottlecode.app",
+    "types:openapi": "openapi -i src/lib/types/openapi/bottle-code-backend.json -o src/lib/types/openapi && npx openapi-typescript src/lib/types/openapi/bottle-code-backend.json -o src/lib/types/openapi/api.d.ts"
   },
   "dependencies": {
     "@gravity-ui/icons": "^2.13.0",
@@ -37,6 +38,8 @@
     "@tanstack/react-router": "^1.114.34",
     "bem-cn-lite": "^4.1.0",
     "immer": "^10.1.1",
+    "openapi-fetch": "^0.13.5",
+    "openapi-react-query": "^0.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "zod": "^3.24.2",
@@ -60,6 +63,8 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "husky": "^8.0.3",
+    "openapi-typescript": "^7.6.1",
+    "openapi-typescript-codegen": "^0.29.0",
     "sass": "^1.68.0",
     "shx": "^0.4.0",
     "stylelint-config-clean-order": "^7.0.0",

@@ -28,11 +28,11 @@ export const Wrapper: React.FC<AppProps> = ({ children }) => {
           <User
             size="l"
             avatar={{
-              text: `${user?.firstName} ${user?.lastName}`,
+              text: `${user?.firstName ?? ""} ${user?.lastName ?? ""}`,
               theme: "brand",
             }}
-            name={`${user?.firstName} ${user?.lastName}`}
-            description={user.email}
+            name={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`}
+            description={user.email ?? ""}
           />
         )}
         <Button

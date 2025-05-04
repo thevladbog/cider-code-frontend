@@ -2,15 +2,10 @@ import { $api } from "@/lib/api";
 import { CreatedUserDto } from "@/lib/types/openapi";
 import { createStore } from "@/lib/zustand";
 import { Toaster } from "@gravity-ui/uikit";
-import { useCookies } from "react-cookie";
 
 interface IUserState {
   data: CreatedUserDto | null;
   isLoading: boolean;
-}
-
-interface ICookieValues {
-  jwt?: string;
 }
 
 const initialState: IUserState = {
@@ -40,22 +35,20 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
       toaster.add({
         name: "login",
         title: "Что-то пошло не так ...",
-        content: `При входе в систему произошла ошибка: ${JSON.stringify(error)}`,
+        content: `При входе в систему произошла ошибка. Пожалуйста, проверьте свои учетные данные и попробуйте еще раз.`,
         isClosable: true,
         theme: "danger",
       });
-      throw new Error("Something went wrong");
+      throw new Error("Something went wrong: " + error);
     } finally {
       setState({ isLoading: false });
     }
   };
 
   const logout = () => {
-    const [__, _, removeCookie] = useCookies<"jwt", ICookieValues>(["jwt"]);
-
-    removeCookie("jwt", {
-      domain: import.meta.env.VITE_FRONTEND_URL,
-    });
+    document.cookie =
+      "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" +
+      import.meta.env.VITE_FRONTEND_URL;
   };
 
   const getDataAboutMe = async () => {
@@ -71,11 +64,11 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
       toaster.add({
         name: "getDataAboutMe",
         title: "Что-то пошло не так ...",
-        content: `При получении данных произошла ошибка: ${JSON.stringify(error)}. Вы будете разлогинены!`,
+        content: `При получении данных произошла ошибка. Вы будете разлогинены!`,
         isClosable: true,
         theme: "danger",
       });
-      throw new Error("Something went wrong");
+      throw new Error("Something went wrong: " + error);
     } finally {
       setState({ isLoading: false });
     }

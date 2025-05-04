@@ -12,8 +12,6 @@ import { ThemeStoreProvider } from "@/entities/Theme";
 import { routeTree } from "./routeTree.gen";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import { CookiesProvider } from "react-cookie";
-
 const router = createRouter({ routeTree });
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,11 +38,9 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <CookiesProvider defaultSetOptions={{ path: "/" }}>
-          <ThemeStoreProvider>
-            <RouterProvider router={router} />
-          </ThemeStoreProvider>
-        </CookiesProvider>
+        <ThemeStoreProvider>
+          <RouterProvider router={router} />
+        </ThemeStoreProvider>
       </QueryClientProvider>
     </StrictMode>,
   );

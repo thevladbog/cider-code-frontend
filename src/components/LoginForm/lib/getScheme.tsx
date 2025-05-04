@@ -5,6 +5,6 @@ export const getLoginSchema = () => {
     email: z.string({ required_error: "Поле обязательно для ввода" }).email(),
     password: z
       .string({ required_error: "Поле обязательно для ввода" })
-      .min(3, "Название должно быть не короче 3 символов"),
+      .min(8, "Пароль должен быть не короче 8 символов"),
   });
 };

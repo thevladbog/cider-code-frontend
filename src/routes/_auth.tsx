@@ -2,11 +2,7 @@ import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { user } from "@/entities/User/useUserStore";
 
 const AuthLayout = () => {
-  return (
-    <>
-      <Outlet />
-    </>
-  );
+  return <Outlet />;
 };
 
 export const Route = createFileRoute("/_auth")({

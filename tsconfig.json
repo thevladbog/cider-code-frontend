@@ -32,7 +32,7 @@
   "include": [
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/routes/_auth.index.tsx"  ],
   "exclude": [
     "node_modules"
   ]

@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ShiftDto } from "./ShiftDto";
-export type IShiftFindMay = {
+export type IShiftFindMany = {
   result: Array<ShiftDto>;
   total: number;
   page: number;

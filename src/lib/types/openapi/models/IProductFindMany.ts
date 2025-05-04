@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { SelectProductDto } from "./SelectProductDto";
-export type IProductFindMay = {
+export type IProductFindMany = {
   result: Array<SelectProductDto>;
   total: number;
   page: number;

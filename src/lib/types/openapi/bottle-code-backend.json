@@ -63,7 +63,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IProductFindMay"
+                  "$ref": "#/components/schemas/IProductFindMany"
                 }
               }
             }
@@ -461,7 +461,7 @@
         ]
       }
     },
-    "/user/me": {
+    "/user/auth/me": {
       "get": {
         "operationId": "UserController_getMe",
         "parameters": [],
@@ -802,7 +802,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IShiftFindMay"
+                  "$ref": "#/components/schemas/IShiftFindMany"
                 }
               }
             }
@@ -1084,7 +1084,7 @@
           "modified"
         ]
       },
-      "IProductFindMay": {
+      "IProductFindMany": {
         "type": "object",
         "properties": {
           "result": {
@@ -1998,7 +1998,7 @@
           "modified"
         ]
       },
-      "IShiftFindMay": {
+      "IShiftFindMany": {
         "type": "object",
         "properties": {
           "result": {

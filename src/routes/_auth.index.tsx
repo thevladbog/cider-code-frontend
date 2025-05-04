@@ -5,6 +5,6 @@ const Index = () => {
   return <ShiftTable />;
 };
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_auth/")({
   component: Index,
 });

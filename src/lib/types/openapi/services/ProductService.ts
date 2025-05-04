@@ -4,7 +4,7 @@
 /* eslint-disable */
 import type { CreatedProductId } from "../models/CreatedProductId";
 import type { CreateProductDto } from "../models/CreateProductDto";
-import type { IProductFindMay } from "../models/IProductFindMay";
+import type { IProductFindMany } from "../models/IProductFindMany";
 import type { SelectProductDto } from "../models/SelectProductDto";
 import type { UpdateProductDto } from "../models/UpdateProductDto";
 import type { UpdateProductStatusDto } from "../models/UpdateProductStatusDto";
@@ -33,13 +33,13 @@ export class ProductService {
   /**
    * @param page Page number
    * @param limit Items per page
-   * @returns IProductFindMay
+   * @returns IProductFindMany
    * @throws ApiError
    */
   public static productControllerFindAll(
     page?: number,
     limit?: number,
-  ): CancelablePromise<IProductFindMay> {
+  ): CancelablePromise<IProductFindMany> {
     return __request(OpenAPI, {
       method: "GET",
       url: "/product",

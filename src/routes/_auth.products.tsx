@@ -9,6 +9,6 @@ const Products = () => {
   );
 };
 
-export const Route = createFileRoute("/products/")({
+export const Route = createFileRoute("/_auth/products")({
   component: Products,
 });

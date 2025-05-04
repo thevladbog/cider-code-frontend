@@ -139,7 +139,7 @@ export class UserService {
   public static userControllerGetMe(): CancelablePromise<IUserFindOne> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/user/me",
+      url: "/user/auth/me",
     });
   }
 }

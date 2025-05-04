@@ -88,9 +88,7 @@ const App = ({ children }: AppProps) => {
   const { data, isLoading, isError } = $api.useQuery("get", "/user/me");
 
   useEffect(() => {
-    if (data || isLoading) {
-      setUserData(isLoading, data?.result);
-    }
+    setUserData(isLoading, data?.result);
 
     if (isError) {
       toaster.add({

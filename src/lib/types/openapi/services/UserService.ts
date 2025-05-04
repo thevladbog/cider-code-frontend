@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateUserDto } from "../models/CreateUserDto";
-import type { IUserFindMay } from "../models/IUserFindMay";
+import type { IUserFindMany } from "../models/IUserFindMany";
 import type { IUserFindOne } from "../models/IUserFindOne";
 import type { SignInDto } from "../models/SignInDto";
 import type { UpdateUserDto } from "../models/UpdateUserDto";
@@ -32,13 +32,13 @@ export class UserService {
   /**
    * @param page Page number
    * @param limit Items per page
-   * @returns IUserFindMay Returns a list of users
+   * @returns IUserFindMany Returns a list of users
    * @throws ApiError
    */
   public static userControllerFindAll(
     page?: number,
     limit?: number,
-  ): CancelablePromise<IUserFindMay> {
+  ): CancelablePromise<IUserFindMany> {
     return __request(OpenAPI, {
       method: "GET",
       url: "/user",

@@ -314,7 +314,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IUserFindMay"
+                  "$ref": "#/components/schemas/IUserFindMany"
                 }
               }
             }
@@ -602,7 +602,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IOperatorFindMay"
+                  "$ref": "#/components/schemas/IOperatorFindMany"
                 }
               }
             }
@@ -1615,7 +1615,7 @@
           "result"
         ]
       },
-      "IUserFindMay": {
+      "IUserFindMany": {
         "type": "object",
         "properties": {
           "result": {
@@ -1867,7 +1867,7 @@
           "barcode"
         ]
       },
-      "IOperatorFindMay": {
+      "IOperatorFindMany": {
         "type": "object",
         "properties": {
           "result": {

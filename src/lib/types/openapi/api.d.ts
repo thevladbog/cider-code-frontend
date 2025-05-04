@@ -507,7 +507,7 @@ export interface components {
     IUserFindOne: {
       result: components["schemas"]["CreatedUserDto"];
     };
-    IUserFindMay: {
+    IUserFindMany: {
       result: components["schemas"]["CreatedUserDto"][];
       total: number;
       page: number;
@@ -575,7 +575,7 @@ export interface components {
     LoginOperatorDto: {
       barcode: string;
     };
-    IOperatorFindMay: {
+    IOperatorFindMany: {
       result: components["schemas"]["CreatedOperatorDto"][];
       total: number;
       page: number;
@@ -855,7 +855,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["IUserFindMay"];
+          "application/json": components["schemas"]["IUserFindMany"];
         };
       };
     };
@@ -1103,7 +1103,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["IOperatorFindMay"];
+          "application/json": components["schemas"]["IOperatorFindMany"];
         };
       };
     };

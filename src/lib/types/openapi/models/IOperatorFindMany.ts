@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreatedUserDto } from "./CreatedUserDto";
-export type IUserFindMay = {
-  result: Array<CreatedUserDto>;
+import type { CreatedOperatorDto } from "./CreatedOperatorDto";
+export type IOperatorFindMany = {
+  result: Array<CreatedOperatorDto>;
   total: number;
   page: number;
   limit: number;

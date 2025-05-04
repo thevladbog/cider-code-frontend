@@ -11,8 +11,8 @@ import { useThemeStore } from "@/entities/Theme";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import React, { ReactNode, useEffect, useState } from "react";
 import { Logo, LogoIcon } from "./components/Icons";
-import { $api } from "./lib/api";
 import { useUserStore } from "./entities/User/useUserStore";
+import { useShallow } from "zustand/shallow";
 
 interface AppProps {
   children: ReactNode;
@@ -20,6 +20,7 @@ interface AppProps {
 
 const App = ({ children }: AppProps) => {
   const [compact, setCompact] = useState<boolean>(true);
+  const [authed, setAuthed] = useState<boolean>(false);
 
   const toaster = new Toaster();
 
@@ -83,24 +84,11 @@ const App = ({ children }: AppProps) => {
     },
   ];
 
-  const setUserData = useUserStore((state) => state.setUserData);
-
-  const { data, isLoading, isError } = $api.useQuery("get", "/user/me");
+  const userData = useUserStore(useShallow((state) => state.data));
 
   useEffect(() => {
-    setUserData(isLoading, data?.result);
-
-    if (isError) {
-      toaster.add({
-        name: "getUserInfo",
-        title: "Что-то пошло не так ...",
-        content: "Не получилось загрузить пользователя. Вы будете разлогинены!",
-        autoHiding: 5000,
-        theme: "danger",
-        isClosable: true,
-      });
-    }
-  }, [data, isLoading, isError]);
+    setAuthed(Boolean(userData));
+  }, [userData]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -115,7 +103,7 @@ const App = ({ children }: AppProps) => {
           hideCollapseButton={false}
           headerDecoration={true}
           onChangeCompact={toggleCompact}
-          menuItems={menuItems}
+          menuItems={authed ? menuItems : undefined}
           compact={compact}
           renderContent={() => {
             return <Wrapper>{children}</Wrapper>;

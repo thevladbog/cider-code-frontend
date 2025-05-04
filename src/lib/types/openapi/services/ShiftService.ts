@@ -4,7 +4,7 @@
 /* eslint-disable */
 import type { CreateShiftDto } from "../models/CreateShiftDto";
 import type { IDeletedShift } from "../models/IDeletedShift";
-import type { IShiftFindMay } from "../models/IShiftFindMay";
+import type { IShiftFindMany } from "../models/IShiftFindMany";
 import type { IShiftFindOne } from "../models/IShiftFindOne";
 import type { ShiftDto } from "../models/ShiftDto";
 import type { UpdateShiftDto } from "../models/UpdateShiftDto";
@@ -33,13 +33,13 @@ export class ShiftService {
   /**
    * @param page Page number
    * @param limit Items per page
-   * @returns IShiftFindMay Returns a list of shifts
+   * @returns IShiftFindMany Returns a list of shifts
    * @throws ApiError
    */
   public static shiftControllerFindAll(
     page?: number,
     limit?: number,
-  ): CancelablePromise<IShiftFindMay> {
+  ): CancelablePromise<IShiftFindMany> {
     return __request(OpenAPI, {
       method: "GET",
       url: "/shift",

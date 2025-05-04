@@ -4,7 +4,7 @@
 /* eslint-disable */
 import type { CreatedOperatorDto } from "../models/CreatedOperatorDto";
 import type { CreateOperatorDto } from "../models/CreateOperatorDto";
-import type { IOperatorFindMay } from "../models/IOperatorFindMay";
+import type { IOperatorFindMany } from "../models/IOperatorFindMany";
 import type { IOperatorFindOne } from "../models/IOperatorFindOne";
 import type { LoginOperatorDto } from "../models/LoginOperatorDto";
 import type { UpdateOperatorDto } from "../models/UpdateOperatorDto";
@@ -30,13 +30,13 @@ export class OperatorService {
   /**
    * @param page Page number
    * @param limit Items per page
-   * @returns IOperatorFindMay Returns a list of users
+   * @returns IOperatorFindMany Returns a list of users
    * @throws ApiError
    */
   public static operatorControllerFindAll(
     page?: number,
     limit?: number,
-  ): CancelablePromise<IOperatorFindMay> {
+  ): CancelablePromise<IOperatorFindMany> {
     return __request(OpenAPI, {
       method: "GET",
       url: "/operator",

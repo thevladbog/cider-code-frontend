@@ -8,6 +8,7 @@ import { StateCreator } from "zustand/vanilla";
 
 import { IS_DEV } from "./const/env";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TAnyObject = Record<string, any>;
 
 type TMods = [["zustand/immer", never]];

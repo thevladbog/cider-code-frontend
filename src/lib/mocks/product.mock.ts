@@ -1,6 +1,6 @@
-import { CreateProductDto, IProductFindMay } from "../types/openapi";
+import { CreateProductDto, IProductFindMany } from "../types/openapi";
 
-export const PRODUCTS_MOCK: IProductFindMay = {
+export const PRODUCTS_MOCK: IProductFindMany = {
   total: 10,
   page: 1,
   totalPage: 2,

@@ -10,85 +10,129 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
-import { Route as ProductsIndexImport } from './routes/products/index'
+import { Route as rootRoute } from "./routes/__root";
+import { Route as LoginImport } from "./routes/login";
+import { Route as AuthImport } from "./routes/_auth";
+import { Route as AuthIndexImport } from "./routes/_auth.index";
+import { Route as AuthProductsImport } from "./routes/_auth.products";
 
 // Create/Update Routes
 
-const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
+const LoginRoute = LoginImport.update({
+  id: "/login",
+  path: "/login",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
-const ProductsIndexRoute = ProductsIndexImport.update({
-  id: '/products/',
-  path: '/products/',
+const AuthRoute = AuthImport.update({
+  id: "/_auth",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
+
+const AuthIndexRoute = AuthIndexImport.update({
+  id: "/",
+  path: "/",
+  getParentRoute: () => AuthRoute,
+} as any);
+
+const AuthProductsRoute = AuthProductsImport.update({
+  id: "/products",
+  path: "/products",
+  getParentRoute: () => AuthRoute,
+} as any);
 
 // Populate the FileRoutesByPath interface
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/products/': {
-      id: '/products/'
-      path: '/products'
-      fullPath: '/products'
-      preLoaderRoute: typeof ProductsIndexImport
-      parentRoute: typeof rootRoute
-    }
+    "/_auth": {
+      id: "/_auth";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof AuthImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/login": {
+      id: "/login";
+      path: "/login";
+      fullPath: "/login";
+      preLoaderRoute: typeof LoginImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_auth/products": {
+      id: "/_auth/products";
+      path: "/products";
+      fullPath: "/products";
+      preLoaderRoute: typeof AuthProductsImport;
+      parentRoute: typeof AuthImport;
+    };
+    "/_auth/": {
+      id: "/_auth/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof AuthIndexImport;
+      parentRoute: typeof AuthImport;
+    };
   }
 }
 
 // Create and export the route tree
 
+interface AuthRouteChildren {
+  AuthProductsRoute: typeof AuthProductsRoute;
+  AuthIndexRoute: typeof AuthIndexRoute;
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthProductsRoute: AuthProductsRoute,
+  AuthIndexRoute: AuthIndexRoute,
+};
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren);
+
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/products': typeof ProductsIndexRoute
+  "": typeof AuthRouteWithChildren;
+  "/login": typeof LoginRoute;
+  "/products": typeof AuthProductsRoute;
+  "/": typeof AuthIndexRoute;
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/products': typeof ProductsIndexRoute
+  "/login": typeof LoginRoute;
+  "/products": typeof AuthProductsRoute;
+  "/": typeof AuthIndexRoute;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/products/': typeof ProductsIndexRoute
+  __root__: typeof rootRoute;
+  "/_auth": typeof AuthRouteWithChildren;
+  "/login": typeof LoginRoute;
+  "/_auth/products": typeof AuthProductsRoute;
+  "/_auth/": typeof AuthIndexRoute;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/products'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/products'
-  id: '__root__' | '/' | '/products/'
-  fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: "" | "/login" | "/products" | "/";
+  fileRoutesByTo: FileRoutesByTo;
+  to: "/login" | "/products" | "/";
+  id: "__root__" | "/_auth" | "/login" | "/_auth/products" | "/_auth/";
+  fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  ProductsIndexRoute: typeof ProductsIndexRoute
+  AuthRoute: typeof AuthRouteWithChildren;
+  LoginRoute: typeof LoginRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  ProductsIndexRoute: ProductsIndexRoute,
-}
+  AuthRoute: AuthRouteWithChildren,
+  LoginRoute: LoginRoute,
+};
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {
@@ -96,15 +140,27 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/products/"
+        "/_auth",
+        "/login"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/_auth": {
+      "filePath": "_auth.tsx",
+      "children": [
+        "/_auth/products",
+        "/_auth/"
+      ]
     },
-    "/products/": {
-      "filePath": "products/index.tsx"
+    "/login": {
+      "filePath": "login.tsx"
+    },
+    "/_auth/products": {
+      "filePath": "_auth.products.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/": {
+      "filePath": "_auth.index.tsx",
+      "parent": "/_auth"
     }
   }
 }

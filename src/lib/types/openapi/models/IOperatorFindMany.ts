@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { SelectProductDto } from "./SelectProductDto";
-export type IProductFindMay = {
-  result: Array<SelectProductDto>;
+import type { CreatedOperatorDto } from "./CreatedOperatorDto";
+export type IOperatorFindMany = {
+  result: Array<CreatedOperatorDto>;
   total: number;
   page: number;
   limit: number;

@@ -133,7 +133,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/user/me": {
+  "/user/auth/me": {
     parameters: {
       query?: never;
       header?: never;
@@ -340,7 +340,7 @@ export interface components {
       created: unknown;
       modified: unknown;
     };
-    IProductFindMay: {
+    IProductFindMany: {
       result: components["schemas"]["SelectProductDto"][];
       total: number;
       page: number;
@@ -507,7 +507,7 @@ export interface components {
     IUserFindOne: {
       result: components["schemas"]["CreatedUserDto"];
     };
-    IUserFindMay: {
+    IUserFindMany: {
       result: components["schemas"]["CreatedUserDto"][];
       total: number;
       page: number;
@@ -575,7 +575,7 @@ export interface components {
     LoginOperatorDto: {
       barcode: string;
     };
-    IOperatorFindMay: {
+    IOperatorFindMany: {
       result: components["schemas"]["CreatedOperatorDto"][];
       total: number;
       page: number;
@@ -607,7 +607,7 @@ export interface components {
       created: unknown;
       modified: unknown;
     };
-    IShiftFindMay: {
+    IShiftFindMany: {
       result: components["schemas"]["ShiftDto"][];
       total: number;
       page: number;
@@ -650,7 +650,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["IProductFindMay"];
+          "application/json": components["schemas"]["IProductFindMany"];
         };
       };
       /** @description Forbidden. */
@@ -855,7 +855,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["IUserFindMay"];
+          "application/json": components["schemas"]["IUserFindMany"];
         };
       };
     };
@@ -1103,7 +1103,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["IOperatorFindMay"];
+          "application/json": components["schemas"]["IOperatorFindMany"];
         };
       };
     };
@@ -1256,7 +1256,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["IShiftFindMay"];
+          "application/json": components["schemas"]["IShiftFindMany"];
         };
       };
     };

@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreatedOperatorDto } from "./CreatedOperatorDto";
-export type IOperatorFindMay = {
-  result: Array<CreatedOperatorDto>;
+import type { ShiftDto } from "./ShiftDto";
+export type IShiftFindMany = {
+  result: Array<ShiftDto>;
   total: number;
   page: number;
   limit: number;

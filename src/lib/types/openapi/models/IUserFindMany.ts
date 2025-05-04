@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ShiftDto } from "./ShiftDto";
-export type IShiftFindMay = {
-  result: Array<ShiftDto>;
+import type { CreatedUserDto } from "./CreatedUserDto";
+export type IUserFindMany = {
+  result: Array<CreatedUserDto>;
   total: number;
   page: number;
   limit: number;

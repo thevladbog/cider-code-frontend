@@ -5,16 +5,16 @@ import "./styles/globals.scss";
 
 // eslint-disable-next-line
 import { createRouter, RouterProvider } from "@tanstack/react-router";
-import { Toaster, ToasterComponent, ToasterProvider } from "@gravity-ui/uikit";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
 import { ThemeStoreProvider } from "@/entities/Theme";
 
 import { routeTree } from "./routeTree.gen";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createRouter({ routeTree });
-const toaster = new Toaster();
+const queryClient = new QueryClient();
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -28,12 +28,11 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <ThemeStoreProvider>
-        <ToasterProvider toaster={toaster}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeStoreProvider>
           <RouterProvider router={router} />
-          <ToasterComponent />
-        </ToasterProvider>
-      </ThemeStoreProvider>
+        </ThemeStoreProvider>
+      </QueryClientProvider>
     </StrictMode>,
   );
 }

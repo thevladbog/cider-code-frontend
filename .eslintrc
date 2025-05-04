@@ -2,18 +2,22 @@
   "extends": [
     "@gravity-ui/eslint-config",
     "@gravity-ui/eslint-config/prettier",
-    "plugin:import/typescript"
+    "plugin:import/typescript",
+    "plugin:@tanstack/query/recommended"
   ],
   "root": true,
   "parserOptions": {
     "project": [
       "./tsconfig.json"
-    ],
+    ]
+  },
+  "rules": {
     "prettier/prettier": [
       "error",
       {
         "endOfLine": "auto"
       }
-    ]
+    ],
+    "@tanstack/query/exhaustive-deps": "error"
   }
 }

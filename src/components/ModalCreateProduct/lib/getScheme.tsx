@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { PRODUCT_STATUSES_ENUM } from "@/lib/types";
 
-export const getCreateeProductSchema = () => {
+export const getCreateProductSchema = () => {
   return z.object({
     fullName: z
       .string({ required_error: "Поле обязательно для ввода" })

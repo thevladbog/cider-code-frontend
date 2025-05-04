@@ -1,11 +1,18 @@
 import { Clock, Mug, Persons, Plus } from "@gravity-ui/icons";
 import { AsideHeader, MenuItem } from "@gravity-ui/navigation";
-import { Icon, ThemeProvider } from "@gravity-ui/uikit";
+import {
+  Icon,
+  ThemeProvider,
+  Toaster,
+  ToasterProvider,
+} from "@gravity-ui/uikit";
 import { Wrapper } from "@/components/Wrapper";
 import { useThemeStore } from "@/entities/Theme";
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { Logo, LogoIcon } from "./components/Icons";
+import { $api } from "./lib/api";
+import { useUserStore } from "./entities/User/useUserStore";
 
 interface AppProps {
   children: ReactNode;
@@ -13,6 +20,8 @@ interface AppProps {
 
 const App = ({ children }: AppProps) => {
   const [compact, setCompact] = useState<boolean>(true);
+
+  const toaster = new Toaster();
 
   const { theme } = useThemeStore();
   const location = useLocation();
@@ -68,30 +77,51 @@ const App = ({ children }: AppProps) => {
       type: "action",
       icon: Plus,
       afterMoreButton: true,
-      onItemClick({ id, title, current }) {
+      onItemClick: ({ id, title, current }) => {
         alert(JSON.stringify({ id, title, current }));
       },
     },
   ];
 
+  const setUserData = useUserStore((state) => state.setUserData);
+
+  const { data, isLoading, isError } = $api.useQuery("get", "/user/me");
+
+  useEffect(() => {
+    setUserData(isLoading, data?.result);
+
+    if (isError) {
+      toaster.add({
+        name: "getUserInfo",
+        title: "Что-то пошло не так ...",
+        content: "Не получилось загрузить пользователя. Вы будете разлогинены!",
+        autoHiding: 5000,
+        theme: "danger",
+        isClosable: true,
+      });
+    }
+  }, [data, isLoading, isError]);
+
   return (
     <ThemeProvider theme={theme}>
-      <AsideHeader
-        logo={{
-          icon: LogoIcon,
-          text: () => <Icon data={Logo} width={80} />,
-          onClick: () => navigate({ to: "/" }),
-          href: "/",
-        }}
-        hideCollapseButton={false}
-        headerDecoration={true}
-        onChangeCompact={toggleCompact}
-        menuItems={menuItems}
-        compact={compact}
-        renderContent={() => {
-          return <Wrapper>{children}</Wrapper>;
-        }}
-      />
+      <ToasterProvider toaster={toaster}>
+        <AsideHeader
+          logo={{
+            icon: LogoIcon,
+            text: () => <Icon data={Logo} width={80} />,
+            onClick: () => navigate({ to: "/" }),
+            href: "/",
+          }}
+          hideCollapseButton={false}
+          headerDecoration={true}
+          onChangeCompact={toggleCompact}
+          menuItems={menuItems}
+          compact={compact}
+          renderContent={() => {
+            return <Wrapper>{children}</Wrapper>;
+          }}
+        />
+      </ToasterProvider>
     </ThemeProvider>
   );
 };

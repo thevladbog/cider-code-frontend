@@ -1,11 +1,8 @@
 import { Avatar, Label, TableColumnConfig } from "@gravity-ui/uikit";
-import {
-  IProduct,
-  PRODUCT_STATUS_COLOR_MAP,
-  PRODUCT_STATUS_MAP,
-} from "@/lib/types";
+import { PRODUCT_STATUS_COLOR_MAP, PRODUCT_STATUS_MAP } from "@/lib/types";
+import { CreateProductDto } from "@/lib/types/openapi";
 
-export const getColumnConfig = (): TableColumnConfig<IProduct>[] => {
+export const getColumnConfig = (): TableColumnConfig<CreateProductDto>[] => {
   return [
     {
       id: "shortName",
@@ -13,7 +10,7 @@ export const getColumnConfig = (): TableColumnConfig<IProduct>[] => {
       align: "start",
       meta: {
         defaultSortOrder: "desc",
-        sort: (a: IProduct, b: IProduct) =>
+        sort: (a: CreateProductDto, b: CreateProductDto) =>
           a.shortName.localeCompare(b.shortName),
       },
     },
@@ -36,20 +33,20 @@ export const getColumnConfig = (): TableColumnConfig<IProduct>[] => {
       id: "pictureUrl",
       name: "Изображение",
       align: "start",
-      template: (item: IProduct) => (
+      template: (item: CreateProductDto) => (
         <Avatar imgUrl={item.pictureUrl ? item.pictureUrl : ""} size="xl" />
       ),
     },
     {
       id: "status",
       name: "Статус",
-      template: (item: IProduct) => (
+      template: (item: CreateProductDto) => (
         <Label
-          theme={PRODUCT_STATUS_COLOR_MAP[item.status]}
+          theme={PRODUCT_STATUS_COLOR_MAP[item?.status ?? "INACTIVE"]}
           interactive
           qa="products.table.label.status"
         >
-          {PRODUCT_STATUS_MAP[item.status]}
+          {PRODUCT_STATUS_MAP[item?.status ?? "INACTIVE"]}
         </Label>
       ),
     },

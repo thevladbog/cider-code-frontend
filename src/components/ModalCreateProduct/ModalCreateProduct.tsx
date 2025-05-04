@@ -1,4 +1,4 @@
-import { getCreateeProductSchema } from "@/components/ModalCreateProduct/lib/getScheme";
+import { getCreateProductSchema } from "@/components/ModalCreateProduct/lib/getScheme";
 import { useForm } from "@tanstack/react-form";
 import {
   Button,
@@ -22,7 +22,7 @@ export interface IModalCreateProductProps {
 export const ModalCreateProduct = (props: IModalCreateProductProps) => {
   const { visible, onClose } = props;
 
-  const scheme = getCreateeProductSchema();
+  const scheme = getCreateProductSchema();
   const form = useForm({
     defaultValues: {
       fullName: "",
@@ -365,7 +365,7 @@ export const ModalCreateProduct = (props: IModalCreateProductProps) => {
                       name={field.name}
                       options={PRODUCT_STATUS_SELECT_OPTIONS}
                       multiple={false}
-                      onUpdate={(e) => field.handleChange(e[0])}
+                      onUpdate={(e) => field.handleChange(e[0] ?? "")}
                       onBlur={field.handleBlur}
                       className={s.field}
                       placeholder="Выберите статус продукта"

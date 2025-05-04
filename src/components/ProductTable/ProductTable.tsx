@@ -15,11 +15,11 @@ import {
 import React from "react";
 
 import s from "./ProductTable.module.scss";
-import { IProduct } from "@/lib/types";
 import { PRODUCTS_MOCK } from "@/lib/mocks";
 import { getColumnConfig } from "@/components/ProductTable/lib/getColumnConfig";
 import { getRowActions } from "@/components/ProductTable/lib/getRowActions";
 import { ModalCreateProduct } from "@/components/ModalCreateProduct";
+import { SelectProductDto } from "@/lib/types/openapi";
 
 export const ProductTable = () => {
   const [paginationState, setPaginationState] = React.useState({
@@ -30,7 +30,7 @@ export const ProductTable = () => {
   const [openModal, setOpenModal] = React.useState(false);
 
   const ProductTableWrapper = withTableSorting(
-    withTableActions<IProduct>(Table),
+    withTableActions<SelectProductDto>(Table),
   );
 
   const columns = getColumnConfig();

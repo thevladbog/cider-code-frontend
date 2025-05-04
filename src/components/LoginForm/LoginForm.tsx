@@ -64,10 +64,7 @@ export const LoginForm = () => {
             return (
               <div className={s.fieldWrapper}>
                 <label htmlFor={field.name}>
-                  <TextWrapper
-                    variant="body-1"
-                    qa={`product.modal.${field.name}.label`}
-                  >
+                  <TextWrapper variant="body-1" qa={`auth.${field.name}.label`}>
                     Email:
                   </TextWrapper>
                 </label>
@@ -102,10 +99,7 @@ export const LoginForm = () => {
             return (
               <div className={s.fieldWrapper}>
                 <label htmlFor={field.name}>
-                  <TextWrapper
-                    variant="body-1"
-                    qa={`product.modal.${field.name}.label`}
-                  >
+                  <TextWrapper variant="body-1" qa={`auth.${field.name}.label`}>
                     Пароль:
                   </TextWrapper>
                 </label>
@@ -143,7 +137,7 @@ export const LoginForm = () => {
                 onClick={() => form.reset()}
                 size="l"
                 view="outlined"
-                qa={`product.modal.button.reset`}
+                qa={`auth.button.reset`}
               >
                 Сбросить данные формы
               </Button>
@@ -153,7 +147,7 @@ export const LoginForm = () => {
                 view={"action"}
                 loading={isSubmitting}
                 size="l"
-                qa={`product.modal.button.submit`}
+                qa={`auth.button.submit`}
               >
                 Войти
               </Button>

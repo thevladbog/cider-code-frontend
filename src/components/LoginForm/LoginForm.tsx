@@ -112,7 +112,7 @@ export const LoginForm = () => {
                   onBlur={field.handleBlur}
                   className={s.field}
                   hasClear={true}
-                  placeholder="Введите email"
+                  placeholder="Введите пароль"
                   qa={`auth.${field.name}.field`}
                   errorMessage={field.state.meta.errors
                     .map((err) => err?.message)

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PasswordInput, TextInput } from "@gravity-ui/uikit";
 
 export const getRegisterSchema = () => {
   return z
@@ -18,3 +19,44 @@ export const getRegisterSchema = () => {
       path: ["confirmPassword"],
     });
 };
+
+interface IRegisterFields {
+  name: "firstName" | "lastName" | "email" | "password" | "confirmPassword";
+  label: string;
+  placeholder: string;
+  Component: typeof TextInput | typeof PasswordInput;
+}
+
+export const registerFields: IRegisterFields[] = [
+  {
+    name: "firstName",
+    label: "Имя:",
+    placeholder: "Введите имя",
+    Component: TextInput,
+  },
+  {
+    name: "lastName",
+    label: "Фамилия:",
+    placeholder: "Введите фамилию",
+    Component: TextInput,
+  },
+
+  {
+    name: "email",
+    label: "Email:",
+    placeholder: "Введите электронную почту",
+    Component: TextInput,
+  },
+  {
+    name: "password",
+    label: "Пароль:",
+    placeholder: "Введите пароль",
+    Component: PasswordInput,
+  },
+  {
+    name: "confirmPassword",
+    label: "Подтвердите пароль:",
+    placeholder: "Введите пароль повторно",
+    Component: PasswordInput,
+  },
+];

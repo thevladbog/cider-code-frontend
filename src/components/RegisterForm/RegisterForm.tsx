@@ -1,17 +1,11 @@
 import { useForm } from "@tanstack/react-form";
-import {
-  Button,
-  PasswordInput,
-  TextInput,
-  Text as TextWrapper,
-  useToaster,
-} from "@gravity-ui/uikit";
+import { Button, Text as TextWrapper, useToaster } from "@gravity-ui/uikit";
 
 import s from "./RegisterForm.module.scss";
 import { useNavigate, useRouter } from "@tanstack/react-router";
 import { sleep } from "@/entities/User/utils";
 import { useUserStore } from "@/entities/User/useUserStore";
-import { getRegisterSchema } from "./lib/getScheme";
+import { getRegisterSchema, registerFields } from "./lib/getScheme";
 
 export const RegisterForm = () => {
   const scheme = getRegisterSchema();
@@ -67,195 +61,51 @@ export const RegisterForm = () => {
           form.handleSubmit().then();
         }}
       >
-        <form.Field
-          name="firstName"
-          children={(field) => {
-            return (
-              <div className={s.fieldWrapper}>
-                <label htmlFor={field.name}>
-                  <TextWrapper
-                    variant="body-1"
-                    qa={`register.${field.name}.label`}
-                  >
-                    Имя:
-                  </TextWrapper>
-                </label>
-                <TextInput
-                  size={"l"}
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  className={s.field}
-                  hasClear={true}
-                  placeholder="Введите имя"
-                  qa={`register.${field.name}.field`}
-                  errorMessage={field.state.meta.errors
-                    .map((err) => err?.message)
-                    .join(", ")}
-                  validationState={
-                    field.state.meta.isTouched && field.state.meta.errors.length
-                      ? "invalid"
-                      : undefined
-                  }
-                />
-              </div>
-            );
-          }}
-        />
-
-        <form.Field
-          name="lastName"
-          children={(field) => {
-            return (
-              <div className={s.fieldWrapper}>
-                <label htmlFor={field.name}>
-                  <TextWrapper
-                    variant="body-1"
-                    qa={`register.${field.name}.label`}
-                  >
-                    Фамилия:
-                  </TextWrapper>
-                </label>
-                <TextInput
-                  size={"l"}
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  className={s.field}
-                  hasClear={true}
-                  placeholder="Введите фамилию"
-                  qa={`register.${field.name}.field`}
-                  errorMessage={field.state.meta.errors
-                    .map((err) => err?.message)
-                    .join(", ")}
-                  validationState={
-                    field.state.meta.isTouched && field.state.meta.errors.length
-                      ? "invalid"
-                      : undefined
-                  }
-                />
-              </div>
-            );
-          }}
-        />
-
-        <form.Field
-          name="email"
-          children={(field) => {
-            return (
-              <div className={s.fieldWrapper}>
-                <label htmlFor={field.name}>
-                  <TextWrapper
-                    variant="body-1"
-                    qa={`register.${field.name}.label`}
-                  >
-                    Email:
-                  </TextWrapper>
-                </label>
-                <TextInput
-                  size={"l"}
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  className={s.field}
-                  hasClear={true}
-                  placeholder="Введите email"
-                  qa={`register.${field.name}.field`}
-                  errorMessage={field.state.meta.errors
-                    .map((err) => err?.message)
-                    .join(", ")}
-                  validationState={
-                    field.state.meta.isTouched && field.state.meta.errors.length
-                      ? "invalid"
-                      : undefined
-                  }
-                />
-              </div>
-            );
-          }}
-        />
-
-        <form.Field
-          name="password"
-          children={(field) => {
-            return (
-              <div className={s.fieldWrapper}>
-                <label htmlFor={field.name}>
-                  <TextWrapper
-                    variant="body-1"
-                    qa={`register.${field.name}.label`}
-                  >
-                    Пароль:
-                  </TextWrapper>
-                </label>
-                <PasswordInput
-                  size={"l"}
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  className={s.field}
-                  hasClear={true}
-                  placeholder="Введите пароль"
-                  qa={`register.${field.name}.field`}
-                  errorMessage={field.state.meta.errors
-                    .map((err) => err?.message)
-                    .join(", ")}
-                  validationState={
-                    field.state.meta.isTouched && field.state.meta.errors.length
-                      ? "invalid"
-                      : undefined
-                  }
-                />
-              </div>
-            );
-          }}
-        />
-
-        <form.Field
-          name="confirmPassword"
-          children={(field) => {
-            return (
-              <div className={s.fieldWrapper}>
-                <label htmlFor={field.name}>
-                  <TextWrapper
-                    variant="body-1"
-                    qa={`register.${field.name}.label`}
-                  >
-                    Подтвердите пароль:
-                  </TextWrapper>
-                </label>
-                <PasswordInput
-                  size={"l"}
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                  className={s.field}
-                  hasClear={true}
-                  placeholder="Введите пароль"
-                  qa={`register.${field.name}.field`}
-                  errorMessage={field.state.meta.errors
-                    .map((err) => err?.message)
-                    .join(", ")}
-                  validationState={
-                    field.state.meta.isTouched && field.state.meta.errors.length
-                      ? "invalid"
-                      : undefined
-                  }
-                />
-              </div>
-            );
-          }}
-        />
+        {registerFields.map((field) => {
+          return (
+            <form.Field
+              key={field.name}
+              name={field.name}
+              children={(currentField) => {
+                return (
+                  <div className={s.fieldWrapper}>
+                    <label htmlFor={currentField.name}>
+                      <TextWrapper
+                        variant="body-1"
+                        qa={`register.${currentField.name}.label`}
+                      >
+                        {field.label}
+                      </TextWrapper>
+                    </label>
+                    <field.Component
+                      size={"l"}
+                      id={currentField.name}
+                      name={currentField.name}
+                      value={currentField.state.value}
+                      onChange={(e) =>
+                        currentField.handleChange(e.target.value)
+                      }
+                      onBlur={currentField.handleBlur}
+                      className={s.field}
+                      hasClear={true}
+                      placeholder={field.placeholder}
+                      qa={`register.${currentField.name}.field`}
+                      errorMessage={currentField.state.meta.errors
+                        .map((err) => err?.message)
+                        .join(", ")}
+                      validationState={
+                        currentField.state.meta.isTouched &&
+                        currentField.state.meta.errors.length
+                          ? "invalid"
+                          : undefined
+                      }
+                    />
+                  </div>
+                );
+              }}
+            />
+          );
+        })}
 
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}

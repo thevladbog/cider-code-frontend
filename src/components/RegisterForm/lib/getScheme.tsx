@@ -40,7 +40,6 @@ export const registerFields: IRegisterFields[] = [
     placeholder: "Введите фамилию",
     Component: TextInput,
   },
-
   {
     name: "email",
     label: "Email:",

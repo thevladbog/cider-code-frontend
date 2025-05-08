@@ -1,16 +1,18 @@
 import { $api } from "@/lib/api";
-import { CreatedUserDto } from "@/lib/types/openapi";
+import { CreateUserDto, CreatedUserDto } from "@/lib/types/openapi";
 import { createStore } from "@/lib/zustand";
 import { Toaster } from "@gravity-ui/uikit";
 
 interface IUserState {
   data: CreatedUserDto | null;
   isLoading: boolean;
+  isLogoutLoading: boolean;
 }
 
 const initialState: IUserState = {
   data: null,
   isLoading: false,
+  isLogoutLoading: false,
 };
 
 const toaster = new Toaster();
@@ -45,10 +47,48 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
     }
   };
 
-  const logout = () => {
-    document.cookie =
-      "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" +
-      import.meta.env.VITE_FRONTEND_URL;
+  const register = async (props: CreateUserDto) => {
+    try {
+      // eslint-disable-next-line new-cap
+      const { data } = await $api.POST("/user", {
+        body: props,
+      });
+
+      setState({ data: data?.result });
+
+      return data;
+    } catch (error) {
+      toaster.add({
+        name: "register",
+        title: "Что-то пошло не так ...",
+        content: `При регистрации произошла ошибка. Пожалуйста, попробуйте еще раз.`,
+        isClosable: true,
+        theme: "danger",
+      });
+      throw new Error("Something went wrong: " + error);
+    }
+  };
+
+  const logout = async () => {
+    setState({ isLogoutLoading: true });
+    try {
+      // eslint-disable-next-line new-cap
+      await $api.POST("/user/auth/revoke-token");
+
+      setState(initialState);
+    } catch (error) {
+      toaster.add({
+        name: "logout",
+        title: "Что-то пошло не так ...",
+        content: `При выходе из системы произошла ошибка. Пожалуйста, попробуйте еще раз.`,
+        isClosable: true,
+        theme: "danger",
+      });
+      throw new Error("Something went wrong: " + error);
+    } finally {
+      setState({ isLogoutLoading: false });
+      document.location.assign("/");
+    }
   };
 
   const getDataAboutMe = async () => {
@@ -79,10 +119,10 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
     return Boolean(state.data);
   };
 
-  return { login, logout, getDataAboutMe, isAuth };
+  return { login, logout, getDataAboutMe, isAuth, register };
 });
 
-export const { login, logout, getDataAboutMe, isAuth } =
+export const { login, logout, getDataAboutMe, isAuth, register } =
   useUserStore.getState();
 
 export const user = {
@@ -90,4 +130,5 @@ export const user = {
   logout,
   getDataAboutMe,
   isAuth,
+  register,
 };

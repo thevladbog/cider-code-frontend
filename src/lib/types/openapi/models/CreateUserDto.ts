@@ -3,11 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export type CreateUserDto = {
-  id?: string;
   email: string;
   firstName: string;
   lastName: string;
   password: string;
-  created?: any;
-  modified: any;
 };

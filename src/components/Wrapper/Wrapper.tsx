@@ -9,6 +9,7 @@ import block from "bem-cn-lite";
 import { useThemeStore } from "@/entities/Theme";
 import { FooterWrapper } from "@/components/Footer";
 import { useUserStore } from "@/entities/User/useUserStore";
+import { useShallow } from "zustand/shallow";
 
 const b = block("wrapper");
 
@@ -19,21 +20,33 @@ export type AppProps = {
 export const Wrapper: React.FC<AppProps> = ({ children }) => {
   const { theme, setTheme } = useThemeStore();
 
-  const user = useUserStore((state) => state.data);
+  const [user, logout, isLoading] = useUserStore(
+    useShallow((state) => [state.data, state.logout, state.isLogoutLoading]),
+  );
 
   return (
     <div className={b()}>
       <div className={b("theme-button")}>
         {user && (
-          <User
-            size="l"
-            avatar={{
-              text: `${user?.firstName ?? ""} ${user?.lastName ?? ""}`,
-              theme: "brand",
-            }}
-            name={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`}
-            description={user.email ?? ""}
-          />
+          <>
+            <User
+              size="l"
+              avatar={{
+                text: `${user?.firstName ?? ""} ${user?.lastName ?? ""}`,
+                theme: "brand",
+              }}
+              name={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`}
+              description={user.email ?? ""}
+            />
+            <Button
+              size={"l"}
+              view="outlined-danger"
+              onClick={() => logout()}
+              loading={isLoading}
+            >
+              Выйти
+            </Button>
+          </>
         )}
         <Button
           size={"l"}

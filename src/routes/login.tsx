@@ -9,9 +9,7 @@ import { ReactNode, useState } from "react";
 
 const Login = () => {
   const { theme } = useThemeStore();
-  const [form, currentForm] = useState<"login" | "register" | "forgot">(
-    "login",
-  );
+  const [form, setForm] = useState<"login" | "register" | "forgot">("login");
 
   const loginForm = (): ReactNode => {
     return (
@@ -30,10 +28,7 @@ const Login = () => {
           <TextWrapper variant={"body-1"} qa="login.register.header">
             Впервые на портале?
           </TextWrapper>
-          <Button
-            view="outlined-action"
-            onClick={() => currentForm("register")}
-          >
+          <Button view="outlined-action" onClick={() => setForm("register")}>
             Регистрация
           </Button>
         </div>
@@ -41,7 +36,7 @@ const Login = () => {
           <TextWrapper variant={"body-1"} qa="login.forgot.header">
             Забыли пароль?
           </TextWrapper>
-          <Button view="outlined-info" onClick={() => currentForm("forgot")}>
+          <Button view="outlined-info" onClick={() => setForm("forgot")}>
             Восстановить
           </Button>
         </div>
@@ -66,7 +61,7 @@ const Login = () => {
           <TextWrapper variant={"body-1"} qa="register.login.header">
             Уже зарегистрирован?
           </TextWrapper>
-          <Button view="outlined-action" onClick={() => currentForm("login")}>
+          <Button view="outlined-action" onClick={() => setForm("login")}>
             Войти
           </Button>
         </div>

@@ -1544,9 +1544,6 @@
       "CreateUserDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
           "email": {
             "type": "string"
           },
@@ -1558,18 +1555,13 @@
           },
           "password": {
             "type": "string"
-          },
-          "created": {},
-          "modified": {
-            "nullable": true
           }
         },
         "required": [
           "email",
           "firstName",
           "lastName",
-          "password",
-          "modified"
+          "password"
         ]
       },
       "CreatedUserDto": {

@@ -132,3 +132,43 @@
     --g-color-private-brand-200-solid
   );
 }
+
+.auth {
+  &_page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 100%;
+  }
+
+  &_logo {
+    width: 100%;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &_form {
+    margin-bottom: var(--g-spacing-9);
+  }
+
+  &_header {
+    margin: var(--g-spacing-9) 0;
+    text-align: start;
+  }
+
+  &_select {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    margin-top: var(--g-spacing-3);
+
+    & > button {
+      width: 150px;
+    }
+  }
+}

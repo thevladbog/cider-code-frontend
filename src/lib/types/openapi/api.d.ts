@@ -487,13 +487,10 @@ export interface components {
       status: "ACTIVE" | "INACTIVE" | "PAUSED" | "REGISTRATION" | "ARCHIVED";
     };
     CreateUserDto: {
-      id?: string;
       email: string;
       firstName: string;
       lastName: string;
       password: string;
-      created?: unknown;
-      modified: unknown;
     };
     CreatedUserDto: {
       id: string;

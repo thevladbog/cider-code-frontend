@@ -26,7 +26,7 @@ const Login = () => {
 
         <div className="auth_select">
           <TextWrapper variant={"body-1"} qa="login.register.header">
-            Впервые на портале? Впервые на портале?
+            Впервые на портале?
           </TextWrapper>
           <Button view="outlined-action" onClick={() => setForm("register")}>
             Регистрация

@@ -1,5 +1,9 @@
 import { $api } from "@/lib/api";
-import { CreateUserDto, CreatedUserDto } from "@/lib/types/openapi";
+import {
+  CreateUserDto,
+  CreatedUserDto,
+  ResetPasswordDto,
+} from "@/lib/types/openapi";
 import { createStore } from "@/lib/zustand";
 import { Toaster } from "@gravity-ui/uikit";
 
@@ -7,12 +11,14 @@ interface IUserState {
   data: CreatedUserDto | null;
   isLoading: boolean;
   isLogoutLoading: boolean;
+  resetRequestSend: boolean;
 }
 
 const initialState: IUserState = {
   data: null,
   isLoading: false,
   isLogoutLoading: false,
+  resetRequestSend: false,
 };
 
 const toaster = new Toaster();
@@ -43,7 +49,7 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
       });
       throw new Error("Something went wrong: " + error);
     } finally {
-      setState({ isLoading: false });
+      setState({ isLoading: false, resetRequestSend: false });
     }
   };
 
@@ -114,16 +120,70 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
     }
   };
 
+  const sendResetRequest = async (email: string) => {
+    try {
+      // eslint-disable-next-line new-cap
+      await $api.POST("/user/auth/reset-password-request", {
+        body: { email },
+      });
+      setState({ resetRequestSend: true });
+    } catch (error) {
+      toaster.add({
+        name: "sendResetRequest",
+        title: "Что-то пошло не так ...",
+        content: `При запросе сброса пароля произошла ошибка`,
+        isClosable: true,
+        theme: "danger",
+      });
+      throw new Error("Something went wrong: " + error);
+    }
+  };
+
+  const resetPassword = async (body: ResetPasswordDto) => {
+    try {
+      // eslint-disable-next-line new-cap
+      await $api.POST("/user/auth/reset-password", {
+        body,
+      });
+      setState({ resetRequestSend: false });
+      return true;
+    } catch (error) {
+      toaster.add({
+        name: "resetPassword",
+        title: "Что-то пошло не так ...",
+        content: `При сбросе пароля произошла ошибка`,
+        isClosable: true,
+        theme: "danger",
+      });
+      throw new Error("Something went wrong: " + error);
+    }
+  };
+
   const isAuth = () => {
     const state = getState();
     return Boolean(state.data);
   };
 
-  return { login, logout, getDataAboutMe, isAuth, register };
+  return {
+    login,
+    logout,
+    getDataAboutMe,
+    isAuth,
+    register,
+    sendResetRequest,
+    resetPassword,
+  };
 });
 
-export const { login, logout, getDataAboutMe, isAuth, register } =
-  useUserStore.getState();
+export const {
+  login,
+  logout,
+  getDataAboutMe,
+  isAuth,
+  register,
+  sendResetRequest,
+  resetPassword,
+} = useUserStore.getState();
 
 export const user = {
   login,
@@ -131,4 +191,6 @@ export const user = {
   getDataAboutMe,
   isAuth,
   register,
+  sendResetRequest,
+  resetPassword,
 };

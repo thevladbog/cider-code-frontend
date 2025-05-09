@@ -8,6 +8,7 @@ export type CreatedUserDto = {
   firstName: string;
   lastName: string;
   password?: string;
+  picture: string | null;
   created: any;
   modified: any;
 };

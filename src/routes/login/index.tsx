@@ -1,14 +1,17 @@
 import { CompanyLogo } from "@/components/Icons";
 import { LoginForm } from "@/components/LoginForm";
 import { RegisterForm } from "@/components/RegisterForm";
+import { RequestResetPasswordForm } from "@/components/RequestResetPasswordForm";
 import { useThemeStore } from "@/entities/Theme";
-import { Button, Text as TextWrapper } from "@gravity-ui/uikit";
+import { useUserStore } from "@/entities/User/useUserStore";
+import { Alert, Button, Text as TextWrapper } from "@gravity-ui/uikit";
 
 import { createFileRoute } from "@tanstack/react-router";
 import { ReactNode, useState } from "react";
 
 const Login = () => {
   const { theme } = useThemeStore();
+  const resetRequestSend = useUserStore((state) => state.resetRequestSend);
   const [form, setForm] = useState<"login" | "register" | "forgot">("login");
 
   const loginForm = (): ReactNode => {
@@ -59,7 +62,44 @@ const Login = () => {
 
         <div className="auth_select">
           <TextWrapper variant={"body-1"} qa="register.login.header">
-            Уже зарегистрирован?
+            Уже зарегистрированы?
+          </TextWrapper>
+          <Button view="outlined-action" onClick={() => setForm("login")}>
+            Войти
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
+  const resetRequestForm = () => {
+    return (
+      <div className="auth_main">
+        <div className="auth_header">
+          <TextWrapper variant={"header-1"} qa="register.header">
+            Сброс пароля
+          </TextWrapper>
+        </div>
+
+        <div className="auth_form">
+          {resetRequestSend ? (
+            <Alert
+              theme="warning"
+              title="Сброс пароля"
+              message="Если пользователь с таким Email существует, то данные для дальнейших шагов буду отправлены на указанный Email"
+              align="center"
+              style={{
+                width: "500px",
+              }}
+            />
+          ) : (
+            <RequestResetPasswordForm />
+          )}
+        </div>
+
+        <div className="auth_select">
+          <TextWrapper variant={"body-1"} qa="register.login.header">
+            Вспомнили пароль?
           </TextWrapper>
           <Button view="outlined-action" onClick={() => setForm("login")}>
             Войти
@@ -72,7 +112,7 @@ const Login = () => {
   const FORM_MAP = {
     login: loginForm,
     register: registerForm,
-    forgot: loginForm,
+    forgot: resetRequestForm,
   };
 
   return (
@@ -90,6 +130,6 @@ const Login = () => {
   );
 };
 
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute("/login/")({
   component: Login,
 });

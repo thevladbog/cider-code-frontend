@@ -38,7 +38,7 @@ export const RequestResetPasswordForm = () => {
         await navigate({ to: "/" });
       } catch (error) {
         add({
-          name: "login",
+          name: "RequestResetPasswordForm",
           title: "Что-то пошло не так ...",
           content: `При попытке сделать запрос на сброс пароля произошла ошибка: ${JSON.stringify(error)}`,
           isClosable: true,

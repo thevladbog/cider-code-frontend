@@ -46,9 +46,9 @@ export const ResetPasswordForm = () => {
         await navigate({ to: "/login" });
       } catch (error) {
         add({
-          name: "register",
+          name: "ResetPasswordForm",
           title: "Что-то пошло не так ...",
-          content: `При регистрации произошла ошибка: ${JSON.stringify(error)}`,
+          content: `При сбросе пароля произошла ошибка: ${JSON.stringify(error)}`,
           isClosable: true,
         });
       }

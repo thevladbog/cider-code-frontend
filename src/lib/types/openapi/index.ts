@@ -25,6 +25,8 @@ export type { IShiftFindOne } from "./models/IShiftFindOne";
 export type { IUserFindMany } from "./models/IUserFindMany";
 export type { IUserFindOne } from "./models/IUserFindOne";
 export type { LoginOperatorDto } from "./models/LoginOperatorDto";
+export type { ResetPasswordDto } from "./models/ResetPasswordDto";
+export type { ResetPasswordRequestDto } from "./models/ResetPasswordRequestDto";
 export { SelectProductDto } from "./models/SelectProductDto";
 export { ShiftDto } from "./models/ShiftDto";
 export type { SignInDto } from "./models/SignInDto";

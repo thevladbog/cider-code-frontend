@@ -5,6 +5,8 @@
 import type { CreateUserDto } from "../models/CreateUserDto";
 import type { IUserFindMany } from "../models/IUserFindMany";
 import type { IUserFindOne } from "../models/IUserFindOne";
+import type { ResetPasswordDto } from "../models/ResetPasswordDto";
+import type { ResetPasswordRequestDto } from "../models/ResetPasswordRequestDto";
 import type { SignInDto } from "../models/SignInDto";
 import type { UpdateUserDto } from "../models/UpdateUserDto";
 import type { CancelablePromise } from "../core/CancelablePromise";
@@ -120,6 +122,42 @@ export class UserService {
       url: "/user/auth/sign-in",
       body: requestBody,
       mediaType: "application/json",
+    });
+  }
+  /**
+   * @param requestBody
+   * @returns any
+   * @throws ApiError
+   */
+  public static userControllerResetRequest(
+    requestBody: ResetPasswordRequestDto,
+  ): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/user/auth/reset-password-request",
+      body: requestBody,
+      mediaType: "application/json",
+      errors: {
+        404: `User can't be found or something went wrong`,
+      },
+    });
+  }
+  /**
+   * @param requestBody
+   * @returns any
+   * @throws ApiError
+   */
+  public static userControllerResetPasswordAfterRequest(
+    requestBody: ResetPasswordDto,
+  ): CancelablePromise<any> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/user/auth/reset-password",
+      body: requestBody,
+      mediaType: "application/json",
+      errors: {
+        404: `Something went wrong`,
+      },
     });
   }
   /**

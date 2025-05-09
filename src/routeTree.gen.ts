@@ -11,21 +11,22 @@
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root";
-import { Route as LoginImport } from "./routes/login";
 import { Route as AuthImport } from "./routes/_auth";
+import { Route as LoginIndexImport } from "./routes/login/index";
 import { Route as AuthIndexImport } from "./routes/_auth.index";
+import { Route as LoginResetImport } from "./routes/login/reset";
 import { Route as AuthProductsImport } from "./routes/_auth.products";
 
 // Create/Update Routes
 
-const LoginRoute = LoginImport.update({
-  id: "/login",
-  path: "/login",
+const AuthRoute = AuthImport.update({
+  id: "/_auth",
   getParentRoute: () => rootRoute,
 } as any);
 
-const AuthRoute = AuthImport.update({
-  id: "/_auth",
+const LoginIndexRoute = LoginIndexImport.update({
+  id: "/login/",
+  path: "/login/",
   getParentRoute: () => rootRoute,
 } as any);
 
@@ -33,6 +34,12 @@ const AuthIndexRoute = AuthIndexImport.update({
   id: "/",
   path: "/",
   getParentRoute: () => AuthRoute,
+} as any);
+
+const LoginResetRoute = LoginResetImport.update({
+  id: "/login/reset",
+  path: "/login/reset",
+  getParentRoute: () => rootRoute,
 } as any);
 
 const AuthProductsRoute = AuthProductsImport.update({
@@ -52,13 +59,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthImport;
       parentRoute: typeof rootRoute;
     };
-    "/login": {
-      id: "/login";
-      path: "/login";
-      fullPath: "/login";
-      preLoaderRoute: typeof LoginImport;
-      parentRoute: typeof rootRoute;
-    };
     "/_auth/products": {
       id: "/_auth/products";
       path: "/products";
@@ -66,12 +66,26 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthProductsImport;
       parentRoute: typeof AuthImport;
     };
+    "/login/reset": {
+      id: "/login/reset";
+      path: "/login/reset";
+      fullPath: "/login/reset";
+      preLoaderRoute: typeof LoginResetImport;
+      parentRoute: typeof rootRoute;
+    };
     "/_auth/": {
       id: "/_auth/";
       path: "/";
       fullPath: "/";
       preLoaderRoute: typeof AuthIndexImport;
       parentRoute: typeof AuthImport;
+    };
+    "/login/": {
+      id: "/login/";
+      path: "/login";
+      fullPath: "/login";
+      preLoaderRoute: typeof LoginIndexImport;
+      parentRoute: typeof rootRoute;
     };
   }
 }
@@ -92,42 +106,53 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren);
 
 export interface FileRoutesByFullPath {
   "": typeof AuthRouteWithChildren;
-  "/login": typeof LoginRoute;
   "/products": typeof AuthProductsRoute;
+  "/login/reset": typeof LoginResetRoute;
   "/": typeof AuthIndexRoute;
+  "/login": typeof LoginIndexRoute;
 }
 
 export interface FileRoutesByTo {
-  "/login": typeof LoginRoute;
   "/products": typeof AuthProductsRoute;
+  "/login/reset": typeof LoginResetRoute;
   "/": typeof AuthIndexRoute;
+  "/login": typeof LoginIndexRoute;
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute;
   "/_auth": typeof AuthRouteWithChildren;
-  "/login": typeof LoginRoute;
   "/_auth/products": typeof AuthProductsRoute;
+  "/login/reset": typeof LoginResetRoute;
   "/_auth/": typeof AuthIndexRoute;
+  "/login/": typeof LoginIndexRoute;
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "" | "/login" | "/products" | "/";
+  fullPaths: "" | "/products" | "/login/reset" | "/" | "/login";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/login" | "/products" | "/";
-  id: "__root__" | "/_auth" | "/login" | "/_auth/products" | "/_auth/";
+  to: "/products" | "/login/reset" | "/" | "/login";
+  id:
+    | "__root__"
+    | "/_auth"
+    | "/_auth/products"
+    | "/login/reset"
+    | "/_auth/"
+    | "/login/";
   fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren;
-  LoginRoute: typeof LoginRoute;
+  LoginResetRoute: typeof LoginResetRoute;
+  LoginIndexRoute: typeof LoginIndexRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
-  LoginRoute: LoginRoute,
+  LoginResetRoute: LoginResetRoute,
+  LoginIndexRoute: LoginIndexRoute,
 };
 
 export const routeTree = rootRoute
@@ -141,7 +166,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_auth",
-        "/login"
+        "/login/reset",
+        "/login/"
       ]
     },
     "/_auth": {
@@ -151,16 +177,19 @@ export const routeTree = rootRoute
         "/_auth/"
       ]
     },
-    "/login": {
-      "filePath": "login.tsx"
-    },
     "/_auth/products": {
       "filePath": "_auth.products.tsx",
       "parent": "/_auth"
     },
+    "/login/reset": {
+      "filePath": "login/reset.tsx"
+    },
     "/_auth/": {
       "filePath": "_auth.index.tsx",
       "parent": "/_auth"
+    },
+    "/login/": {
+      "filePath": "login/index.tsx"
     }
   }
 }

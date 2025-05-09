@@ -2,10 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type CreateUserDto = {
+export type ResetPasswordRequestDto = {
   email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  picture?: string;
 };

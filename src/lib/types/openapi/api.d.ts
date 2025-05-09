@@ -117,6 +117,38 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/user/auth/reset-password-request": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations["UserController_resetRequest"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/user/auth/reset-password": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: operations["UserController_resetPasswordAfterRequest"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/user/auth/revoke-token": {
     parameters: {
       query?: never;
@@ -491,6 +523,7 @@ export interface components {
       firstName: string;
       lastName: string;
       password: string;
+      picture?: string;
     };
     CreatedUserDto: {
       id: string;
@@ -498,6 +531,7 @@ export interface components {
       firstName: string;
       lastName: string;
       password?: string;
+      picture: string | null;
       created: unknown;
       modified: unknown;
     };
@@ -516,6 +550,15 @@ export interface components {
       /** Format: email */
       email: string;
       password: string;
+    };
+    ResetPasswordRequestDto: {
+      /** Format: email */
+      email: string;
+    };
+    ResetPasswordDto: {
+      userId: string;
+      password: string;
+      token: string;
     };
     WriteIndividualCodeDto: {
       code: string;
@@ -989,6 +1032,62 @@ export interface operations {
     };
     responses: {
       201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  UserController_resetRequest: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ResetPasswordRequestDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description User can't be found or something went wrong */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  UserController_resetPasswordAfterRequest: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ResetPasswordDto"];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Something went wrong */
+      404: {
         headers: {
           [name: string]: unknown;
         };

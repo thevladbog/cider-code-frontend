@@ -447,6 +447,60 @@
         ]
       }
     },
+    "/user/auth/reset-password-request": {
+      "post": {
+        "operationId": "UserController_resetRequest",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "404": {
+            "description": "User can't be found or something went wrong"
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/user/auth/reset-password": {
+      "post": {
+        "operationId": "UserController_resetPasswordAfterRequest",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "404": {
+            "description": "Something went wrong"
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
     "/user/auth/revoke-token": {
       "post": {
         "operationId": "UserController_revokeToken",
@@ -1555,6 +1609,9 @@
           },
           "password": {
             "type": "string"
+          },
+          "picture": {
+            "type": "string"
           }
         },
         "required": [
@@ -1582,6 +1639,10 @@
           "password": {
             "type": "string"
           },
+          "picture": {
+            "type": "string",
+            "nullable": true
+          },
           "created": {},
           "modified": {
             "nullable": true
@@ -1592,6 +1653,7 @@
           "email",
           "firstName",
           "lastName",
+          "picture",
           "created",
           "modified"
         ]
@@ -1656,6 +1718,39 @@
         "required": [
           "email",
           "password"
+        ]
+      },
+      "ResetPasswordRequestDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 1,
+            "format": "email"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "ResetPasswordDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "password": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId",
+          "password",
+          "token"
         ]
       },
       "WriteIndividualCodeDto": {

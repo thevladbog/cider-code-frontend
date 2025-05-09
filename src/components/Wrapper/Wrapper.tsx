@@ -34,6 +34,7 @@ export const Wrapper: React.FC<AppProps> = ({ children }) => {
               avatar={{
                 text: `${user?.firstName ?? ""} ${user?.lastName ?? ""}`,
                 theme: "brand",
+                imgUrl: user.picture ?? "",
               }}
               name={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`}
               description={user.email ?? ""}

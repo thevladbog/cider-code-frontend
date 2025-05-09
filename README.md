@@ -1,40 +1,42 @@
-# gravity-ui-vite-example
+<p align="center">
+  <a href="https://github.com/thevladbog/cider-code-frontend" target="blank"><img src="./public/img/BOTTLE-CODE-LOGO.png" width="600" alt="BOTTLE [CODE] Logo" /></a>
+</p>
 
-Vite template with: typescript, sass and Gravity UI.
+## Description
 
-## ⚗️ Technologies list
-
-- [Gravity UI](https://gravity-ui.com/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Sass](https://sass-lang.com/)
-- [ESlint](https://eslint.org/) & [Prettier](https://prettier.io/)
+Frontend for web app BOTTLE [CODE]
 
 # 🚀 Start using it
 
-To use this template for your app you can run:
+1. Install dependencies
 
 ```sh
-npx degit gravity-ui/gravity-ui-vite-example#main my-project
-cd my-project
-
 npm install
-npm run dev
 ```
 
-or
+2. Install local certificates
+
+- Unix
+
+```bash
+VITE_FRONTEND_URL='test.in.bottlecode.app' npm run cert
+```
+
+- Windows
+
+```bash
+$env:VITE_FRONTEND_URL='test.in.bottlecode.app'
+npm run cert
+```
+
+3. Generate types from OpenApi
 
 ```sh
-yarn degit gravity-ui-vite-example#main my-project
-cd my-project
-
-npm install
-npm run dev
+npm run types:openapi
 ```
 
-# 📖 Learn More
+## Compile and run the project
 
-This package includes scripts and configuration used by [Vite](https://vitejs.dev/).\
-Please refer to its documentation:
-
-- [Getting Started](https://vitejs.dev/guide/) – How to create a new app.
-- [User Guide](https://vitejs.dev/) – How to develop apps bootstrapped with Vite.
+```sh
+npm run dev
+```

@@ -79,6 +79,9 @@ jobs:
           yc config set token "$YC_OAUTH_TOKEN"
           yc config set cloud-id "$YC_CLOUD_ID"
           yc config set folder-id "$YC_FOLDER_ID"
+          export IAM_TOKEN=`yc iam create-token`
+          echo "::add-mask::$IAM_TOKEN" 
+          echo "IAM_TOKEN=$IAM_TOKEN" >> $GITHUB_ENV
       
       - name: Docker login YCR
         run: echo "${{ secrets.YC_OAUTH_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
@@ -155,7 +158,7 @@ jobs:
       - name: Copy IAM_TOKEN env
         run: |
           export VM_ID=${{ secrets.VM_ID }}
-          export IAM_TOKEN=`yc iam create-token`
+          export IAM_TOKEN=$IAM_TOKEN
           yc compute ssh --id "$VM_ID" -- "
             sudo sh -c 'echo \"IAM_TOKEN=${IAM_TOKEN}\" >> /opt/bottlecode-frontend/.env'
           "

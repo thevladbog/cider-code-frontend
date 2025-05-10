@@ -89,17 +89,17 @@ jobs:
         if: env.is_beta == 'false'
         run: |
           docker build -t $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} .
-          docker tag $REGISTRY:${{ steps.meta.outputs.img_tag }} $REGISTRY:latest
+          docker tag $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} $YCR_REGISTRY/$IMAGE_NAME:latest
           docker push $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }}
-          docker push $REGISTRY:latest
+          docker push $YCR_REGISTRY/$IMAGE_NAME:latest
 
       - name: Build & push BETA
         if: env.is_beta == 'true'
         run: |
           docker build -t $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} .
-          docker tag $REGISTRY:${{ steps.meta.outputs.img_tag }} $REGISTRY:beta
+          docker tag $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} $YCR_REGISTRY/$IMAGE_NAME:beta
           docker push $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }}
-          docker push $REGISTRY:beta
+          docker push $YCR_REGISTRY/$IMAGE_NAME:beta
 
       - name: Upload docker-compose.yaml to server
         run: |

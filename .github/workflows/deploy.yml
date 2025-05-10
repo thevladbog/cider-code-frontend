@@ -107,7 +107,7 @@ jobs:
           cat docker-compose.yaml | yc compute ssh --id "$VM_ID" -- "sudo tee /opt/bottlecode-frontend/docker-compose.yaml > /dev/null"
 
       - name: Copy .env.stable
-        if: env.is_beta == 'true'
+        if: env.is_beta == 'false'
         run: |
           export VM_ID=${{ secrets.VM_ID }}
           echo '${{ secrets.PROD_ENV_FILE }}' > envfile
@@ -176,8 +176,7 @@ jobs:
             cd /opt/bottlecode-frontend &&
             sudo docker login --username iam --password '$IAM_TOKEN' cr.yandex &&
             sudo docker compose pull frontend-stable &&
-            sudo docker compose up -d frontend-stable &&
-            sudo docker compose run --rm frontend-stable
+            sudo docker compose up -d frontend-stable
           "
 
       - name: Restart app-beta (beta release)
@@ -188,6 +187,5 @@ jobs:
             cd /opt/bottlecode-frontend &&
             sudo docker login --username iam --password '$IAM_TOKEN' cr.yandex &&
             sudo docker compose pull frontend-beta &&
-            sudo docker compose up -d frontend-beta &&
-            sudo docker compose run --rm frontend-beta
+            sudo docker compose up -d frontend-beta
           "

@@ -2,7 +2,7 @@ name: Semantic Release & Deploy
 
 on:
   push:
-    branches: [ main, beta ]
+    branches: [ stable, beta ]
 
 env:
   YCR_REGISTRY: cr.yandex/${{ secrets.YCR_REGISTRY_ID }}
@@ -79,8 +79,6 @@ jobs:
           yc config set token "$YC_OAUTH_TOKEN"
           yc config set cloud-id "$YC_CLOUD_ID"
           yc config set folder-id "$YC_FOLDER_ID"
-          export IAM_TOKEN=`yc iam create-token`
-          echo "IAM_TOKEN=$IAM_TOKEN" >> $GITHUB_ENV
       
       - name: Docker login YCR
         run: echo "${{ secrets.YC_OAUTH_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
@@ -88,7 +86,13 @@ jobs:
       - name: Build & push STABLE
         if: env.is_beta == 'false'
         run: |
-          docker build -t $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} .
+          docker build \
+            --build-arg VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }} \
+            --build-arg VITE_FRONTEND_URL=${{ secrets.VITE_FRONTEND_URL }} \
+            --build-arg LOCAL_FRONTEND=${{ secrets.LOCAL_FRONTEND }} \
+            --build-arg NODE_ENV=${{ secrets.NODE_ENV }} \
+            --build-arg CONFIG_API_PROXY_URL=${{ secrets.CONFIG_API_PROXY_URL }} \
+            -t $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} .
           docker tag $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} $YCR_REGISTRY/$IMAGE_NAME:latest
           docker push $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }}
           docker push $YCR_REGISTRY/$IMAGE_NAME:latest
@@ -96,7 +100,13 @@ jobs:
       - name: Build & push BETA
         if: env.is_beta == 'true'
         run: |
-          docker build -t $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} .
+          docker build \
+            --build-arg VITE_BACKEND_URL=${{ secrets.BETA_VITE_BACKEND_URL }} \
+            --build-arg VITE_FRONTEND_URL=${{ secrets.BETA_VITE_FRONTEND_URL }} \
+            --build-arg LOCAL_FRONTEND=${{ secrets.BETA_LOCAL_FRONTEND }} \
+            --build-arg NODE_ENV=${{ secrets.BETA_NODE_ENV }} \
+            --build-arg CONFIG_API_PROXY_URL=${{ secrets.BETA_CONFIG_API_PROXY_URL }} \
+            -t $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} .
           docker tag $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} $YCR_REGISTRY/$IMAGE_NAME:beta
           docker push $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }}
           docker push $YCR_REGISTRY/$IMAGE_NAME:beta
@@ -145,27 +155,9 @@ jobs:
       - name: Copy IAM_TOKEN env
         run: |
           export VM_ID=${{ secrets.VM_ID }}
-          export IAM_TOKEN=$IAM_TOKEN
+          export IAM_TOKEN=`yc iam create-token`
           yc compute ssh --id "$VM_ID" -- "
             sudo sh -c 'echo \"IAM_TOKEN=${IAM_TOKEN}\" >> /opt/bottlecode-frontend/.env'
-          "
-
-      - name: Set production NODE_ENV env
-        if: env.is_beta == 'false'
-        run: |
-          export VM_ID=${{ secrets.VM_ID }}
-          export NODE_ENV=production
-          yc compute ssh --id "$VM_ID" -- "
-            sudo sh -c 'echo \"NODE_ENV=${NODE_ENV}\" >> /opt/bottlecode-frontend/.env'
-          "
-
-      - name: Set beta NODE_ENV env
-        if: env.is_beta == 'true'
-        run: |
-          export VM_ID=${{ secrets.VM_ID }}
-          export NODE_ENV=beta
-          yc compute ssh --id "$VM_ID" -- "
-            sudo sh -c 'echo \"NODE_ENV=${NODE_ENV}\" >> /opt/bottlecode-frontend/.env'
           "
 
       - name: Restart app-stable (stable release)

@@ -1,8 +1,6 @@
 services:
   frontend-beta:
     image: cr.yandex/${YCR_REGISTRY_ID}/bottlecode-frontend:beta
-    env_file:
-      - .env.beta
     expose:
       - "80"
     restart: unless-stopped
@@ -19,8 +17,6 @@ services:
 
   frontend-stable:
     image: cr.yandex/${YCR_REGISTRY_ID}/bottlecode-frontend:latest
-    env_file:
-      - .env.stable
     expose:
       - "80"
     restart: unless-stopped

@@ -1,3 +1,10 @@
+# [1.0.0-beta.2](https://github.com/thevladbog/cider-code-frontend/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2025-05-10)
+
+
+### Bug Fixes
+
+* fixing workflow ([f6ad8cd](https://github.com/thevladbog/cider-code-frontend/commit/f6ad8cd2d322ac3d13fcd24278db5e068278504c))
+
 # 1.0.0-beta.1 (2025-05-10)
 
 

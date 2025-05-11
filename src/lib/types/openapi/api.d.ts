@@ -330,8 +330,6 @@ export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
     CreateProductDto: {
-      /** @description The unique identifier for the product */
-      id?: string;
       shortName: string;
       fullName: string;
       gtin: string;
@@ -350,8 +348,6 @@ export interface components {
       pictureUrl: string | null;
       /** @enum {string} */
       status?: "ACTIVE" | "INACTIVE" | "PAUSED" | "REGISTRATION" | "ARCHIVED";
-      created?: unknown;
-      modified: unknown;
     };
     CreatedProductId: {
       /** @description The unique identifier for the product */
@@ -532,6 +528,8 @@ export interface components {
       lastName: string;
       password?: string;
       picture: string | null;
+      /** @enum {string} */
+      role: "ADMIN" | "SUPERVISOR" | "USER" | "GUEST";
       created: unknown;
       modified: unknown;
     };
@@ -678,6 +676,8 @@ export interface operations {
         page?: number;
         /** @description Items per page */
         limit?: number;
+        /** @description Search string */
+        search?: string;
       };
       header?: never;
       path?: never;

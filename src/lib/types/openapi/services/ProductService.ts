@@ -33,12 +33,14 @@ export class ProductService {
   /**
    * @param page Page number
    * @param limit Items per page
+   * @param search Search string
    * @returns IProductFindMany
    * @throws ApiError
    */
   public static productControllerFindAll(
     page?: number,
     limit?: number,
+    search?: string,
   ): CancelablePromise<IProductFindMany> {
     return __request(OpenAPI, {
       method: "GET",
@@ -46,6 +48,7 @@ export class ProductService {
       query: {
         page: page,
         limit: limit,
+        search: search,
       },
       errors: {
         403: `Forbidden.`,

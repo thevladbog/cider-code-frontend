@@ -10,7 +10,7 @@ export type { OpenAPIConfig } from "./core/OpenAPI";
 export type { BoxesCodeDataDto } from "./models/BoxesCodeDataDto";
 export type { CreatedOperatorDto } from "./models/CreatedOperatorDto";
 export type { CreatedProductId } from "./models/CreatedProductId";
-export type { CreatedUserDto } from "./models/CreatedUserDto";
+export { CreatedUserDto } from "./models/CreatedUserDto";
 export type { CreateOperatorDto } from "./models/CreateOperatorDto";
 export { CreateProductDto } from "./models/CreateProductDto";
 export { CreateShiftDto } from "./models/CreateShiftDto";

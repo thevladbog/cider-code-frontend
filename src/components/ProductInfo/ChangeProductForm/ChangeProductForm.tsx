@@ -34,10 +34,10 @@ export const ChangeProductForm = ({
     defaultValues: {
       fullName: product?.fullName ?? "",
       shortName: product?.shortName ?? "",
-      volume: Number(product?.volume) ?? 0,
+      volume: Number(product?.volume ?? 0),
       gtin: product?.gtin ?? "",
       alcoholCode: product?.alcoholCode ?? "",
-      expirationInDays: Number(product?.expirationInDays) ?? 0,
+      expirationInDays: Number(product?.expirationInDays ?? 0),
       pictureUrl: product?.pictureUrl ?? "",
     },
     validators: {

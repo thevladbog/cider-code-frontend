@@ -1,14 +1,7 @@
 import { CreatedUserDto, SelectProductDto } from "@/lib/types/openapi";
 import { Drawer, DrawerItem } from "@gravity-ui/navigation";
 import { Pencil, XmarkShape } from "@gravity-ui/icons";
-import {
-  Button,
-  Icon,
-  Label,
-  Loader,
-  Overlay,
-  Text as TextWrapper,
-} from "@gravity-ui/uikit";
+import { Button, Icon, Label, Loader, Overlay } from "@gravity-ui/uikit";
 import {
   PRODUCT_STATUS_COLOR_MAP,
   PRODUCT_STATUS_COLOR_MAP_BUTTON,
@@ -21,6 +14,7 @@ import { useUserStore } from "@/entities/User/useUserStore";
 import { useProductStore } from "@/entities/Product/useProductStore";
 import { useShallow } from "zustand/shallow";
 import { ChangeProductForm } from "./ChangeProductForm/ChangeProductForm";
+import { ViewProductForm } from "./VewProductForm/ViewProductForm";
 
 interface IProductInfo {
   visible: boolean;
@@ -65,70 +59,7 @@ export const ProductInfo = (props: IProductInfo) => {
     if (newStatus !== null) {
       changeProductStatus(productId, newStatus);
     }
-  }, [newStatus]);
-
-  const ViewState = () => {
-    return (
-      <>
-        <hr className={s.divider} />
-        <div className={s.main}>
-          <div className={s.title}>
-            <div className={s.titleText}>
-              <div className={s.titleText_main}>
-                <TextWrapper variant="header-1">
-                  {product?.fullName}
-                </TextWrapper>
-              </div>
-              <div className={s.titleText_caption}>
-                <TextWrapper variant="subheader-2" className={s.keyText}>
-                  Краткое имя:
-                </TextWrapper>
-                <TextWrapper variant="body-2">{product?.shortName}</TextWrapper>
-              </div>
-              <div className={s.titleText_caption}>
-                <TextWrapper variant="subheader-2" className={s.keyText}>
-                  Объем:
-                </TextWrapper>
-                <TextWrapper variant="body-2">{product?.volume} л.</TextWrapper>
-              </div>
-              <div className={s.titleText_caption}>
-                <TextWrapper variant="subheader-2" className={s.keyText}>
-                  GTIN:
-                </TextWrapper>
-                <TextWrapper variant="body-2">{product?.gtin}</TextWrapper>
-              </div>
-              <div className={s.titleText_caption}>
-                <TextWrapper variant="subheader-2" className={s.keyText}>
-                  Код ФСРАР:
-                </TextWrapper>
-                <TextWrapper variant="body-2">
-                  {product?.alcoholCode}
-                </TextWrapper>
-              </div>
-              <div className={s.titleText_caption}>
-                <TextWrapper variant="subheader-2" className={s.keyText}>
-                  Срок годности, д.:
-                </TextWrapper>
-                <TextWrapper variant="body-2">
-                  {product?.expirationInDays}
-                </TextWrapper>
-              </div>
-            </div>
-
-            {product?.pictureUrl && (
-              <img
-                className={s.mainPicture}
-                src={product.pictureUrl}
-                alt={`${product.fullName} - Изображение продукции`}
-                height={250}
-              />
-            )}
-          </div>
-        </div>
-        <hr className={s.divider} />
-      </>
-    );
-  };
+  }, [newStatus, productId, changeProductStatus]);
 
   return (
     <Drawer
@@ -253,7 +184,7 @@ export const ProductInfo = (props: IProductInfo) => {
           </div>
 
           {currentState === "view" ? (
-            <ViewState />
+            <ViewProductForm product={product} />
           ) : (
             <ChangeProductForm
               productId={productId}
@@ -261,7 +192,7 @@ export const ProductInfo = (props: IProductInfo) => {
             />
           )}
         </div>
-        <Overlay visible={isLoading || isChangeLoading}>
+        <Overlay visible={isLoading ?? isChangeLoading}>
           <Loader />
         </Overlay>
       </DrawerItem>

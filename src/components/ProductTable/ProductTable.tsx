@@ -3,6 +3,7 @@
 import { Magnifier, Plus } from "@gravity-ui/icons";
 import {
   Button,
+  Dialog,
   Icon,
   Loader,
   Overlay,
@@ -21,20 +22,23 @@ import { getColumnConfig } from "@/components/ProductTable/lib/getColumnConfig";
 import { getRowActions } from "@/components/ProductTable/lib/getRowActions";
 import { ModalCreateProduct } from "@/components/ModalCreateProduct";
 import { CreatedUserDto, SelectProductDto } from "@/lib/types/openapi";
-import { product, useProductStore } from "@/entities/Product/useProductStore";
+import { useProductStore } from "@/entities/Product/useProductStore";
 import { useShallow } from "zustand/shallow";
 import { useUserStore } from "@/entities/User/useUserStore";
 import { ProductInfo } from "../ProductInfo";
 
 export const ProductTable = () => {
-  const [data, isLoading, setSearch, search] = useProductStore(
-    useShallow((store) => [
-      store.data,
-      store.isLoading,
-      store.setSearch,
-      store.search,
-    ]),
-  );
+  const [data, isLoading, setSearch, search, deleteProduct, getProducts] =
+    useProductStore(
+      useShallow((store) => [
+        store.data,
+        store.isLoading,
+        store.setSearch,
+        store.search,
+        store.deleteProduct,
+        store.getProducts,
+      ]),
+    );
   const user = useUserStore((store) => store.data);
 
   const [paginationState, setPaginationState] = React.useState({
@@ -54,10 +58,16 @@ export const ProductTable = () => {
     visible,
     setVisible,
     productId: selectedProduct,
+    dialogProduct,
+    setOpenDialog,
+    openDialog,
   } = getRowActions();
 
   const handleUpdate: PaginationProps["onUpdate"] = (page, pageSize) => {
-    setPaginationState({ page, limit: pageSize });
+    setPaginationState((prev) => ({
+      page,
+      limit: pageSize ?? prev.limit,
+    }));
   };
 
   const createNewProduct = () => {
@@ -65,7 +75,7 @@ export const ProductTable = () => {
   };
 
   useEffect(() => {
-    product.getProducts(paginationState);
+    getProducts(paginationState);
   }, [paginationState]);
 
   return (
@@ -106,11 +116,9 @@ export const ProductTable = () => {
         className={s.table}
         qa="product.table"
       />
-
       <Overlay visible={isLoading}>
         <Loader />
       </Overlay>
-
       <div className={s.pagination}>
         <Pagination
           page={paginationState.page}
@@ -126,6 +134,34 @@ export const ProductTable = () => {
         visible={openModal}
         onClose={() => setOpenModal(false)}
       />
+      {dialogProduct && (
+        <Dialog
+          onClose={() => setOpenDialog(false)}
+          open={openDialog}
+          onEnterKeyDown={() => {
+            alert("onEnterKeyDown");
+          }}
+          aria-labelledby="app-confirmation-dialog-title"
+        >
+          <Dialog.Header
+            caption="Вы уверены, что хотите удалить продукцию?"
+            id="app-confirmation-dialog-title"
+          />
+          <Dialog.Body>
+            Вы пытаетесь удалить продукцию: {dialogProduct?.fullName}
+          </Dialog.Body>
+          <Dialog.Footer
+            onClickButtonCancel={() => setOpenDialog(false)}
+            onClickButtonApply={async () => {
+              await deleteProduct(dialogProduct?.id);
+              setOpenDialog(false);
+            }}
+            textButtonApply="Удалить"
+            textButtonCancel="Отменить"
+          />
+        </Dialog>
+      )}
+
       {selectedProduct && (
         <ProductInfo
           visible={visible}

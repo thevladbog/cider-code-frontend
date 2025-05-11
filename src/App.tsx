@@ -13,6 +13,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { Logo, LogoIcon } from "./components/Icons";
 import { useUserStore } from "./entities/User/useUserStore";
 import { useShallow } from "zustand/shallow";
+import { CreatedUserDto } from "./lib/types/openapi";
 
 interface AppProps {
   children: ReactNode;
@@ -21,6 +22,8 @@ interface AppProps {
 const App = ({ children }: AppProps) => {
   const [compact, setCompact] = useState<boolean>(true);
   const [authed, setAuthed] = useState<boolean>(false);
+
+  const user = useUserStore((store) => store.data);
 
   const toaster = new Toaster();
 
@@ -41,6 +44,10 @@ const App = ({ children }: AppProps) => {
       to: href ?? "/",
     }).then();
   };
+
+  const isHiddenAdminMenu =
+    user?.role === CreatedUserDto.role.GUEST ||
+    user?.role === CreatedUserDto.role.USER;
 
   const menuItems: Array<MenuItem> = [
     {
@@ -66,6 +73,7 @@ const App = ({ children }: AppProps) => {
       link: "/users",
       onItemClick: (item, _, event) => handleClick(event, item.link),
       current: location.pathname === "/users",
+      hidden: isHiddenAdminMenu,
     },
     {
       id: "divider1",
@@ -81,6 +89,7 @@ const App = ({ children }: AppProps) => {
       onItemClick: ({ id, title, current }) => {
         alert(JSON.stringify({ id, title, current }));
       },
+      hidden: user?.role === CreatedUserDto.role.GUEST,
     },
   ];
 

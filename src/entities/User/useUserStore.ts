@@ -60,7 +60,7 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
         body: props,
       });
 
-      setState({ data: data?.result });
+      setState({ data: data?.result as CreatedUserDto });
 
       return data;
     } catch (error) {
@@ -103,7 +103,7 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
       // eslint-disable-next-line new-cap
       const { data } = await $api.GET("/user/auth/me");
 
-      setState({ data: data?.result });
+      setState({ data: data?.result as CreatedUserDto });
 
       return data;
     } catch (error) {

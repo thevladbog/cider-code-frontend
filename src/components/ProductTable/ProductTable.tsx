@@ -3,7 +3,10 @@
 import { Magnifier, Plus } from "@gravity-ui/icons";
 import {
   Button,
+  Dialog,
   Icon,
+  Loader,
+  Overlay,
   Pagination,
   PaginationProps,
   Table,
@@ -12,21 +15,37 @@ import {
   withTableActions,
   withTableSorting,
 } from "@gravity-ui/uikit";
-import React from "react";
+import React, { useEffect } from "react";
 
 import s from "./ProductTable.module.scss";
-import { PRODUCTS_MOCK } from "@/lib/mocks";
 import { getColumnConfig } from "@/components/ProductTable/lib/getColumnConfig";
 import { getRowActions } from "@/components/ProductTable/lib/getRowActions";
 import { ModalCreateProduct } from "@/components/ModalCreateProduct";
-import { SelectProductDto } from "@/lib/types/openapi";
+import { CreatedUserDto, SelectProductDto } from "@/lib/types/openapi";
+import { useProductStore } from "@/entities/Product/useProductStore";
+import { useShallow } from "zustand/shallow";
+import { useUserStore } from "@/entities/User/useUserStore";
+import { ProductInfo } from "../ProductInfo";
 
 export const ProductTable = () => {
+  const [data, isLoading, setSearch, search, deleteProduct, getProducts] =
+    useProductStore(
+      useShallow((store) => [
+        store.data,
+        store.isLoading,
+        store.setSearch,
+        store.search,
+        store.deleteProduct,
+        store.getProducts,
+      ]),
+    );
+  const user = useUserStore((store) => store.data);
+
   const [paginationState, setPaginationState] = React.useState({
-    page: PRODUCTS_MOCK.page,
-    pageSize: PRODUCTS_MOCK.limit,
+    page: 1,
+    limit: 5,
   });
-  const [search, setSearch] = React.useState("");
+
   const [openModal, setOpenModal] = React.useState(false);
 
   const ProductTableWrapper = withTableSorting(
@@ -34,13 +53,30 @@ export const ProductTable = () => {
   );
 
   const columns = getColumnConfig();
+  const {
+    actions,
+    visible,
+    setVisible,
+    productId: selectedProduct,
+    dialogProduct,
+    setOpenDialog,
+    openDialog,
+  } = getRowActions();
 
-  const handleUpdate: PaginationProps["onUpdate"] = (page, pageSize) =>
-    setPaginationState((prevState) => ({ ...prevState, page, pageSize }));
+  const handleUpdate: PaginationProps["onUpdate"] = (page, pageSize) => {
+    setPaginationState((prev) => ({
+      page,
+      limit: pageSize ?? prev.limit,
+    }));
+  };
 
   const createNewProduct = () => {
     setOpenModal(true);
   };
+
+  useEffect(() => {
+    getProducts(paginationState);
+  }, [paginationState]);
 
   return (
     <div className={s.root}>
@@ -66,6 +102,7 @@ export const ProductTable = () => {
             view="outlined-action"
             onClick={createNewProduct}
             qa="product.table.createButton"
+            disabled={user ? user.role === CreatedUserDto.role.GUEST : true}
           >
             <Icon data={Plus} size={18} />
             Создать новую
@@ -74,17 +111,19 @@ export const ProductTable = () => {
       </div>
       <ProductTableWrapper
         columns={columns}
-        getRowActions={getRowActions}
-        data={PRODUCTS_MOCK.result}
+        getRowActions={() => actions}
+        data={data?.result ?? []}
         className={s.table}
         qa="product.table"
       />
-
+      <Overlay visible={isLoading}>
+        <Loader />
+      </Overlay>
       <div className={s.pagination}>
         <Pagination
           page={paginationState.page}
-          pageSize={paginationState.pageSize}
-          total={PRODUCTS_MOCK.total}
+          pageSize={paginationState.limit}
+          total={data?.total}
           onUpdate={handleUpdate}
           pageSizeOptions={[1, 5, 10, 15, 25, 50]}
           showPages
@@ -95,6 +134,41 @@ export const ProductTable = () => {
         visible={openModal}
         onClose={() => setOpenModal(false)}
       />
+      {dialogProduct && (
+        <Dialog
+          onClose={() => setOpenDialog(false)}
+          open={openDialog}
+          onEnterKeyDown={() => {
+            alert("onEnterKeyDown");
+          }}
+          aria-labelledby="app-confirmation-dialog-title"
+        >
+          <Dialog.Header
+            caption="Вы уверены, что хотите удалить продукцию?"
+            id="app-confirmation-dialog-title"
+          />
+          <Dialog.Body>
+            Вы пытаетесь удалить продукцию: {dialogProduct?.fullName}
+          </Dialog.Body>
+          <Dialog.Footer
+            onClickButtonCancel={() => setOpenDialog(false)}
+            onClickButtonApply={async () => {
+              await deleteProduct(dialogProduct?.id);
+              setOpenDialog(false);
+            }}
+            textButtonApply="Удалить"
+            textButtonCancel="Отменить"
+          />
+        </Dialog>
+      )}
+
+      {selectedProduct && (
+        <ProductInfo
+          visible={visible}
+          setVisible={setVisible}
+          productId={selectedProduct}
+        />
+      )}
     </div>
   );
 };

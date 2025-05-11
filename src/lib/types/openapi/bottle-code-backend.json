@@ -55,6 +55,15 @@
             "schema": {
               "type": "number"
             }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search string",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -986,10 +995,6 @@
       "CreateProductDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "description": "The unique identifier for the product",
-            "type": "string"
-          },
           "shortName": {
             "type": "string"
           },
@@ -1053,10 +1058,6 @@
               "REGISTRATION",
               "ARCHIVED"
             ]
-          },
-          "created": {},
-          "modified": {
-            "nullable": true
           }
         },
         "required": [
@@ -1066,8 +1067,7 @@
           "alcoholCode",
           "expirationInDays",
           "volume",
-          "pictureUrl",
-          "modified"
+          "pictureUrl"
         ]
       },
       "CreatedProductId": {
@@ -1643,6 +1643,15 @@
             "type": "string",
             "nullable": true
           },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "SUPERVISOR",
+              "USER",
+              "GUEST"
+            ]
+          },
           "created": {},
           "modified": {
             "nullable": true
@@ -1654,6 +1663,7 @@
           "firstName",
           "lastName",
           "picture",
+          "role",
           "created",
           "modified"
         ]

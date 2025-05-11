@@ -53,7 +53,7 @@ export const ChangeProductForm = ({
         add({
           name: "changeProductModal",
           title: "Что-то пошло не так ...",
-          content: `При изменении новой продукции произошла ошибка: ${JSON.stringify(error)}`,
+          content: `При изменении новой продукции произошла ошибка: ${error instanceof Error ? error.message : "Неизвестная ошибка"}`,
           isClosable: true,
           theme: "danger",
         });

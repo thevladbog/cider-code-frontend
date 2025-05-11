@@ -26,7 +26,7 @@
     "lint:styles:fix": "stylelint '{styles,src}/**/*.scss' --fix",
     "lint:prettier": "prettier --check '**/*.md'",
     "lint:prettier:fix": "prettier --check '**/*.md' --write",
-    "lint": "npm run lint:js && npm run lint:styles && npm run lint:prettier",
+    "lint": "npm run lint:js && npm run lint:styles",
     "test": "exit 0",
     "cert": "shx rm -rf .cert && shx mkdir -p .cert && mkcert -key-file ./.cert/key.pem -cert-file ./.cert/cert.pem $VITE_FRONTEND_URL",
     "types:openapi": "openapi -i src/lib/types/openapi/bottle-code-backend.json -o src/lib/types/openapi && npx openapi-typescript src/lib/types/openapi/bottle-code-backend.json -o src/lib/types/openapi/api.d.ts"

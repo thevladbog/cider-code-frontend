@@ -1,0 +1,186 @@
+name: Semantic Release & Deploy
+
+on:
+  push:
+    branches: [ stable, beta ]
+
+env:
+  YCR_REGISTRY: cr.yandex/${{ secrets.YCR_REGISTRY_ID }}
+  IMAGE_NAME: bottlecode-frontend
+  YC_VM_ID: ${{ secrets.VM_ID }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.meta.outputs.VERSION }}
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
+
+      # Версия передаётся через GITHUB_ENV из semantic-release/exec
+
+      - name: Set image tag & service
+        id: meta
+        run: |
+          TAG="latest"
+          SERVICE="frontend-stable"
+          if [[ "${GITHUB_REF#refs/heads/}" == "beta" ]]; then
+            TAG="beta"
+            SERVICE="frontend-beta"
+          fi
+          if [ -n "$RELEASE_VERSION" ]; then
+            TAG="$RELEASE_VERSION"
+          fi
+          echo "img_tag=$TAG" >> $GITHUB_OUTPUT
+          echo "service=$SERVICE" >> $GITHUB_OUTPUT
+      
+      - name: Check is_beta
+        id: branch_check
+        run: |
+          if [[ "${GITHUB_REF#refs/heads/}" == "beta" ]]; then
+            echo "is_beta=true" >> $GITHUB_ENV
+            echo "is_beta=true"
+          else
+            echo "is_beta=false" >> $GITHUB_ENV
+            echo "is_beta=false"
+          fi
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Install Yandex Cloud CLI
+        run: |
+          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
+          echo "$HOME/yandex-cloud/bin" >> $GITHUB_PATH
+
+      - name: Auth YC CLI
+        env:
+          YC_OAUTH_TOKEN: ${{ secrets.YC_OAUTH_TOKEN }}
+          YC_CLOUD_ID: ${{ secrets.YC_CLOUD_ID }}
+          YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
+        run: |
+          yc config set token "$YC_OAUTH_TOKEN"
+          yc config set cloud-id "$YC_CLOUD_ID"
+          yc config set folder-id "$YC_FOLDER_ID"
+          export IAM_TOKEN=`yc iam create-token`
+          echo "::add-mask::$IAM_TOKEN" 
+          echo "IAM_TOKEN=$IAM_TOKEN" >> $GITHUB_ENV
+      
+      - name: Docker login YCR
+        run: echo "${{ secrets.YC_OAUTH_TOKEN }}" | docker login --username oauth --password-stdin cr.yandex
+
+      - name: Build & push STABLE
+        if: env.is_beta == 'false'
+        run: |
+          docker build \
+            --build-arg VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }} \
+            --build-arg VITE_FRONTEND_URL=${{ secrets.VITE_FRONTEND_URL }} \
+            --build-arg LOCAL_FRONTEND=${{ secrets.LOCAL_FRONTEND }} \
+            --build-arg NODE_ENV=${{ secrets.NODE_ENV }} \
+            --build-arg CONFIG_API_PROXY_URL=${{ secrets.CONFIG_API_PROXY_URL }} \
+            -t $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} .
+          docker tag $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} $YCR_REGISTRY/$IMAGE_NAME:latest
+          docker push $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }}
+          docker push $YCR_REGISTRY/$IMAGE_NAME:latest
+
+      - name: Build & push BETA
+        if: env.is_beta == 'true'
+        run: |
+          docker build \
+            --build-arg VITE_BACKEND_URL=${{ secrets.BETA_VITE_BACKEND_URL }} \
+            --build-arg VITE_FRONTEND_URL=${{ secrets.BETA_VITE_FRONTEND_URL }} \
+            --build-arg LOCAL_FRONTEND=${{ secrets.BETA_LOCAL_FRONTEND }} \
+            --build-arg NODE_ENV=${{ secrets.BETA_NODE_ENV }} \
+            --build-arg CONFIG_API_PROXY_URL=${{ secrets.BETA_CONFIG_API_PROXY_URL }} \
+            -t $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} .
+          docker tag $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} $YCR_REGISTRY/$IMAGE_NAME:beta
+          docker push $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }}
+          docker push $YCR_REGISTRY/$IMAGE_NAME:beta
+
+      - name: Upload docker-compose.yaml to server
+        run: |
+          export VM_ID=${{ secrets.VM_ID }}
+          cat docker-compose.yaml | yc compute ssh --id "$VM_ID" -- "sudo tee /opt/bottlecode-frontend/docker-compose.yaml > /dev/null"
+
+      - name: Copy .env.stable
+        if: env.is_beta == 'false'
+        run: |
+          export VM_ID=${{ secrets.VM_ID }}
+          echo '${{ secrets.PROD_ENV_FILE }}' > envfile
+          cat envfile | yc compute ssh --id "$VM_ID" -- "sudo tee /opt/bottlecode-frontend/.env.stable > /dev/null"
+
+      - name: Upload .env.stable as .env
+        if: env.is_beta == 'false'
+        run: |
+          export VM_ID=${{ secrets.VM_ID }}
+          echo '${{ secrets.PROD_ENV_FILE }}' > envfile
+          cat envfile | yc compute ssh --id "$VM_ID" -- "sudo tee /opt/bottlecode-frontend/.env > /dev/null"
+
+      - name: Copy .env.beta
+        if: env.is_beta == 'true'
+        run: |
+          export VM_ID=${{ secrets.VM_ID }}
+          echo '${{ secrets.BETA_ENV_FILE }}' > envfile
+          cat envfile | yc compute ssh --id "$VM_ID" -- "sudo tee /opt/bottlecode-frontend/.env.beta > /dev/null"
+
+      - name: Upload .env.beta as .env
+        if: env.is_beta == 'true'
+        run: |
+          export VM_ID=${{ secrets.VM_ID }}
+          echo '${{ secrets.BETA_ENV_FILE }}' > envfile
+          cat envfile | yc compute ssh --id "$VM_ID" -- "sudo tee /opt/bottlecode-frontend/.env > /dev/null"
+
+      - name: Copy YCR_REGISTRY_ID env
+        run: |
+          export VM_ID=${{ secrets.VM_ID }}
+          export YCR_REGISTRY_ID=${{ secrets.YCR_REGISTRY_ID }}
+          yc compute ssh --id "$VM_ID" -- "
+            sudo sh -c 'echo \"YCR_REGISTRY_ID=${YCR_REGISTRY_ID}\" >> /opt/bottlecode-frontend/.env'
+          "
+
+      - name: Copy IAM_TOKEN env
+        run: |
+          export VM_ID=${{ secrets.VM_ID }}
+          export IAM_TOKEN=$IAM_TOKEN
+          yc compute ssh --id "$VM_ID" -- "
+            sudo sh -c 'echo \"IAM_TOKEN=${IAM_TOKEN}\" >> /opt/bottlecode-frontend/.env'
+          "
+
+      - name: Restart app-stable (stable release)
+        if: env.is_beta == 'false'
+        run: |
+          export VM_ID=${{ secrets.VM_ID }}
+          yc compute ssh --id "$VM_ID" -- "
+            cd /opt/bottlecode-frontend &&
+            sudo docker login --username iam --password '$IAM_TOKEN' cr.yandex &&
+            sudo docker compose pull frontend-stable &&
+            sudo docker compose up -d frontend-stable
+          "
+
+      - name: Restart app-beta (beta release)
+        if: env.is_beta == 'true'
+        run: |
+          export VM_ID=${{ secrets.VM_ID }}
+          yc compute ssh --id "$VM_ID" -- "
+            cd /opt/bottlecode-frontend &&
+            sudo docker login --username iam --password '$IAM_TOKEN' cr.yandex &&
+            sudo docker compose pull frontend-beta &&
+            sudo docker compose up -d frontend-beta
+          "

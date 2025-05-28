@@ -37,7 +37,7 @@
     "@gravity-ui/uikit": "^7.8.0",
     "@tanstack/react-form": "^1.4.0",
     "@tanstack/react-query": "^5.75.1",
-    "@tanstack/react-query-devtools": "^5.75.1",
+    "@tanstack/react-query-devtools": "^5.75.4",
     "@tanstack/react-router": "^1.115.2",
     "bem-cn-lite": "^4.1.0",
     "immer": "^10.1.1",

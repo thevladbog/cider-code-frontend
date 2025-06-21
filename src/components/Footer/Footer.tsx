@@ -1,24 +1,23 @@
 import { Footer } from "@gravity-ui/navigation";
 
-import s from "./Footer.module.scss";
+import { useNavigate } from "@tanstack/react-router";
 
 export const FooterWrapper = () => {
+  const navigate = useNavigate();
   return (
     <Footer
-      className={s.footer}
       withDivider={true}
       moreButtonTitle="Show more"
       copyright={`@ ${new Date().getFullYear()} "BOTTLE [CODE]"`}
       menuItems={[
         {
           text: "Поддержка",
-          href: "https://gravity-ui.com/",
+          href: "mailto:rebelapple@bottlecode.app",
           target: "blank",
         },
         {
           text: "Конфиденциальность",
-          href: "https://gravity-ui.com/",
-          target: "blank",
+          onClick: () => navigate({ to: "/privacy" }),
         },
       ]}
     />

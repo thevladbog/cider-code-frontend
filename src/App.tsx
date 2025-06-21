@@ -12,6 +12,7 @@ import { useShallow } from "zustand/shallow";
 import { CreatedUserDto } from "./lib/types/openapi";
 import { toaster } from "./lib/toaster";
 import * as Sentry from "@sentry/react";
+import { FooterWrapper } from "./components/Footer";
 
 interface AppProps {
   children: ReactNode;
@@ -114,7 +115,12 @@ const App = ({ children }: AppProps) => {
           menuItems={authed ? menuItems : undefined}
           compact={!compact}
           renderContent={() => {
-            return <Wrapper>{children}</Wrapper>;
+            return (
+              <>
+                <Wrapper>{children}</Wrapper>
+                <FooterWrapper />
+              </>
+            );
           }}
           renderFooter={({ compact: compactFooter }) => (
             <>

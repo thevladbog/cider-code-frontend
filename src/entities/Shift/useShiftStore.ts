@@ -7,7 +7,7 @@ import {
   UpdateShiftDto,
 } from "@/lib/types/openapi";
 import { createStore } from "@/lib/zustand";
-import { Toaster } from "@gravity-ui/uikit";
+import { toaster } from "@/lib/toaster";
 import { dateTime } from "@gravity-ui/date-utils";
 
 interface IShiftState {
@@ -27,8 +27,6 @@ const initialState: IShiftState = {
   isChangeLoading: false,
   isError: false,
 };
-
-const toaster = new Toaster();
 
 export const useShiftStore = createStore(initialState, (setState) => {
   const getShifts = async ({

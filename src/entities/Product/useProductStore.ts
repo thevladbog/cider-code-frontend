@@ -6,7 +6,7 @@ import {
   UpdateProductDto,
 } from "@/lib/types/openapi";
 import { createStore } from "@/lib/zustand";
-import { Toaster } from "@gravity-ui/uikit";
+import { toaster } from "@/lib/toaster";
 import { sleep } from "../User/utils";
 
 interface IProductState {
@@ -24,8 +24,6 @@ const initialState: IProductState = {
   oneProduct: null,
   isChangeLoading: false,
 };
-
-const toaster = new Toaster();
 
 export const useProductStore = createStore(
   initialState,

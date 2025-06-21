@@ -31,3 +31,5 @@ yarn-error.log*
 
 #certs
 .cert
+# Sentry Config File
+.env.sentry-build-plugin

@@ -1,11 +1,6 @@
-import { Clock, Mug, Persons, Plus } from "@gravity-ui/icons";
-import { AsideHeader, MenuItem } from "@gravity-ui/navigation";
-import {
-  Icon,
-  ThemeProvider,
-  Toaster,
-  ToasterProvider,
-} from "@gravity-ui/uikit";
+import { Bug, Clock, Mug, Persons, Plus } from "@gravity-ui/icons";
+import { AsideHeader, FooterItem, MenuItem } from "@gravity-ui/navigation";
+import { Icon, ThemeProvider, ToasterProvider } from "@gravity-ui/uikit";
 import { Wrapper } from "@/components/Wrapper";
 import { ModalCreateShift } from "@/components/ModalCreateShift";
 import { useThemeStore } from "@/entities/Theme";
@@ -15,6 +10,8 @@ import { Logo, LogoIcon } from "./components/Icons";
 import { useUserStore } from "./entities/User/useUserStore";
 import { useShallow } from "zustand/shallow";
 import { CreatedUserDto } from "./lib/types/openapi";
+import { toaster } from "./lib/toaster";
+import * as Sentry from "@sentry/react";
 
 interface AppProps {
   children: ReactNode;
@@ -27,8 +24,6 @@ const App = ({ children }: AppProps) => {
     useState<boolean>(false);
 
   const user = useUserStore((store) => store.data);
-
-  const toaster = new Toaster();
 
   const { theme } = useThemeStore();
   const location = useLocation();
@@ -98,6 +93,8 @@ const App = ({ children }: AppProps) => {
 
   const userData = useUserStore(useShallow((state) => state.data));
 
+  const feedback = Sentry.getFeedback();
+
   useEffect(() => {
     setAuthed(Boolean(userData));
   }, [userData]);
@@ -119,6 +116,32 @@ const App = ({ children }: AppProps) => {
           renderContent={() => {
             return <Wrapper>{children}</Wrapper>;
           }}
+          renderFooter={({ compact: compactFooter }) => (
+            <>
+              <FooterItem
+                item={{
+                  id: "report-bug",
+                  title: "Ошибка?",
+                  tooltipText: (
+                    <div>
+                      <b>Ошибка?</b>
+                    </div>
+                  ),
+                  itemWrapper: (params, makeItem) =>
+                    makeItem({
+                      ...params,
+                      icon: <Icon data={Bug} />,
+                    }),
+                  onItemClick: async () => {
+                    const form = await feedback?.createForm();
+                    form?.appendToDom();
+                    form?.open();
+                  },
+                }}
+                compact={compactFooter}
+              />
+            </>
+          )}
         />
         <ModalCreateShift
           visible={isCreateShiftModalVisible}

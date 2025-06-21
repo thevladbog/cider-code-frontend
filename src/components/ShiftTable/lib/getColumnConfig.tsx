@@ -1,12 +1,24 @@
-import { Label, TableColumnConfig } from "@gravity-ui/uikit";
+import { Button, Label, TableColumnConfig } from "@gravity-ui/uikit";
 import { IShiftData, STATUS_COLOR_MAP, STATUS_MAP } from "@/lib/types";
 
-export const getColumnConfig = (): TableColumnConfig<IShiftData>[] => {
+export const getColumnConfig = (
+  onOpenShift: (shiftId: string) => void,
+): TableColumnConfig<IShiftData>[] => {
   return [
     {
       id: "id",
       name: "ID",
       align: "start",
+      template: (item: IShiftData) => (
+        <Button
+          view="flat"
+          size="s"
+          onClick={() => onOpenShift(item.id)}
+          qa="shift.table.id.button"
+        >
+          {item.id}
+        </Button>
+      ),
       meta: {
         defaultSortOrder: "desc",
         sort: (a: IShiftData, b: IShiftData) => Number(a.id) - Number(b.id),

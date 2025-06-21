@@ -2,12 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { OperatorShiftDto } from "./OperatorShiftDto";
-export type IShiftFindMany = {
-  result: Array<OperatorShiftDto>;
+import type { SelectOrderToDeliveryDto } from "./SelectOrderToDeliveryDto";
+export type IOrderToDeliveryFindMany = {
+  result: Array<SelectOrderToDeliveryDto>;
   total: number;
   page: number;
   limit: number;
   totalPage: number;
-  labelTemplate?: string;
 };

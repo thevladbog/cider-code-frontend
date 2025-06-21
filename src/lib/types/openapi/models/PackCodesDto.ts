@@ -2,8 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type WriteBoxesCodeDto = {
-  gln?: string;
+export type PackCodesDto = {
+  id: number;
+  ssccCode: string;
+  codes: Array<string>;
+  shiftId: string;
   productId: string;
-  currentSscc?: string;
 };

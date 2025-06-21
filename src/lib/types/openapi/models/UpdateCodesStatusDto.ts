@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type WriteBoxesCodeDto = {
-  gln?: string;
-  productId: string;
-  currentSscc?: string;
+export type UpdateCodesStatusDto = {
+  codes: Array<string>;
+  shiftId: string;
+  productId?: string;
 };

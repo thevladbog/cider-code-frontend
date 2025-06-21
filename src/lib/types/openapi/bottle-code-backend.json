@@ -3,6 +3,7 @@
   "paths": {
     "/product": {
       "post": {
+        "description": "Create a new product with all required details",
         "operationId": "ProductController_create",
         "parameters": [],
         "requestBody": {
@@ -31,11 +32,13 @@
             "description": "Forbidden."
           }
         },
+        "summary": "Create product",
         "tags": [
           "Product"
         ]
       },
       "get": {
+        "description": "Retrieve a paginated list of all products with optional search capabilities",
         "operationId": "ProductController_findAll",
         "parameters": [
           {
@@ -81,6 +84,7 @@
             "description": "Forbidden."
           }
         },
+        "summary": "Get all products",
         "tags": [
           "Product"
         ]
@@ -88,6 +92,7 @@
     },
     "/product/{id}": {
       "get": {
+        "description": "Retrieve detailed information about a specific product by its ID",
         "operationId": "ProductController_findOne",
         "parameters": [
           {
@@ -112,13 +117,18 @@
           },
           "403": {
             "description": "Forbidden."
+          },
+          "404": {
+            "description": "Product not found."
           }
         },
+        "summary": "Get product by ID",
         "tags": [
           "Product"
         ]
       },
       "patch": {
+        "description": "Update an existing product information such as name, GTIN, alcohol code, etc.",
         "operationId": "ProductController_update",
         "parameters": [
           {
@@ -154,13 +164,18 @@
           },
           "403": {
             "description": "Forbidden."
+          },
+          "404": {
+            "description": "Product not found."
           }
         },
+        "summary": "Update product",
         "tags": [
           "Product"
         ]
       },
       "delete": {
+        "description": "Remove a product from the system",
         "operationId": "ProductController_remove",
         "parameters": [
           {
@@ -174,9 +189,16 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Product successfully deleted"
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "Product not found."
           }
         },
+        "summary": "Delete product",
         "tags": [
           "Product"
         ]
@@ -184,6 +206,7 @@
     },
     "/product/{id}/status": {
       "patch": {
+        "description": "Change product status (ACTIVE, INACTIVE, PAUSED, etc.)",
         "operationId": "ProductController_updateStatus",
         "parameters": [
           {
@@ -208,7 +231,7 @@
         },
         "responses": {
           "200": {
-            "description": "",
+            "description": "Product status successfully updated",
             "content": {
               "application/json": {
                 "schema": {
@@ -219,8 +242,12 @@
           },
           "403": {
             "description": "Forbidden."
+          },
+          "404": {
+            "description": "Product not found."
           }
         },
+        "summary": "Update product status",
         "tags": [
           "Product"
         ]
@@ -228,6 +255,7 @@
     },
     "/product/search": {
       "get": {
+        "description": "Search for products by name, GTIN, alcohol code or other attributes",
         "operationId": "ProductController_search",
         "parameters": [
           {
@@ -257,6 +285,7 @@
             "description": "Forbidden."
           }
         },
+        "summary": "Search products",
         "tags": [
           "Product"
         ]
@@ -264,6 +293,7 @@
     },
     "/user": {
       "post": {
+        "description": "Register a new user in the system with email and password",
         "operationId": "UserController_create",
         "parameters": [],
         "requestBody": {
@@ -291,11 +321,14 @@
             "description": "Data isn't unique"
           }
         },
+        "summary": "Create user",
         "tags": [
-          "User"
+          "User",
+          "Authentication"
         ]
       },
       "get": {
+        "description": "Get paginated list of all registered users in the system",
         "operationId": "UserController_findAll",
         "parameters": [
           {
@@ -329,6 +362,7 @@
             }
           }
         },
+        "summary": "Find all users",
         "tags": [
           "User"
         ]
@@ -336,6 +370,7 @@
     },
     "/user/{id}": {
       "get": {
+        "description": "Get detailed information about a specific user by their ID",
         "operationId": "UserController_findOne",
         "parameters": [
           {
@@ -362,11 +397,13 @@
             "description": "User can't be found or something went wrong"
           }
         },
+        "summary": "Find user by ID",
         "tags": [
           "User"
         ]
       },
       "patch": {
+        "description": "Update user information such as name, email, or other profile data",
         "operationId": "UserController_update",
         "parameters": [
           {
@@ -390,7 +427,7 @@
         },
         "responses": {
           "200": {
-            "description": "",
+            "description": "User successfully updated",
             "content": {
               "application/json": {
                 "schema": {
@@ -403,11 +440,13 @@
             "description": "User can't be found or something went wrong"
           }
         },
+        "summary": "Update user",
         "tags": [
           "User"
         ]
       },
       "delete": {
+        "description": "Remove a user from the system",
         "operationId": "UserController_remove",
         "parameters": [
           {
@@ -421,12 +460,13 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "User successfully deleted"
           },
           "404": {
             "description": "User can't be found or something went wrong"
           }
         },
+        "summary": "Delete user",
         "tags": [
           "User"
         ]
@@ -434,6 +474,7 @@
     },
     "/user/auth/sign-in": {
       "post": {
+        "description": "Authenticate user with email and password and return JWT token",
         "operationId": "UserController_signIn",
         "parameters": [],
         "requestBody": {
@@ -448,16 +489,29 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "User successfully signed in, JWT token set in cookies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserLoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
           }
         },
+        "summary": "Sign in user",
         "tags": [
-          "User"
+          "User",
+          "Authentication"
         ]
       }
     },
     "/user/auth/reset-password-request": {
       "post": {
+        "description": "Request a password reset by providing an email, sends reset link to user email",
         "operationId": "UserController_resetRequest",
         "parameters": [],
         "requestBody": {
@@ -472,19 +526,22 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Reset password request processed successfully"
           },
           "404": {
             "description": "User can't be found or something went wrong"
           }
         },
+        "summary": "Reset password request",
         "tags": [
-          "User"
+          "User",
+          "Authentication"
         ]
       }
     },
     "/user/auth/reset-password": {
       "post": {
+        "description": "Reset user password using token received via email",
         "operationId": "UserController_resetPasswordAfterRequest",
         "parameters": [],
         "requestBody": {
@@ -499,38 +556,50 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Password has been successfully reset"
           },
           "404": {
             "description": "Something went wrong"
           }
         },
+        "summary": "Reset password",
         "tags": [
-          "User"
+          "User",
+          "Authentication"
         ]
       }
     },
     "/user/auth/revoke-token": {
       "post": {
+        "description": "Revoke the current JWT token (logout)",
         "operationId": "UserController_revokeToken",
         "parameters": [],
         "responses": {
+          "200": {
+            "description": "Token successfully revoked"
+          },
           "201": {
             "description": ""
+          },
+          "400": {
+            "description": "Token ID (jti) is missing"
           }
         },
+        "summary": "Revoke token",
         "tags": [
-          "User"
+          "User",
+          "Authentication"
         ]
       }
     },
     "/user/auth/me": {
       "get": {
+        "description": "Get details of the currently authenticated user",
         "operationId": "UserController_getMe",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Returns current user information",
             "content": {
               "application/json": {
                 "schema": {
@@ -538,15 +607,21 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "User ID (sub) is missing"
           }
         },
+        "summary": "Get current user",
         "tags": [
-          "User"
+          "User",
+          "Authentication"
         ]
       }
     },
     "/code/individual": {
       "post": {
+        "description": "Create new individual product codes and store them in the database with product association",
         "operationId": "CodeController_writeIndividualCode",
         "parameters": [],
         "requestBody": {
@@ -561,23 +636,55 @@
         },
         "responses": {
           "201": {
-            "description": "Code successfully created",
+            "description": "Codes successfully created and stored in database",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IndividualCodeDataDto"
+                  "properties": {
+                    "count": {
+                      "type": "number",
+                      "description": "Number of codes created"
+                    },
+                    "codes": {
+                      "type": "array",
+                      "description": "Array of created codes",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number"
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "productId": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid input format or validation error"
           }
         },
+        "summary": "Create individual codes",
         "tags": [
-          "Code"
+          "Codes",
+          "Individual"
         ]
       }
     },
     "/code/boxes": {
       "post": {
+        "description": "Generate next SSCC code for boxes and store it in the database",
         "operationId": "CodeController_getNextSscc",
         "parameters": [],
         "requestBody": {
@@ -600,15 +707,149 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid input data or SSCC format"
+          },
+          "404": {
+            "description": "No previous SSCC codes found in database"
           }
         },
+        "summary": "Generate SSCC code",
         "tags": [
-          "Code"
+          "Codes",
+          "Boxes"
+        ]
+      }
+    },
+    "/code/pack": {
+      "post": {
+        "description": "Pack individual codes into a box and generate a new SSCC code",
+        "operationId": "CodeController_packCodes",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PackCodesDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Codes successfully packed and new SSCC code created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PackedCodesResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data format"
+          },
+          "404": {
+            "description": "Box code or individual codes not found"
+          }
+        },
+        "summary": "Pack codes",
+        "tags": [
+          "Codes",
+          "Packaging"
+        ]
+      }
+    },
+    "/code/update-status": {
+      "post": {
+        "description": "Update the status of multiple individual codes and link them to a shift",
+        "operationId": "CodeController_updateCodesStatus",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCodesStatusDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Codes status successfully updated"
+          },
+          "400": {
+            "description": "Invalid input data format"
+          },
+          "404": {
+            "description": "Shift or individual codes not found"
+          }
+        },
+        "summary": "Update codes status",
+        "tags": [
+          "Codes",
+          "Status"
+        ]
+      }
+    },
+    "/code/download": {
+      "get": {
+        "description": "Download codes for a specific shift as a text file. Can include box codes if requested.",
+        "operationId": "CodeController_downloadCodes",
+        "parameters": [
+          {
+            "name": "includeBoxes",
+            "required": false,
+            "in": "query",
+            "description": "Whether to include box codes in the download",
+            "schema": {
+              "example": false,
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "shiftId",
+            "required": true,
+            "in": "query",
+            "description": "ID of the shift to download codes for",
+            "schema": {
+              "example": "shift_123",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Text file with codes successfully generated",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "description": "Text file containing codes, one per line"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data format"
+          },
+          "404": {
+            "description": "Shift not found"
+          }
+        },
+        "summary": "Download codes as text file",
+        "tags": [
+          "Codes",
+          "Download"
         ]
       }
     },
     "/operator": {
       "post": {
+        "description": "Create a new operator account in the system",
         "operationId": "OperatorController_createOperator",
         "parameters": [],
         "requestBody": {
@@ -633,11 +874,13 @@
             }
           }
         },
+        "summary": "Create operator",
         "tags": [
           "Operator"
         ]
       },
       "get": {
+        "description": "Retrieve a paginated list of all operators in the system",
         "operationId": "OperatorController_findAll",
         "parameters": [
           {
@@ -661,7 +904,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns a list of users",
+            "description": "Returns a list of operators",
             "content": {
               "application/json": {
                 "schema": {
@@ -671,6 +914,7 @@
             }
           }
         },
+        "summary": "Get all operators",
         "tags": [
           "Operator"
         ]
@@ -678,6 +922,7 @@
     },
     "/operator/{id}": {
       "patch": {
+        "description": "Update operator information such as name or barcode",
         "operationId": "OperatorController_updateOperator",
         "parameters": [
           {
@@ -714,6 +959,7 @@
             "description": "Operator not found"
           }
         },
+        "summary": "Update operator",
         "tags": [
           "Operator"
         ]
@@ -721,6 +967,7 @@
     },
     "/operator/login": {
       "post": {
+        "description": "Authenticate an operator using barcode and return JWT token",
         "operationId": "OperatorController_login",
         "parameters": [],
         "requestBody": {
@@ -739,19 +986,22 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "boolean"
+                  "$ref": "#/components/schemas/OperatorLoginResponse"
                 }
               }
             }
           }
         },
+        "summary": "Login operator",
         "tags": [
-          "Operator"
+          "Operator",
+          "Authentication"
         ]
       }
     },
     "/operator/one/{id}": {
       "get": {
+        "description": "Retrieve detailed information about a specific operator",
         "operationId": "OperatorController_findOne",
         "parameters": [
           {
@@ -765,7 +1015,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns the requested user",
+            "description": "Returns the requested operator",
             "content": {
               "application/json": {
                 "schema": {
@@ -775,9 +1025,10 @@
             }
           },
           "404": {
-            "description": "User can't be found or something went wrong"
+            "description": "Operator can't be found or something went wrong"
           }
         },
+        "summary": "Get operator by ID",
         "tags": [
           "Operator"
         ]
@@ -785,11 +1036,12 @@
     },
     "/operator/me": {
       "get": {
+        "description": "Get details of the currently authenticated operator",
         "operationId": "OperatorController_getMe",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Returns current operator information",
             "content": {
               "application/json": {
                 "schema": {
@@ -797,15 +1049,21 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized or operator token missing"
           }
         },
+        "summary": "Get current operator",
         "tags": [
-          "Operator"
+          "Operator",
+          "Authentication"
         ]
       }
     },
     "/shift": {
       "post": {
+        "description": "Create a new production shift with product and planning details",
         "operationId": "ShiftController_create",
         "parameters": [],
         "requestBody": {
@@ -833,11 +1091,13 @@
             "description": "Data isn't unique"
           }
         },
+        "summary": "Create shift",
         "tags": [
           "Shift"
         ]
       },
       "get": {
+        "description": "Retrieve a paginated list of all production shifts",
         "operationId": "ShiftController_findAll",
         "parameters": [
           {
@@ -871,13 +1131,58 @@
             }
           }
         },
+        "summary": "Get all shifts",
         "tags": [
           "Shift"
         ]
       }
     },
+    "/shift/operator": {
+      "get": {
+        "description": "Retrieve a paginated list of all production shifts accessible by operators",
+        "operationId": "ShiftController_findAllForApp",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of shifts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IShiftFindMany"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all shifts for operator",
+        "tags": [
+          "Shift",
+          "Operator"
+        ]
+      }
+    },
     "/shift/{id}": {
       "get": {
+        "description": "Retrieve detailed information about a specific production shift",
         "operationId": "ShiftController_findOne",
         "parameters": [
           {
@@ -904,11 +1209,13 @@
             "description": "Shift can't be found or something went wrong"
           }
         },
+        "summary": "Get shift by ID",
         "tags": [
           "Shift"
         ]
       },
       "patch": {
+        "description": "Update information about an existing production shift such as planned count, status, etc.",
         "operationId": "ShiftController_update",
         "parameters": [
           {
@@ -932,7 +1239,7 @@
         },
         "responses": {
           "200": {
-            "description": "",
+            "description": "Shift successfully updated",
             "content": {
               "application/json": {
                 "schema": {
@@ -945,11 +1252,13 @@
             "description": "Shift can't be found or something went wrong"
           }
         },
+        "summary": "Update shift",
         "tags": [
           "Shift"
         ]
       },
       "delete": {
+        "description": "Remove a production shift from the system",
         "operationId": "ShiftController_remove",
         "parameters": [
           {
@@ -976,8 +1285,312 @@
             "description": "Shift can't be found or something went wrong"
           }
         },
+        "summary": "Delete shift",
         "tags": [
           "Shift"
+        ]
+      }
+    },
+    "/shift/operator/{id}": {
+      "get": {
+        "description": "Retrieve detailed information about a specific production shift for operators",
+        "operationId": "ShiftController_findOneForApp",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the requested shift",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IShiftFindOne"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Shift can't be found or something went wrong"
+          }
+        },
+        "summary": "Get shift by ID for operator",
+        "tags": [
+          "Shift",
+          "Operator"
+        ]
+      }
+    },
+    "/shift/operator/create": {
+      "post": {
+        "description": "Create a new production shift by operator using EAN/GTIN code",
+        "operationId": "ShiftController_createByOperator",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateShiftByOperatorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Shift successfully created by operator",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IShiftFindOne"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data or product not found"
+          },
+          "404": {
+            "description": "Product with specified GTIN not found or not active"
+          }
+        },
+        "summary": "Create shift by operator",
+        "tags": [
+          "Shift",
+          "Operator"
+        ]
+      }
+    },
+    "/saby/order/delivery": {
+      "post": {
+        "description": "Creates a new delivery order in the SABY system",
+        "operationId": "SabyController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Json structure for order object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrderToDeliveryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The record has been successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedOrderToDeliveryId"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "summary": "Create delivery order",
+        "tags": [
+          "Saby Orders"
+        ]
+      },
+      "get": {
+        "description": "Retrieves a paginated list of delivery orders from the SABY system with optional filtering",
+        "operationId": "SabyController_findAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "Order status filter",
+            "schema": {
+              "enum": [
+                "NEW",
+                "ARCHIVE"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search string",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IOrderToDeliveryFindMany"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden."
+          }
+        },
+        "summary": "Get all delivery orders",
+        "tags": [
+          "Saby Orders"
+        ]
+      }
+    },
+    "/saby/order/delivery/{id}": {
+      "get": {
+        "description": "Retrieves a specific delivery order from the SABY system by its ID",
+        "operationId": "SabyController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SelectOrderToDeliveryDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "Order not found."
+          }
+        },
+        "summary": "Get delivery order by ID",
+        "tags": [
+          "Saby Orders"
+        ]
+      },
+      "patch": {
+        "description": "Updates an existing delivery order in the SABY system by its ID",
+        "operationId": "SabyController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Json structure for order object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrderToDeliveryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateOrderToDeliveryDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "Order not found."
+          }
+        },
+        "summary": "Update delivery order",
+        "tags": [
+          "Saby Orders"
+        ]
+      }
+    },
+    "/saby/order/delivery/change": {
+      "put": {
+        "description": "Updates a delivery order with information received from the SABY system",
+        "operationId": "SabyController_updateFromSaby",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Json structure for order object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrderToDeliveryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateOrderToDeliveryDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "Order not found."
+          }
+        },
+        "summary": "Update delivery order from SABY",
+        "tags": [
+          "Saby Orders"
         ]
       }
     }
@@ -1730,6 +2343,17 @@
           "password"
         ]
       },
+      "UserLoginResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/CreatedUserDto"
+          }
+        },
+        "required": [
+          "user"
+        ]
+      },
       "ResetPasswordRequestDto": {
         "type": "object",
         "properties": {
@@ -1767,7 +2391,11 @@
         "type": "object",
         "properties": {
           "code": {
-            "type": "string"
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
           },
           "status": {
             "type": "string",
@@ -1792,49 +2420,6 @@
           "productId"
         ]
       },
-      "IndividualCodeDataDto": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": [
-              "NEW",
-              "USED"
-            ]
-          },
-          "id": {
-            "type": "integer"
-          },
-          "code": {
-            "type": "string"
-          },
-          "productId": {
-            "type": "string"
-          },
-          "created": {},
-          "modified": {
-            "nullable": true
-          },
-          "boxesCodeId": {
-            "type": "integer",
-            "nullable": true
-          },
-          "shiftId": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "required": [
-          "status",
-          "id",
-          "code",
-          "productId",
-          "created",
-          "modified",
-          "boxesCodeId",
-          "shiftId"
-        ]
-      },
       "WriteBoxesCodeDto": {
         "type": "object",
         "properties": {
@@ -1849,7 +2434,6 @@
           }
         },
         "required": [
-          "gln",
           "productId"
         ]
       },
@@ -1888,6 +2472,80 @@
           "productId",
           "created",
           "modified",
+          "shiftId"
+        ]
+      },
+      "PackCodesDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "ssccCode": {
+            "type": "string"
+          },
+          "codes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "shiftId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "productId": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "ssccCode",
+          "codes",
+          "shiftId",
+          "productId"
+        ]
+      },
+      "PackedCodesResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "ssccCode": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "ssccCode"
+        ]
+      },
+      "UpdateCodesStatusDto": {
+        "type": "object",
+        "properties": {
+          "codes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "shiftId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "productId": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "codes",
           "shiftId"
         ]
       },
@@ -1962,6 +2620,17 @@
         },
         "required": [
           "barcode"
+        ]
+      },
+      "OperatorLoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
         ]
       },
       "IOperatorFindMany": {
@@ -2095,13 +2764,315 @@
           "modified"
         ]
       },
+      "OperatorShiftDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "PLANNED",
+              "INPROGRESS",
+              "PAUSED",
+              "DONE",
+              "CANCELED"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "plannedDate": {},
+          "product": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "INACTIVE",
+                  "PAUSED",
+                  "REGISTRATION",
+                  "ARCHIVED"
+                ]
+              },
+              "id": {
+                "description": "The unique identifier for the product",
+                "type": "string"
+              },
+              "shortName": {
+                "type": "string"
+              },
+              "fullName": {
+                "type": "string"
+              },
+              "gtin": {
+                "type": "string"
+              },
+              "alcoholCode": {
+                "type": "string"
+              },
+              "expirationInDays": {
+                "type": "integer"
+              },
+              "volume": {},
+              "pictureUrl": {
+                "type": "string",
+                "nullable": true
+              },
+              "created": {},
+              "modified": {
+                "nullable": true
+              }
+            },
+            "required": [
+              "status",
+              "id",
+              "shortName",
+              "fullName",
+              "gtin",
+              "alcoholCode",
+              "expirationInDays",
+              "volume",
+              "pictureUrl",
+              "created",
+              "modified"
+            ]
+          },
+          "plannedCount": {
+            "type": "integer",
+            "nullable": true
+          },
+          "factCount": {
+            "type": "integer",
+            "nullable": true
+          },
+          "packing": {
+            "type": "boolean"
+          },
+          "countInBox": {
+            "type": "integer",
+            "nullable": true
+          },
+          "operatorId": {
+            "type": "string",
+            "nullable": true
+          },
+          "created": {},
+          "modified": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "status",
+          "id",
+          "plannedDate",
+          "product",
+          "plannedCount",
+          "factCount",
+          "packing",
+          "countInBox",
+          "operatorId",
+          "created",
+          "modified"
+        ]
+      },
       "IShiftFindMany": {
         "type": "object",
         "properties": {
           "result": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ShiftDto"
+              "$ref": "#/components/schemas/OperatorShiftDto"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "totalPage": {
+            "type": "number"
+          },
+          "labelTemplate": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "result",
+          "total",
+          "page",
+          "limit",
+          "totalPage"
+        ]
+      },
+      "IShiftFindOne": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/OperatorShiftDto"
+          }
+        },
+        "required": [
+          "result"
+        ]
+      },
+      "UpdateShiftDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateShiftByOperatorDto": {
+        "type": "object",
+        "properties": {
+          "ean": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 14
+          },
+          "plannedDay": {}
+        },
+        "required": [
+          "ean"
+        ]
+      },
+      "IDeletedShift": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "message"
+        ]
+      },
+      "CreateOrderToDeliveryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "orderNumber": {
+            "type": "string"
+          },
+          "deliveryDate": {},
+          "status": {
+            "type": "string",
+            "enum": [
+              "NEW",
+              "ARCHIVE"
+            ]
+          },
+          "consignee": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "created": {},
+          "modified": {}
+        },
+        "required": [
+          "orderNumber",
+          "deliveryDate",
+          "consignee",
+          "address"
+        ]
+      },
+      "CreatedOrderToDeliveryId": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the order",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "SelectOrderToDeliveryDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "NEW",
+              "ARCHIVE"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "orderNumber": {
+            "type": "string"
+          },
+          "deliveryDate": {},
+          "consignee": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "created": {
+            "nullable": true
+          },
+          "modified": {
+            "nullable": true
+          }
+        },
+        "required": [
+          "status",
+          "id",
+          "orderNumber",
+          "deliveryDate",
+          "consignee",
+          "address",
+          "created",
+          "modified"
+        ]
+      },
+      "UpdateOrderToDeliveryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "orderNumber": {
+            "type": "string"
+          },
+          "deliveryDate": {},
+          "status": {
+            "type": "string",
+            "enum": [
+              "NEW",
+              "ARCHIVE"
+            ]
+          },
+          "consignee": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "IOrderToDeliveryFindMany": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SelectOrderToDeliveryDto"
             }
           },
           "total": {
@@ -2123,36 +3094,6 @@
           "page",
           "limit",
           "totalPage"
-        ]
-      },
-      "IShiftFindOne": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "$ref": "#/components/schemas/ShiftDto"
-          }
-        },
-        "required": [
-          "result"
-        ]
-      },
-      "UpdateShiftDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "IDeletedShift": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "message"
         ]
       }
     }

@@ -1,11 +1,14 @@
-"use client";
-
 import { getColumnConfig } from "@/components/ShiftTable/lib/getColumnConfig";
 import { getRowActions } from "@/components/ShiftTable/lib/getRowActions";
+import { ModalCreateShift } from "@/components/ModalCreateShift";
+import { ShiftInfo } from "@/components/ShiftInfo";
+import { adaptShiftData, useShiftStore } from "@/entities/Shift";
 import { Magnifier, Plus } from "@gravity-ui/icons";
 import {
   Button,
   Icon,
+  Loader,
+  Overlay,
   Pagination,
   PaginationProps,
   Table,
@@ -18,27 +21,59 @@ import React from "react";
 
 import s from "./ShiftTable.module.scss";
 import { IShiftData } from "@/lib/types";
-import { SHIFTS_MOCK } from "@/lib/mocks";
 
 export const ShiftTable = () => {
+  const { data, isLoading, getShifts, setSearch, search } = useShiftStore();
+
   const [paginationState, setPaginationState] = React.useState({
-    page: SHIFTS_MOCK.page,
-    pageSize: SHIFTS_MOCK.limit,
+    page: 1,
+    pageSize: 10,
   });
-  const [search, setSearch] = React.useState("");
+
+  const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false);
+  const [isShiftInfoOpen, setIsShiftInfoOpen] = React.useState(false);
+  const [selectedShiftId, setSelectedShiftId] = React.useState<string>("");
 
   const ShiftTableWrapper = withTableSorting(
     withTableActions<IShiftData>(Table),
   );
 
-  const columns = getColumnConfig();
+  const handleOpenShift = (shiftId: string) => {
+    setSelectedShiftId(shiftId);
+    setIsShiftInfoOpen(true);
+  };
 
-  const handleUpdate: PaginationProps["onUpdate"] = (page, pageSize) =>
-    setPaginationState((prevState) => ({ ...prevState, page, pageSize }));
+  const columns = getColumnConfig(handleOpenShift);
+
+  // Адаптируем данные для отображения в таблице
+  const adaptedData = React.useMemo(() => {
+    return data?.result?.map(adaptShiftData) || [];
+  }, [data?.result]);
+
+  const handleUpdate: PaginationProps["onUpdate"] = (page, pageSize) => {
+    setPaginationState({ page, pageSize });
+    getShifts({ page, limit: pageSize });
+  };
 
   const createNewShift = () => {
-    return;
+    setIsCreateModalOpen(true);
   };
+
+  const handleCloseCreateModal = () => {
+    setIsCreateModalOpen(false);
+    // Обновляем данные после создания смены
+    getShifts({ page: paginationState.page, limit: paginationState.pageSize });
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value || undefined);
+    // TODO: Реализовать поиск когда API будет поддерживать поиск по сменам
+  };
+
+  // Загружаем данные при монтировании компонента и изменении пагинации
+  React.useEffect(() => {
+    getShifts({ page: paginationState.page, limit: paginationState.pageSize });
+  }, [getShifts, paginationState.page, paginationState.pageSize]);
 
   return (
     <div className={s.root}>
@@ -52,8 +87,8 @@ export const ShiftTable = () => {
             size={"l"}
             label={"Продукция:"}
             startContent={<Icon data={Magnifier} size={18} />}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={search || ""}
+            onChange={(e) => handleSearchChange(e.target.value)}
             qa="shift.table.search"
           />
         </div>
@@ -72,23 +107,37 @@ export const ShiftTable = () => {
       </div>
       <ShiftTableWrapper
         columns={columns}
-        getRowActions={getRowActions}
-        data={SHIFTS_MOCK.result}
+        getRowActions={() => getRowActions(handleOpenShift)}
+        data={adaptedData}
         className={s.table}
         qa="shift.table"
       />
+      <Overlay visible={isLoading}>
+        <Loader />
+      </Overlay>
 
       <div className={s.pagination}>
         <Pagination
           page={paginationState.page}
           pageSize={paginationState.pageSize}
-          total={SHIFTS_MOCK.total}
+          total={data?.total || 0}
           onUpdate={handleUpdate}
           pageSizeOptions={[1, 5, 10, 15, 25, 50]}
           showPages
           qa="shift.table.pagination"
         />
       </div>
+
+      <ModalCreateShift
+        visible={isCreateModalOpen}
+        onClose={handleCloseCreateModal}
+      />
+
+      <ShiftInfo
+        visible={isShiftInfoOpen}
+        setVisible={setIsShiftInfoOpen}
+        shiftId={selectedShiftId}
+      />
     </div>
   );
 };

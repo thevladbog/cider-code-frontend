@@ -7,6 +7,7 @@ import {
   ToasterProvider,
 } from "@gravity-ui/uikit";
 import { Wrapper } from "@/components/Wrapper";
+import { ModalCreateShift } from "@/components/ModalCreateShift";
 import { useThemeStore } from "@/entities/Theme";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import React, { ReactNode, useEffect, useState } from "react";
@@ -22,6 +23,8 @@ interface AppProps {
 const App = ({ children }: AppProps) => {
   const [compact, setCompact] = useState<boolean>(true);
   const [authed, setAuthed] = useState<boolean>(false);
+  const [isCreateShiftModalVisible, setIsCreateShiftModalVisible] =
+    useState<boolean>(false);
 
   const user = useUserStore((store) => store.data);
 
@@ -86,8 +89,8 @@ const App = ({ children }: AppProps) => {
       type: "action",
       icon: Plus,
       afterMoreButton: true,
-      onItemClick: ({ id, title, current }) => {
-        alert(JSON.stringify({ id, title, current }));
+      onItemClick: () => {
+        setIsCreateShiftModalVisible(true);
       },
       hidden: user?.role === CreatedUserDto.role.GUEST,
     },
@@ -105,18 +108,21 @@ const App = ({ children }: AppProps) => {
         <AsideHeader
           logo={{
             icon: LogoIcon,
-            text: () => <Icon data={Logo} width={80} />,
+            text: () => <Icon data={Logo} width={80} height={60} />,
             onClick: () => navigate({ to: "/" }),
-            href: "/",
           }}
           hideCollapseButton={false}
           headerDecoration={true}
           onChangeCompact={toggleCompact}
           menuItems={authed ? menuItems : undefined}
-          compact={compact}
+          compact={!compact}
           renderContent={() => {
             return <Wrapper>{children}</Wrapper>;
           }}
+        />
+        <ModalCreateShift
+          visible={isCreateShiftModalVisible}
+          onClose={() => setIsCreateShiftModalVisible(false)}
         />
       </ToasterProvider>
     </ThemeProvider>

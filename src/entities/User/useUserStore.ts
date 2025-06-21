@@ -27,19 +27,15 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
   const login = async (email: string, password: string) => {
     setState({ isLoading: true });
 
-    try {
-      // eslint-disable-next-line new-cap
-      const { data } = await $api.POST("/user/auth/sign-in", {
-        body: {
-          email,
-          password,
-        },
-      });
+    // eslint-disable-next-line new-cap
+    const { data, error } = await $api.POST("/user/auth/sign-in", {
+      body: {
+        email,
+        password,
+      },
+    });
 
-      setState({ data });
-
-      return data;
-    } catch (error) {
+    if (error) {
       toaster.add({
         name: "login",
         title: "Что-то пошло не так ...",
@@ -47,23 +43,24 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
         isClosable: true,
         theme: "danger",
       });
-      throw new Error("Something went wrong: " + error);
-    } finally {
       setState({ isLoading: false, resetRequestSend: false });
+      throw new Error("Something went wrong: " + error);
     }
+
+    setState({
+      data: data?.user as CreatedUserDto,
+      isLoading: false,
+      resetRequestSend: false,
+    });
+    return data;
   };
-
   const register = async (props: CreateUserDto) => {
-    try {
-      // eslint-disable-next-line new-cap
-      const { data } = await $api.POST("/user", {
-        body: props,
-      });
+    // eslint-disable-next-line new-cap
+    const { data, error } = await $api.POST("/user", {
+      body: props,
+    });
 
-      setState({ data: data?.result as CreatedUserDto });
-
-      return data;
-    } catch (error) {
+    if (error) {
       toaster.add({
         name: "register",
         title: "Что-то пошло не так ...",
@@ -73,16 +70,17 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
       });
       throw new Error("Something went wrong: " + error);
     }
-  };
 
+    setState({ data: data?.result as CreatedUserDto });
+    return data;
+  };
   const logout = async () => {
     setState({ isLogoutLoading: true });
-    try {
-      // eslint-disable-next-line new-cap
-      await $api.POST("/user/auth/revoke-token");
 
-      setState(initialState);
-    } catch (error) {
+    // eslint-disable-next-line new-cap
+    const { error } = await $api.POST("/user/auth/revoke-token");
+
+    if (error) {
       toaster.add({
         name: "logout",
         title: "Что-то пошло не так ...",
@@ -90,23 +88,20 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
         isClosable: true,
         theme: "danger",
       });
-      throw new Error("Something went wrong: " + error);
-    } finally {
       setState({ isLogoutLoading: false });
-      document.location.assign("/");
+      throw new Error("Something went wrong: " + error);
     }
-  };
 
+    setState(initialState);
+    document.location.assign("/");
+  };
   const getDataAboutMe = async () => {
     setState({ isLoading: true });
-    try {
-      // eslint-disable-next-line new-cap
-      const { data } = await $api.GET("/user/auth/me");
 
-      setState({ data: data?.result as CreatedUserDto });
+    // eslint-disable-next-line new-cap
+    const { data, error } = await $api.GET("/user/auth/me");
 
-      return data;
-    } catch (error) {
+    if (error) {
       toaster.add({
         name: "getDataAboutMe",
         title: "Что-то пошло не так ...",
@@ -114,20 +109,20 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
         isClosable: true,
         theme: "danger",
       });
-      throw new Error("Something went wrong: " + error);
-    } finally {
       setState({ isLoading: false });
+      throw new Error("Something went wrong: " + error);
     }
-  };
 
+    setState({ data: data?.result as CreatedUserDto, isLoading: false });
+    return data;
+  };
   const sendResetRequest = async (email: string) => {
-    try {
-      // eslint-disable-next-line new-cap
-      await $api.POST("/user/auth/reset-password-request", {
-        body: { email },
-      });
-      setState({ resetRequestSend: true });
-    } catch (error) {
+    // eslint-disable-next-line new-cap
+    const { error } = await $api.POST("/user/auth/reset-password-request", {
+      body: { email },
+    });
+
+    if (error) {
       toaster.add({
         name: "sendResetRequest",
         title: "Что-то пошло не так ...",
@@ -137,17 +132,16 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
       });
       throw new Error("Something went wrong: " + error);
     }
-  };
 
+    setState({ resetRequestSend: true });
+  };
   const resetPassword = async (body: ResetPasswordDto) => {
-    try {
-      // eslint-disable-next-line new-cap
-      await $api.POST("/user/auth/reset-password", {
-        body,
-      });
-      setState({ resetRequestSend: false });
-      return true;
-    } catch (error) {
+    // eslint-disable-next-line new-cap
+    const { error } = await $api.POST("/user/auth/reset-password", {
+      body,
+    });
+
+    if (error) {
       toaster.add({
         name: "resetPassword",
         title: "Что-то пошло не так ...",
@@ -157,6 +151,9 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
       });
       throw new Error("Something went wrong: " + error);
     }
+
+    setState({ resetRequestSend: false });
+    return true;
   };
 
   const isAuth = () => {

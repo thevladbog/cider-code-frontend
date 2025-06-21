@@ -3,17 +3,18 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateUserDto } from "../models/CreateUserDto";
-import type { IUserFindMany } from "../models/IUserFindMany";
+import type { IOperatorFindOne } from "../models/IOperatorFindOne";
 import type { IUserFindOne } from "../models/IUserFindOne";
+import type { LoginOperatorDto } from "../models/LoginOperatorDto";
+import type { OperatorLoginResponse } from "../models/OperatorLoginResponse";
 import type { ResetPasswordDto } from "../models/ResetPasswordDto";
 import type { ResetPasswordRequestDto } from "../models/ResetPasswordRequestDto";
 import type { SignInDto } from "../models/SignInDto";
-import type { UpdateUserDto } from "../models/UpdateUserDto";
 import type { UserLoginResponse } from "../models/UserLoginResponse";
 import type { CancelablePromise } from "../core/CancelablePromise";
 import { OpenAPI } from "../core/OpenAPI";
 import { request as __request } from "../core/request";
-export class UserService {
+export class AuthenticationService {
   /**
    * Create user
    * Register a new user in the system with email and password
@@ -31,92 +32,6 @@ export class UserService {
       mediaType: "application/json",
       errors: {
         400: `Data isn't unique`,
-      },
-    });
-  }
-  /**
-   * Find all users
-   * Get paginated list of all registered users in the system
-   * @param page Page number
-   * @param limit Items per page
-   * @returns IUserFindMany Returns a list of users
-   * @throws ApiError
-   */
-  public static userControllerFindAll(
-    page?: number,
-    limit?: number,
-  ): CancelablePromise<IUserFindMany> {
-    return __request(OpenAPI, {
-      method: "GET",
-      url: "/user",
-      query: {
-        page: page,
-        limit: limit,
-      },
-    });
-  }
-  /**
-   * Find user by ID
-   * Get detailed information about a specific user by their ID
-   * @param id
-   * @returns IUserFindOne Returns the requested user
-   * @throws ApiError
-   */
-  public static userControllerFindOne(
-    id: string,
-  ): CancelablePromise<IUserFindOne> {
-    return __request(OpenAPI, {
-      method: "GET",
-      url: "/user/{id}",
-      path: {
-        id: id,
-      },
-      errors: {
-        404: `User can't be found or something went wrong`,
-      },
-    });
-  }
-  /**
-   * Update user
-   * Update user information such as name, email, or other profile data
-   * @param id
-   * @param requestBody
-   * @returns IUserFindOne User successfully updated
-   * @throws ApiError
-   */
-  public static userControllerUpdate(
-    id: string,
-    requestBody: UpdateUserDto,
-  ): CancelablePromise<IUserFindOne> {
-    return __request(OpenAPI, {
-      method: "PATCH",
-      url: "/user/{id}",
-      path: {
-        id: id,
-      },
-      body: requestBody,
-      mediaType: "application/json",
-      errors: {
-        404: `User can't be found or something went wrong`,
-      },
-    });
-  }
-  /**
-   * Delete user
-   * Remove a user from the system
-   * @param id
-   * @returns any User successfully deleted
-   * @throws ApiError
-   */
-  public static userControllerRemove(id: string): CancelablePromise<any> {
-    return __request(OpenAPI, {
-      method: "DELETE",
-      url: "/user/{id}",
-      path: {
-        id: id,
-      },
-      errors: {
-        404: `User can't be found or something went wrong`,
       },
     });
   }
@@ -207,6 +122,38 @@ export class UserService {
       url: "/user/auth/me",
       errors: {
         400: `User ID (sub) is missing`,
+      },
+    });
+  }
+  /**
+   * Login operator
+   * Authenticate an operator using barcode and return JWT token
+   * @param requestBody
+   * @returns OperatorLoginResponse Operator login successful
+   * @throws ApiError
+   */
+  public static operatorControllerLogin(
+    requestBody: LoginOperatorDto,
+  ): CancelablePromise<OperatorLoginResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/operator/login",
+      body: requestBody,
+      mediaType: "application/json",
+    });
+  }
+  /**
+   * Get current operator
+   * Get details of the currently authenticated operator
+   * @returns IOperatorFindOne Returns current operator information
+   * @throws ApiError
+   */
+  public static operatorControllerGetMe(): CancelablePromise<IOperatorFindOne> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/operator/me",
+      errors: {
+        401: `Unauthorized or operator token missing`,
       },
     });
   }

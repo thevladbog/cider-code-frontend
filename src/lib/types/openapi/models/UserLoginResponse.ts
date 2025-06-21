@@ -2,8 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type WriteBoxesCodeDto = {
-  gln?: string;
-  productId: string;
-  currentSscc?: string;
+import type { CreatedUserDto } from "./CreatedUserDto";
+export type UserLoginResponse = {
+  user: CreatedUserDto;
 };

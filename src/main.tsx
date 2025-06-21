@@ -3,14 +3,18 @@ import "@gravity-ui/uikit/styles/styles.css";
 import "./styles/styles.scss";
 import "./styles/globals.scss";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
 import { ThemeStoreProvider } from "@/entities/Theme";
+import { initSentry } from "@/lib/sentry";
 
 import { routeTree } from "./routeTree.gen";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+// Инициализируем Sentry перед созданием приложения
+initSentry();
 
 const router = createRouter({ routeTree });
 const queryClient = new QueryClient({

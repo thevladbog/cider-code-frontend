@@ -5,7 +5,7 @@ import {
   ResetPasswordDto,
 } from "@/lib/types/openapi";
 import { createStore } from "@/lib/zustand";
-import { Toaster } from "@gravity-ui/uikit";
+import { showErrorToast } from "@/lib/toaster";
 
 interface IUserState {
   data: CreatedUserDto | null;
@@ -21,8 +21,6 @@ const initialState: IUserState = {
   resetRequestSend: false,
 };
 
-const toaster = new Toaster();
-
 export const useUserStore = createStore(initialState, (setState, getState) => {
   const login = async (email: string, password: string) => {
     setState({ isLoading: true });
@@ -36,13 +34,10 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
     });
 
     if (error) {
-      toaster.add({
-        name: "login",
-        title: "Что-то пошло не так ...",
-        content: `При входе в систему произошла ошибка. Пожалуйста, проверьте свои учетные данные и попробуйте еще раз.`,
-        isClosable: true,
-        theme: "danger",
-      });
+      showErrorToast(
+        "При входе в систему произошла ошибка. Пожалуйста, проверьте свои учетные данные и попробуйте еще раз.",
+        new Error("Login error: " + JSON.stringify(error)),
+      );
       setState({ isLoading: false, resetRequestSend: false });
       throw new Error("Something went wrong: " + error);
     }
@@ -61,13 +56,10 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
     });
 
     if (error) {
-      toaster.add({
-        name: "register",
-        title: "Что-то пошло не так ...",
-        content: `При регистрации произошла ошибка. Пожалуйста, попробуйте еще раз.`,
-        isClosable: true,
-        theme: "danger",
-      });
+      showErrorToast(
+        "При регистрации произошла ошибка. Пожалуйста, попробуйте еще раз.",
+        new Error("Registration error: " + JSON.stringify(error)),
+      );
       throw new Error("Something went wrong: " + error);
     }
 
@@ -82,13 +74,10 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
     const { error } = await $api.POST("/user/auth/revoke-token");
 
     if (error) {
-      toaster.add({
-        name: "logout",
-        title: "Что-то пошло не так ...",
-        content: `При выходе из системы произошла ошибка. Пожалуйста, попробуйте еще раз.`,
-        isClosable: true,
-        theme: "danger",
-      });
+      showErrorToast(
+        "При выходе из системы произошла ошибка. Пожалуйста, попробуйте еще раз.",
+        new Error("Logout error: " + JSON.stringify(error)),
+      );
       setState({ isLogoutLoading: false });
       throw new Error("Something went wrong: " + error);
     }
@@ -119,13 +108,10 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
     });
 
     if (error) {
-      toaster.add({
-        name: "sendResetRequest",
-        title: "Что-то пошло не так ...",
-        content: `При запросе сброса пароля произошла ошибка`,
-        isClosable: true,
-        theme: "danger",
-      });
+      showErrorToast(
+        "При запросе сброса пароля произошла ошибка",
+        new Error("Reset password request error: " + JSON.stringify(error)),
+      );
       throw new Error("Something went wrong: " + error);
     }
 
@@ -139,13 +125,10 @@ export const useUserStore = createStore(initialState, (setState, getState) => {
     });
 
     if (error) {
-      toaster.add({
-        name: "resetPassword",
-        title: "Что-то пошло не так ...",
-        content: `При сбросе пароля произошла ошибка`,
-        isClosable: true,
-        theme: "danger",
-      });
+      showErrorToast(
+        "При сбросе пароля произошла ошибка",
+        new Error("Reset password error: " + JSON.stringify(error)),
+      );
       throw new Error("Something went wrong: " + error);
     }
 

@@ -1,0 +1,48 @@
+.root {
+  width: 45vw;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.divider {
+  width: 100%;
+  border: 0.5px solid var(--g-color-line-generic-accent);
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.titleText {
+  width: 70%;
+
+  &_main {
+    margin-bottom: 48px;
+  }
+
+  &_caption {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    margin-top: 8px;
+
+    .keyText {
+      width: 180px;
+    }
+  }
+}

@@ -2,11 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ShiftDto } from "./ShiftDto";
+import type { OperatorShiftDto } from "./OperatorShiftDto";
 export type IShiftFindMany = {
-  result: Array<ShiftDto>;
+  result: Array<OperatorShiftDto>;
   total: number;
   page: number;
   limit: number;
   totalPage: number;
+  labelTemplate?: string;
 };

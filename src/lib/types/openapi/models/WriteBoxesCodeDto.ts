@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type WriteBoxesCodeDto = {
-  gln: string;
+  gln?: string;
   productId: string;
   currentSscc?: string;
 };

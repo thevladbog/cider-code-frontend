@@ -9,6 +9,15 @@ export type CreatedUserDto = {
   lastName: string;
   password?: string;
   picture: string | null;
+  role: CreatedUserDto.role;
   created: any;
   modified: any;
 };
+export namespace CreatedUserDto {
+  export enum role {
+    ADMIN = "ADMIN",
+    SUPERVISOR = "SUPERVISOR",
+    USER = "USER",
+    GUEST = "GUEST",
+  }
+}

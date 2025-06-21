@@ -1,0 +1,207 @@
+.root {
+  height: 100%;
+  display: flex;
+  width: 45vw;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+.wrapper {
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.statusesGroup {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldLabel {
+  font-weight: 500;
+  color: var(--g-color-text-secondary);
+}
+
+.fieldValue {
+  padding: 8px 12px;
+  background: var(--g-color-base-float);
+  border-radius: 6px;
+  border: 1px solid var(--g-color-line-generic);
+}
+
+.progressField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progressContainer {
+  padding: 8px 12px;
+  background: var(--g-color-base-float);
+  border-radius: 6px;
+  border: 1px solid var(--g-color-line-generic);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progressInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progressBar {
+  height: 8px;
+  background: #e6e6e6;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50 0%, #66bb6a 100%);
+  border-radius: 4px;
+  transition: width 0.3s ease-in-out;
+  position: relative;
+}
+
+.progressRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--g-color-base-float);
+  border-radius: 6px;
+  border: 1px solid var(--g-color-line-generic);
+}
+
+.checkboxField {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--g-color-base-float);
+  border-radius: 6px;
+  border: 1px solid var(--g-color-line-generic);
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--g-color-base-float);
+  border-radius: 6px;
+  border: 1px solid var(--g-color-line-generic);
+}
+
+.productImage {
+  max-width: 200px;
+  max-height: 200px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.downloadSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--g-color-line-generic);
+}
+
+.downloadButtons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.editButtons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dateInput {
+  padding: 8px 12px;
+  background: var(--g-color-base-float);
+  border-radius: 6px;
+  border: 1px solid var(--g-color-line-generic);
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--g-color-text-primary);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-height: 32px;
+
+  &:focus {
+    outline: 2px solid var(--g-color-line-focus);
+    outline-offset: -1px;
+  }
+
+  // Скрываем иконку календаря в некоторых браузерах
+  &::-webkit-calendar-picker-indicator {
+    opacity: 0.5;
+    cursor: pointer;
+  }
+}
+
+.editField {
+  :global(.g-text-input),
+  :global(.g-select) {
+    width: 100% !important;
+
+    :global(.g-text-input__control),
+    :global(.g-select__control) {
+      width: 100% !important;
+      min-height: 32px;
+      max-height: 32px;
+      padding: 8px 12px !important;
+      font-size: 13px;
+      box-sizing: border-box;
+    }
+
+    :global(.g-text-input__control input) {
+      line-height: 16px;
+      padding: 0;
+    }
+
+    :global(.g-select__control) {
+      display: flex;
+      align-items: center;
+    }
+  }
+}

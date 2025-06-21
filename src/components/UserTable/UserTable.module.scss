@@ -1,0 +1,42 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.search {
+  flex: 1;
+  max-width: 400px;
+  min-width: 250px;
+}
+
+.createButton {
+  flex-shrink: 0;
+}
+
+.table {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  & > table {
+    width: 100%;
+  }
+}
+
+.pagination {
+  margin-top: 16px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}

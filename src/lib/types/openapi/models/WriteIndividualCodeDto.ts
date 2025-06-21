@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type WriteIndividualCodeDto = {
-  code: string;
+  code: Array<string>;
   status: WriteIndividualCodeDto.status;
   productId: string;
   boxesCodeId?: number;

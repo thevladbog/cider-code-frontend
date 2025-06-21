@@ -8,11 +8,15 @@ import {
   TextArea,
   TextInput,
   Text as TextWrapper,
+  useToaster,
 } from "@gravity-ui/uikit";
 
 import s from "./ModalCreateProduct.module.scss";
 import { PRODUCT_STATUS_SELECT_OPTIONS } from "@/lib/types";
 import { CircleXmark } from "@gravity-ui/icons";
+import { sleep } from "@/entities/User/utils";
+import { useProductStore } from "@/entities/Product/useProductStore";
+import { CreateProductDto } from "@/lib/types/openapi";
 
 export interface IModalCreateProductProps {
   visible: boolean;
@@ -21,6 +25,10 @@ export interface IModalCreateProductProps {
 
 export const ModalCreateProduct = (props: IModalCreateProductProps) => {
   const { visible, onClose } = props;
+
+  const { add } = useToaster();
+
+  const createProduct = useProductStore((store) => store.createProduct);
 
   const scheme = getCreateProductSchema();
   const form = useForm({
@@ -37,8 +45,23 @@ export const ModalCreateProduct = (props: IModalCreateProductProps) => {
     validators: {
       onChange: scheme,
     },
-    onSubmit: async ({ value }) => {
-      console.log(value);
+    onSubmit: async (formProps) => {
+      const { value } = formProps;
+      try {
+        await createProduct(value as CreateProductDto);
+        await sleep(1);
+
+        formProps.formApi.reset();
+        onClose();
+      } catch (error) {
+        add({
+          name: "createProductModal",
+          title: "Что-то пошло не так ...",
+          content: `При создании новой продукции произошла ошибка: ${JSON.stringify(error)}`,
+          isClosable: true,
+          theme: "danger",
+        });
+      }
     },
   });
 

@@ -68,8 +68,7 @@ jobs:
       - name: Install Yandex Cloud CLI
         run: |
           curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash
-          echo "$HOME/yandex-cloud/bin" >> $GITHUB_PATH
-
+          echo "$HOME/yandex-cloud/bin" >> $GITHUB_PATH      
       - name: Auth YC CLI
         env:
           YC_OAUTH_TOKEN: ${{ secrets.YC_OAUTH_TOKEN }}
@@ -95,11 +94,15 @@ jobs:
             --build-arg LOCAL_FRONTEND=${{ secrets.LOCAL_FRONTEND }} \
             --build-arg NODE_ENV=${{ secrets.NODE_ENV }} \
             --build-arg CONFIG_API_PROXY_URL=${{ secrets.CONFIG_API_PROXY_URL }} \
+            --build-arg VITE_SENTRY_DSN=${{ secrets.VITE_SENTRY_DSN }} \
+            --build-arg VITE_SENTRY_ORG=${{ secrets.VITE_SENTRY_ORG }} \
+            --build-arg VITE_SENTRY_PROJECT=${{ secrets.VITE_SENTRY_PROJECT }} \
+            --build-arg VITE_SENTRY_AUTH_TOKEN=${{ secrets.VITE_SENTRY_AUTH_TOKEN }} \
             -t $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} .
           docker tag $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} $YCR_REGISTRY/$IMAGE_NAME:latest
           docker push $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }}
-          docker push $YCR_REGISTRY/$IMAGE_NAME:latest
-
+          docker push $YCR_REGISTRY/$IMAGE_NAME:latest      
+          
       - name: Build & push BETA
         if: env.is_beta == 'true'
         run: |
@@ -109,6 +112,10 @@ jobs:
             --build-arg LOCAL_FRONTEND=${{ secrets.BETA_LOCAL_FRONTEND }} \
             --build-arg NODE_ENV=${{ secrets.BETA_NODE_ENV }} \
             --build-arg CONFIG_API_PROXY_URL=${{ secrets.BETA_CONFIG_API_PROXY_URL }} \
+            --build-arg VITE_SENTRY_DSN=${{ secrets.BETA_VITE_SENTRY_DSN }} \
+            --build-arg VITE_SENTRY_ORG=${{ secrets.VITE_SENTRY_ORG }} \
+            --build-arg VITE_SENTRY_PROJECT=${{ secrets.BETA_VITE_SENTRY_PROJECT }} \
+            --build-arg VITE_SENTRY_AUTH_TOKEN=${{ secrets.VITE_SENTRY_AUTH_TOKEN }} \
             -t $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} .
           docker tag $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }} $YCR_REGISTRY/$IMAGE_NAME:beta
           docker push $YCR_REGISTRY/$IMAGE_NAME:${{ steps.meta.outputs.img_tag }}

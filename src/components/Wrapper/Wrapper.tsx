@@ -7,7 +7,6 @@ import { Button, Icon, User } from "@gravity-ui/uikit";
 import block from "bem-cn-lite";
 
 import { useThemeStore } from "@/entities/Theme";
-import { FooterWrapper } from "@/components/Footer";
 import { useUserStore } from "@/entities/User/useUserStore";
 import { useShallow } from "zustand/shallow";
 
@@ -63,7 +62,7 @@ export const Wrapper: React.FC<AppProps> = ({ children }) => {
         <div className={b("content")}>{children}</div>
       </div>
 
-      <FooterWrapper />
+      {/* <FooterWrapper /> */}
     </div>
   );
 };

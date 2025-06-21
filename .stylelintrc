@@ -2,5 +2,17 @@
   "extends": [
     "@gravity-ui/stylelint-config",
     "@gravity-ui/stylelint-config/prettier"
-  ]
+  ],
+  "rules": {
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": [
+          "global",
+          "export"
+        ]
+      }
+    ],
+    "declaration-no-important": null
+  }
 }

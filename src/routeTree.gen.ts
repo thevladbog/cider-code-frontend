@@ -15,7 +15,9 @@ import { Route as AuthImport } from "./routes/_auth";
 import { Route as LoginIndexImport } from "./routes/login/index";
 import { Route as AuthIndexImport } from "./routes/_auth.index";
 import { Route as LoginResetImport } from "./routes/login/reset";
+import { Route as AuthUsersImport } from "./routes/_auth.users";
 import { Route as AuthProductsImport } from "./routes/_auth.products";
+import { Route as AuthPrivacyImport } from "./routes/_auth.privacy";
 
 // Create/Update Routes
 
@@ -42,9 +44,21 @@ const LoginResetRoute = LoginResetImport.update({
   getParentRoute: () => rootRoute,
 } as any);
 
+const AuthUsersRoute = AuthUsersImport.update({
+  id: "/users",
+  path: "/users",
+  getParentRoute: () => AuthRoute,
+} as any);
+
 const AuthProductsRoute = AuthProductsImport.update({
   id: "/products",
   path: "/products",
+  getParentRoute: () => AuthRoute,
+} as any);
+
+const AuthPrivacyRoute = AuthPrivacyImport.update({
+  id: "/privacy",
+  path: "/privacy",
   getParentRoute: () => AuthRoute,
 } as any);
 
@@ -59,11 +73,25 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthImport;
       parentRoute: typeof rootRoute;
     };
+    "/_auth/privacy": {
+      id: "/_auth/privacy";
+      path: "/privacy";
+      fullPath: "/privacy";
+      preLoaderRoute: typeof AuthPrivacyImport;
+      parentRoute: typeof AuthImport;
+    };
     "/_auth/products": {
       id: "/_auth/products";
       path: "/products";
       fullPath: "/products";
       preLoaderRoute: typeof AuthProductsImport;
+      parentRoute: typeof AuthImport;
+    };
+    "/_auth/users": {
+      id: "/_auth/users";
+      path: "/users";
+      fullPath: "/users";
+      preLoaderRoute: typeof AuthUsersImport;
       parentRoute: typeof AuthImport;
     };
     "/login/reset": {
@@ -93,12 +121,16 @@ declare module "@tanstack/react-router" {
 // Create and export the route tree
 
 interface AuthRouteChildren {
+  AuthPrivacyRoute: typeof AuthPrivacyRoute;
   AuthProductsRoute: typeof AuthProductsRoute;
+  AuthUsersRoute: typeof AuthUsersRoute;
   AuthIndexRoute: typeof AuthIndexRoute;
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthPrivacyRoute: AuthPrivacyRoute,
   AuthProductsRoute: AuthProductsRoute,
+  AuthUsersRoute: AuthUsersRoute,
   AuthIndexRoute: AuthIndexRoute,
 };
 
@@ -106,14 +138,18 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren);
 
 export interface FileRoutesByFullPath {
   "": typeof AuthRouteWithChildren;
+  "/privacy": typeof AuthPrivacyRoute;
   "/products": typeof AuthProductsRoute;
+  "/users": typeof AuthUsersRoute;
   "/login/reset": typeof LoginResetRoute;
   "/": typeof AuthIndexRoute;
   "/login": typeof LoginIndexRoute;
 }
 
 export interface FileRoutesByTo {
+  "/privacy": typeof AuthPrivacyRoute;
   "/products": typeof AuthProductsRoute;
+  "/users": typeof AuthUsersRoute;
   "/login/reset": typeof LoginResetRoute;
   "/": typeof AuthIndexRoute;
   "/login": typeof LoginIndexRoute;
@@ -122,7 +158,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute;
   "/_auth": typeof AuthRouteWithChildren;
+  "/_auth/privacy": typeof AuthPrivacyRoute;
   "/_auth/products": typeof AuthProductsRoute;
+  "/_auth/users": typeof AuthUsersRoute;
   "/login/reset": typeof LoginResetRoute;
   "/_auth/": typeof AuthIndexRoute;
   "/login/": typeof LoginIndexRoute;
@@ -130,13 +168,22 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "" | "/products" | "/login/reset" | "/" | "/login";
+  fullPaths:
+    | ""
+    | "/privacy"
+    | "/products"
+    | "/users"
+    | "/login/reset"
+    | "/"
+    | "/login";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/products" | "/login/reset" | "/" | "/login";
+  to: "/privacy" | "/products" | "/users" | "/login/reset" | "/" | "/login";
   id:
     | "__root__"
     | "/_auth"
+    | "/_auth/privacy"
     | "/_auth/products"
+    | "/_auth/users"
     | "/login/reset"
     | "/_auth/"
     | "/login/";
@@ -173,12 +220,22 @@ export const routeTree = rootRoute
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
+        "/_auth/privacy",
         "/_auth/products",
+        "/_auth/users",
         "/_auth/"
       ]
     },
+    "/_auth/privacy": {
+      "filePath": "_auth.privacy.tsx",
+      "parent": "/_auth"
+    },
     "/_auth/products": {
       "filePath": "_auth.products.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/users": {
+      "filePath": "_auth.users.tsx",
       "parent": "/_auth"
     },
     "/login/reset": {

@@ -3,29 +3,14 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { BoxesCodeDataDto } from "../models/BoxesCodeDataDto";
-import type { IndividualCodeDataDto } from "../models/IndividualCodeDataDto";
 import type { WriteBoxesCodeDto } from "../models/WriteBoxesCodeDto";
-import type { WriteIndividualCodeDto } from "../models/WriteIndividualCodeDto";
 import type { CancelablePromise } from "../core/CancelablePromise";
 import { OpenAPI } from "../core/OpenAPI";
 import { request as __request } from "../core/request";
-export class CodeService {
+export class BoxesService {
   /**
-   * @param requestBody
-   * @returns IndividualCodeDataDto Code successfully created
-   * @throws ApiError
-   */
-  public static codeControllerWriteIndividualCode(
-    requestBody: WriteIndividualCodeDto,
-  ): CancelablePromise<IndividualCodeDataDto> {
-    return __request(OpenAPI, {
-      method: "POST",
-      url: "/code/individual",
-      body: requestBody,
-      mediaType: "application/json",
-    });
-  }
-  /**
+   * Generate SSCC code
+   * Generate next SSCC code for boxes and store it in the database
    * @param requestBody
    * @returns BoxesCodeDataDto Code successfully created
    * @throws ApiError
@@ -38,6 +23,10 @@ export class CodeService {
       url: "/code/boxes",
       body: requestBody,
       mediaType: "application/json",
+      errors: {
+        400: `Invalid input data or SSCC format`,
+        404: `No previous SSCC codes found in database`,
+      },
     });
   }
 }

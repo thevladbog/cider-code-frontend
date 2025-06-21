@@ -35,6 +35,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
 
+      - name: Display updated version
+        run: |
+          if [ -n "$RELEASE_VERSION" ]; then
+            echo "New version released: $RELEASE_VERSION"
+            echo "Package.json version updated to: $(node -p "require('./package.json').version")"
+          else
+            echo "No new version released"
+          fi
+
       # Версия передаётся через GITHUB_ENV из semantic-release/exec
 
       - name: Set image tag & service

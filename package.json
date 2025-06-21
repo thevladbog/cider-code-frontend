@@ -1,6 +1,6 @@
 {
   "name": "bottle-code-frontend",
-  "version": "0.1.0",
+  "version": "1.0.0-beta.8",
   "type": "module",
   "keywords": [
     "react",
@@ -65,6 +65,7 @@
     "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^11.0.2",
+    "@semantic-release/npm": "^12.0.1",
     "@tanstack/eslint-plugin-query": "^5.74.7",
     "@tanstack/react-router-devtools": "^1.114.34",
     "@tanstack/router-plugin": "^1.114.34",

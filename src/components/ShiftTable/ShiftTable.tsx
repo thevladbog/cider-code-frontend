@@ -23,7 +23,8 @@ import s from "./ShiftTable.module.scss";
 import { IShiftData } from "@/lib/types";
 
 export const ShiftTable = () => {
-  const { data, isLoading, getShifts, setSearch, search } = useShiftStore();
+  const { data, isLoading, getShifts, setSearch, search, searchShifts } =
+    useShiftStore();
 
   const [paginationState, setPaginationState] = React.useState({
     page: 1,
@@ -33,6 +34,10 @@ export const ShiftTable = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false);
   const [isShiftInfoOpen, setIsShiftInfoOpen] = React.useState(false);
   const [selectedShiftId, setSelectedShiftId] = React.useState<string>("");
+
+  // Дебаунс для поиска
+  const [searchTimeout, setSearchTimeout] =
+    React.useState<NodeJS.Timeout | null>(null);
 
   const ShiftTableWrapper = withTableSorting(
     withTableActions<IShiftData>(Table),
@@ -52,7 +57,12 @@ export const ShiftTable = () => {
 
   const handleUpdate: PaginationProps["onUpdate"] = (page, pageSize) => {
     setPaginationState({ page, pageSize });
-    getShifts({ page, limit: pageSize });
+    // Если есть поисковый запрос, используем searchShifts, иначе getShifts
+    if (search) {
+      searchShifts({ page, limit: pageSize, search });
+    } else {
+      getShifts({ page, limit: pageSize });
+    }
   };
 
   const createNewShift = () => {
@@ -61,19 +71,79 @@ export const ShiftTable = () => {
 
   const handleCloseCreateModal = () => {
     setIsCreateModalOpen(false);
-    // Обновляем данные после создания смены
-    getShifts({ page: paginationState.page, limit: paginationState.pageSize });
+    // Обновляем данные после создания смены с учетом текущего поиска
+    if (search) {
+      searchShifts({
+        page: paginationState.page,
+        limit: paginationState.pageSize,
+        search,
+      });
+    } else {
+      getShifts({
+        page: paginationState.page,
+        limit: paginationState.pageSize,
+      });
+    }
   };
 
   const handleSearchChange = (value: string) => {
     setSearch(value || undefined);
-    // TODO: Реализовать поиск когда API будет поддерживать поиск по сменам
+
+    // Очищаем предыдущий таймаут
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+
+    // Устанавливаем новый таймаут для дебаунса (500ms)
+    const newTimeout = setTimeout(() => {
+      // Сбрасываем пагинацию на первую страницу при поиске
+      const newPaginationState = {
+        page: 1,
+        pageSize: paginationState.pageSize,
+      };
+      setPaginationState(newPaginationState);
+
+      // Выполняем поиск через API
+      searchShifts({
+        page: newPaginationState.page,
+        limit: newPaginationState.pageSize,
+        search: value || undefined,
+      });
+    }, 1500);
+
+    setSearchTimeout(newTimeout);
   };
 
   // Загружаем данные при монтировании компонента и изменении пагинации
   React.useEffect(() => {
-    getShifts({ page: paginationState.page, limit: paginationState.pageSize });
-  }, [getShifts, paginationState.page, paginationState.pageSize]);
+    if (search) {
+      searchShifts({
+        page: paginationState.page,
+        limit: paginationState.pageSize,
+        search,
+      });
+    } else {
+      getShifts({
+        page: paginationState.page,
+        limit: paginationState.pageSize,
+      });
+    }
+  }, [
+    getShifts,
+    searchShifts,
+    paginationState.page,
+    paginationState.pageSize,
+    search,
+  ]);
+
+  // Очищаем таймаут при размонтировании компонента
+  React.useEffect(() => {
+    return () => {
+      if (searchTimeout) {
+        clearTimeout(searchTimeout);
+      }
+    };
+  }, [searchTimeout]);
 
   return (
     <div className={s.root}>
@@ -85,11 +155,12 @@ export const ShiftTable = () => {
           <TextInput
             placeholder="Поиск по наименованию продукции ..."
             size={"l"}
-            label={"Продукция:"}
+            label={"Продукция или id смены:"}
             startContent={<Icon data={Magnifier} size={18} />}
             value={search || ""}
             onChange={(e) => handleSearchChange(e.target.value)}
             qa="shift.table.search"
+            hasClear
           />
         </div>
 

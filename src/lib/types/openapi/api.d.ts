@@ -1965,6 +1965,8 @@ export interface operations {
         page?: number;
         /** @description Items per page */
         limit?: number;
+        /** @description Search by shift ID, product short name, or product full name */
+        search?: string;
       };
       header?: never;
       path?: never;
@@ -2021,6 +2023,8 @@ export interface operations {
         page?: number;
         /** @description Items per page */
         limit?: number;
+        /** @description Search by shift ID, product short name, or product full name */
+        search?: string;
       };
       header?: never;
       path?: never;

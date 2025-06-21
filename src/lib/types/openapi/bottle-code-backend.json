@@ -1117,6 +1117,15 @@
             "schema": {
               "type": "number"
             }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search by shift ID, product short name, or product full name",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1158,6 +1167,15 @@
             "description": "Items per page",
             "schema": {
               "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search by shift ID, product short name, or product full name",
+            "schema": {
+              "type": "string"
             }
           }
         ],

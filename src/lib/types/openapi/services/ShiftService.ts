@@ -38,12 +38,14 @@ export class ShiftService {
    * Retrieve a paginated list of all production shifts
    * @param page Page number
    * @param limit Items per page
+   * @param search Search by shift ID, product short name, or product full name
    * @returns IShiftFindMany Returns a list of shifts
    * @throws ApiError
    */
   public static shiftControllerFindAll(
     page?: number,
     limit?: number,
+    search?: string,
   ): CancelablePromise<IShiftFindMany> {
     return __request(OpenAPI, {
       method: "GET",
@@ -51,6 +53,7 @@ export class ShiftService {
       query: {
         page: page,
         limit: limit,
+        search: search,
       },
     });
   }
@@ -59,12 +62,14 @@ export class ShiftService {
    * Retrieve a paginated list of all production shifts accessible by operators
    * @param page Page number
    * @param limit Items per page
+   * @param search Search by shift ID, product short name, or product full name
    * @returns IShiftFindMany Returns a list of shifts
    * @throws ApiError
    */
   public static shiftControllerFindAllForApp(
     page?: number,
     limit?: number,
+    search?: string,
   ): CancelablePromise<IShiftFindMany> {
     return __request(OpenAPI, {
       method: "GET",
@@ -72,6 +77,7 @@ export class ShiftService {
       query: {
         page: page,
         limit: limit,
+        search: search,
       },
     });
   }

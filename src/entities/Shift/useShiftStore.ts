@@ -34,9 +34,11 @@ export const useShiftStore = createStore(initialState, (setState) => {
   const getShifts = async ({
     page,
     limit,
+    search,
   }: {
     page: number;
     limit: number;
+    search?: string;
   }) => {
     setState({ isLoading: true });
 
@@ -46,6 +48,7 @@ export const useShiftStore = createStore(initialState, (setState) => {
         query: {
           page,
           limit,
+          search,
         },
       },
     });
@@ -67,6 +70,7 @@ export const useShiftStore = createStore(initialState, (setState) => {
       isLoading: false,
     });
   };
+
   const getOneShift = async (id: string) => {
     setState({ isLoading: true });
 
@@ -189,6 +193,7 @@ export const useShiftStore = createStore(initialState, (setState) => {
     });
     throw new Error(errorMessage);
   };
+
   const createShift = async (body: CreateShiftDto) => {
     setState({ isChangeLoading: true, isError: false });
 
@@ -210,6 +215,7 @@ export const useShiftStore = createStore(initialState, (setState) => {
 
     setState({ isChangeLoading: false });
   };
+
   const updateShift = async (id: string, body: UpdateShiftDto) => {
     setState({ isChangeLoading: true });
 
@@ -241,6 +247,7 @@ export const useShiftStore = createStore(initialState, (setState) => {
 
     setState({ isChangeLoading: false });
   };
+
   const deleteShift = async (id: string) => {
     setState({ isChangeLoading: true });
 
@@ -276,9 +283,23 @@ export const useShiftStore = createStore(initialState, (setState) => {
     setState({ search });
   };
 
+  const searchShifts = async ({
+    page,
+    limit,
+    search,
+  }: {
+    page: number;
+    limit: number;
+    search?: string;
+  }) => {
+    // Используем тот же метод getShifts, но с параметром поиска
+    return getShifts({ page, limit, search });
+  };
+
   const clearOneShift = () => {
     setState({ oneShift: null });
   };
+
   return {
     getShifts,
     getOneShift,
@@ -286,6 +307,7 @@ export const useShiftStore = createStore(initialState, (setState) => {
     updateShift,
     deleteShift,
     setSearch,
+    searchShifts,
     clearOneShift,
     checkShiftExists,
     createShiftWithIdCheck,

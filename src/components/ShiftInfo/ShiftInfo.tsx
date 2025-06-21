@@ -1,4 +1,8 @@
-import { CreatedUserDto, OperatorShiftDto } from "@/lib/types/openapi";
+import {
+  CreatedUserDto,
+  OperatorShiftDto,
+  UpdateShiftDto,
+} from "@/lib/types/openapi";
 import { Drawer, DrawerItem } from "@gravity-ui/navigation";
 import { ArrowDownToLine, Pencil, XmarkShape } from "@gravity-ui/icons";
 import {
@@ -174,10 +178,11 @@ export const ShiftInfo = (props: IShiftInfoProps) => {
     if (!shift?.id) return;
 
     try {
-      await updateShift(shift.id, {
+      const updateData: UpdateShiftDto = {
         status: OperatorShiftDto.status.CANCELED,
-      } as any);
-      await getOneShift(shift.id); // Обновляем данные смены
+      };
+      await updateShift(shift.id, updateData);
+      await getOneShift(shift.id);
       setShowCancelDialog(false);
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -218,10 +223,8 @@ export const ShiftInfo = (props: IShiftInfoProps) => {
 
   const handleSaveEdit = async () => {
     if (!shift?.id) return;
-
     try {
-      const updateData: Record<string, any> = {};
-
+      const updateData: Partial<UpdateShiftDto> = {};
       // Для даты сравниваем форматированные значения
       const currentFormattedDate = formatDateForInput(shift.plannedDate);
       if (editForm.plannedDate !== currentFormattedDate) {
@@ -236,12 +239,11 @@ export const ShiftInfo = (props: IShiftInfoProps) => {
       if (editForm.countInBox !== shift.countInBox) {
         updateData.countInBox = editForm.countInBox;
       }
-
       if (Object.keys(updateData).length > 0) {
         await updateShift(shift.id, updateData as any);
+        Number(await updateShift(shift.id, updateData as UpdateShiftDto));
         await getOneShift(shift.id); // Обновляем данные смены
       }
-
       setCurrentState("view");
     } catch (error) {
       // eslint-disable-next-line no-console

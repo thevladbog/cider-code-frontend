@@ -100,7 +100,7 @@ export class ShiftService {
    * Update shift
    * Update information about an existing production shift such as planned count, status, etc.
    * @param id
-   * @param requestBody
+   * @param requestBody Json structure for updating shift
    * @returns ShiftDto Shift successfully updated
    * @throws ApiError
    */

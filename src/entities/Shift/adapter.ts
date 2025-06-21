@@ -17,7 +17,10 @@ export const adaptShiftData = (shift: OperatorShiftDto): IShiftData => {
     status: statusMapping[shift.status],
     date: new Date(shift.plannedDate).toLocaleDateString("ru-RU"),
     product: shift.product.fullName,
-    volume: Number(shift.product.volume) || 0,
+    volume:
+      typeof shift.product.volume === "number"
+        ? shift.product.volume
+        : parseFloat(shift.product.volume) || 0,
     plannedCount: shift.plannedCount || 0,
     packing: shift.packing,
     countInBox: shift.countInBox || undefined,

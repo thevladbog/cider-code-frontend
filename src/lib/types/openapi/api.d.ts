@@ -1003,7 +1003,14 @@ export interface components {
     IShiftFindOne: {
       result: components["schemas"]["OperatorShiftDto"];
     };
-    UpdateShiftDto: Record<string, never>;
+    UpdateShiftDto: {
+      plannedDate?: unknown;
+      plannedCount?: number;
+      packing?: boolean;
+      countInBox?: number;
+      /** @enum {string} */
+      status?: "PLANNED" | "INPROGRESS" | "PAUSED" | "DONE" | "CANCELED";
+    };
     CreateShiftByOperatorDto: {
       ean: string;
       plannedDay?: unknown;
@@ -2099,6 +2106,7 @@ export interface operations {
       };
       cookie?: never;
     };
+    /** @description Json structure for updating shift */
     requestBody: {
       content: {
         "application/json": components["schemas"]["UpdateShiftDto"];

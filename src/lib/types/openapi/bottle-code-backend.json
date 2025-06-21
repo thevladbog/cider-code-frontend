@@ -1229,6 +1229,7 @@
         ],
         "requestBody": {
           "required": true,
+          "description": "Json structure for updating shift",
           "content": {
             "application/json": {
               "schema": {
@@ -2921,7 +2922,28 @@
       },
       "UpdateShiftDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "plannedDate": {},
+          "plannedCount": {
+            "type": "integer"
+          },
+          "packing": {
+            "type": "boolean"
+          },
+          "countInBox": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PLANNED",
+              "INPROGRESS",
+              "PAUSED",
+              "DONE",
+              "CANCELED"
+            ]
+          }
+        }
       },
       "CreateShiftByOperatorDto": {
         "type": "object",

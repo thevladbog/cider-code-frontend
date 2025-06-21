@@ -43,7 +43,7 @@ export type { UpdateOperatorDto } from "./models/UpdateOperatorDto";
 export { UpdateOrderToDeliveryDto } from "./models/UpdateOrderToDeliveryDto";
 export { UpdateProductDto } from "./models/UpdateProductDto";
 export { UpdateProductStatusDto } from "./models/UpdateProductStatusDto";
-export type { UpdateShiftDto } from "./models/UpdateShiftDto";
+export { UpdateShiftDto } from "./models/UpdateShiftDto";
 export type { UpdateUserDto } from "./models/UpdateUserDto";
 export type { UserLoginResponse } from "./models/UserLoginResponse";
 export type { WriteBoxesCodeDto } from "./models/WriteBoxesCodeDto";

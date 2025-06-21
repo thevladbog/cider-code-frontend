@@ -3,6 +3,54 @@ import { CreatedUserDto, IUserFindMany } from "@/lib/types/openapi";
 import { createStore } from "@/lib/zustand";
 import { showErrorToast, showSuccessToast } from "@/lib/toaster";
 
+// Validation function to check if data conforms to IUserFindMany structure
+const validateUserFindManyResponse = (data: unknown): data is IUserFindMany => {
+  if (!data || typeof data !== "object") {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+
+  // Check required properties and their types
+  return (
+    Array.isArray(obj.result) &&
+    typeof obj.total === "number" &&
+    typeof obj.page === "number" &&
+    typeof obj.limit === "number" &&
+    typeof obj.totalPage === "number" &&
+    // Basic validation that result contains objects (more detailed validation could be added)
+    obj.result.every((item) => item && typeof item === "object")
+  );
+};
+
+// Validation function to check if data conforms to single user response structure
+const validateUserResponse = (
+  data: unknown,
+): data is { result: CreatedUserDto } => {
+  if (!data || typeof data !== "object") {
+    return false;
+  }
+
+  const obj = data as Record<string, unknown>;
+  const result = obj.result;
+
+  if (!result || typeof result !== "object") {
+    return false;
+  }
+
+  const user = result as Record<string, unknown>;
+
+  // Check required CreatedUserDto properties
+  return (
+    typeof user.id === "string" &&
+    typeof user.email === "string" &&
+    typeof user.firstName === "string" &&
+    typeof user.lastName === "string" &&
+    typeof user.role === "string" &&
+    (user.picture === null || typeof user.picture === "string")
+  );
+};
+
 interface IUsersState {
   data: IUserFindMany | null;
   isLoading: boolean;
@@ -44,7 +92,11 @@ export const useUsersStore = createStore(
           throw new Error("Ошибка при загрузке пользователей");
         }
 
-        setState({ data: data as IUserFindMany, isLoading: false });
+        if (!validateUserFindManyResponse(data)) {
+          throw new Error("Некорректные данные от сервера");
+        }
+
+        setState({ data, isLoading: false });
       } catch (error) {
         showErrorToast("Не удалось загрузить список пользователей", error);
         setState({ isLoading: false });
@@ -74,7 +126,11 @@ export const useUsersStore = createStore(
           throw new Error("Ошибка при поиске пользователей");
         }
 
-        setState({ data: data as IUserFindMany, isLoading: false });
+        if (!validateUserFindManyResponse(data)) {
+          throw new Error("Некорректные данные от сервера");
+        }
+
+        setState({ data, isLoading: false });
       } catch (error) {
         showErrorToast("Не удалось найти пользователей", error);
         setState({ isLoading: false });
@@ -96,8 +152,12 @@ export const useUsersStore = createStore(
           throw new Error("Ошибка при загрузке пользователя");
         }
 
+        if (!validateUserResponse(data)) {
+          throw new Error("Некорректные данные пользователя от сервера");
+        }
+
         setState({
-          oneUser: data?.result as CreatedUserDto | null,
+          oneUser: data.result,
           isOneUserLoading: false,
         });
       } catch (error) {
@@ -160,9 +220,13 @@ export const useUsersStore = createStore(
           throw new Error("Ошибка при обновлении пользователя");
         }
 
+        if (!validateUserResponse(data)) {
+          throw new Error("Некорректные данные пользователя от сервера");
+        }
+
         // Обновляем данные в store
         setState({
-          oneUser: data?.result as CreatedUserDto | null,
+          oneUser: data.result,
         });
 
         // Перезагружаем список пользователей
@@ -178,7 +242,7 @@ export const useUsersStore = createStore(
         }
 
         showSuccessToast("Пользователь успешно обновлен");
-        return data?.result as CreatedUserDto;
+        return data.result;
       } catch (error) {
         showErrorToast("Не удалось обновить пользователя", error);
         throw error;

@@ -8,7 +8,7 @@ services:
       - traefik.enable=true
       - traefik.http.middlewares.redirect-https.redirectScheme.scheme=https
       - traefik.http.middlewares.redirect-https.redirectScheme.permanent=true
-      - traefik.http.routers.frontend-beta.rule=Host(`beta.bottlecode.app`)
+      - traefik.http.routers.frontend-beta.rule=Host(`beta.ra.bottlecode.app`)
       - traefik.http.routers.frontend-beta.entrypoints=websecure
       - traefik.http.routers.frontend-beta.tls.certresolver=letsencrypt
       - traefik.http.services.frontend-beta.loadbalancer.server.port=80
@@ -24,7 +24,7 @@ services:
       - traefik.enable=true
       - traefik.http.middlewares.redirect-https.redirectScheme.scheme=https
       - traefik.http.middlewares.redirect-https.redirectScheme.permanent=true
-      - traefik.http.routers.frontend-stable.rule=Host(`bottlecode.app`)
+      - traefik.http.routers.frontend-stable.rule=Host(`ra.bottlecode.app`)
       - traefik.http.routers.frontend-stable.entrypoints=websecure
       - traefik.http.routers.frontend-stable.tls.certresolver=letsencrypt
       - traefik.http.services.frontend-stable.loadbalancer.server.port=80

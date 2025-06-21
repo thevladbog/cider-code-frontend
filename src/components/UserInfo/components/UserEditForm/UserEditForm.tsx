@@ -5,6 +5,13 @@ import React from "react";
 
 import s from "./UserEditForm.module.scss";
 
+// Type guard to check if a string is a valid CreatedUserDto role
+const isValidRole = (role: string): role is CreatedUserDto.role => {
+  return Object.values(CreatedUserDto.role).includes(
+    role as CreatedUserDto.role,
+  );
+};
+
 interface IUserEditFormProps {
   user: CreatedUserDto | null;
   editForm: UpdateUserData;
@@ -12,10 +19,10 @@ interface IUserEditFormProps {
 }
 
 const roleOptions = [
-  { value: CreatedUserDto.role.ADMIN, content: "Администратор" },
-  { value: CreatedUserDto.role.SUPERVISOR, content: "Супервизор" },
-  { value: CreatedUserDto.role.USER, content: "Пользователь" },
-  { value: CreatedUserDto.role.GUEST, content: "Гость" },
+  { value: "ADMIN", content: "Администратор" },
+  { value: "SUPERVISOR", content: "Супервизор" },
+  { value: "USER", content: "Пользователь" },
+  { value: "GUEST", content: "Гость" },
 ];
 
 export const UserEditForm: React.FC<IUserEditFormProps> = ({
@@ -39,7 +46,12 @@ export const UserEditForm: React.FC<IUserEditFormProps> = ({
 
   const handleRoleChange = (value: string[]) => {
     if (value.length > 0) {
-      setEditForm({ ...editForm, role: value[0] as CreatedUserDto.role });
+      const selectedRole = value[0];
+      if (selectedRole && isValidRole(selectedRole)) {
+        setEditForm({ ...editForm, role: selectedRole });
+      }
+      // If role is invalid, we simply don't update the state
+      // The UI will remain in its current state
     }
   };
 
@@ -53,7 +65,7 @@ export const UserEditForm: React.FC<IUserEditFormProps> = ({
         <div className={s.formGroup}>
           <TextInput
             label="Имя"
-            value={editForm.firstName || ""}
+            value={editForm.firstName ?? ""}
             onUpdate={(value) => handleInputChange("firstName", value)}
             placeholder="Введите имя"
             qa="user.edit.firstName"
@@ -63,7 +75,7 @@ export const UserEditForm: React.FC<IUserEditFormProps> = ({
         <div className={s.formGroup}>
           <TextInput
             label="Фамилия"
-            value={editForm.lastName || ""}
+            value={editForm.lastName ?? ""}
             onUpdate={(value) => handleInputChange("lastName", value)}
             placeholder="Введите фамилию"
             qa="user.edit.lastName"
@@ -74,7 +86,7 @@ export const UserEditForm: React.FC<IUserEditFormProps> = ({
           <TextInput
             label="Email"
             type="email"
-            value={editForm.email || ""}
+            value={editForm.email ?? ""}
             onUpdate={(value) => handleInputChange("email", value)}
             placeholder="Введите email"
             qa="user.edit.email"
@@ -85,7 +97,7 @@ export const UserEditForm: React.FC<IUserEditFormProps> = ({
           <TextInput
             label="URL фотографии"
             type="url"
-            value={editForm.picture || ""}
+            value={editForm.picture ?? ""}
             onUpdate={(value) => handleInputChange("picture", value)}
             placeholder="Введите URL фотографии"
             qa="user.edit.picture"

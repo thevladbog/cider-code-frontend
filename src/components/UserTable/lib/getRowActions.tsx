@@ -1,17 +1,15 @@
 import { TableActionConfig } from "@gravity-ui/uikit";
 import { IUserData } from "@/lib/types";
 import { CreatedUserDto } from "@/lib/types/openapi";
-import { useUserStore } from "@/entities/User/useUserStore";
 
 export const getRowActions = (
   handleOpenUser: (userId: string) => void,
   handleDeleteUser: (userId: string) => void,
+  currentUser: CreatedUserDto | null,
 ): TableActionConfig<IUserData>[] => {
-  const user = useUserStore((store) => store.data);
-
   const canDelete =
-    user?.role === CreatedUserDto.role.ADMIN ||
-    user?.role === CreatedUserDto.role.SUPERVISOR;
+    currentUser?.role === CreatedUserDto.role.ADMIN ||
+    currentUser?.role === CreatedUserDto.role.SUPERVISOR;
 
   const actions: TableActionConfig<IUserData>[] = [
     {

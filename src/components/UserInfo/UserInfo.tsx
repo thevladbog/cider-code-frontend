@@ -19,6 +19,7 @@ import { UpdateUserData } from "./types";
 
 import s from "./UserInfo.module.scss";
 import { useShallow } from "zustand/shallow";
+import { showErrorToast } from "@/lib/toaster";
 
 type LabelTheme =
   | "normal"
@@ -72,7 +73,7 @@ export const UserInfo = (props: IUserInfoProps) => {
         lastName: oneUser.lastName,
         email: oneUser.email,
         role: oneUser.role,
-        picture: oneUser.picture || "",
+        picture: oneUser.picture ?? "",
       });
     }
   }, [currentState, oneUser]);
@@ -89,8 +90,7 @@ export const UserInfo = (props: IUserInfoProps) => {
       setShowDeleteDialog(false);
       setVisible(false);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("Ошибка при удалении пользователя:", error);
+      showErrorToast("Не удалось удалить пользователя", error);
     }
   };
 
@@ -122,8 +122,7 @@ export const UserInfo = (props: IUserInfoProps) => {
 
       setCurrentState("view");
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("Ошибка при сохранении изменений:", error);
+      showErrorToast("Не удалось сохранить изменения", error);
     }
   };
 

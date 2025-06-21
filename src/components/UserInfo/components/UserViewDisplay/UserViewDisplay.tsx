@@ -39,9 +39,9 @@ export const UserViewDisplay: React.FC<IUserViewDisplayProps> = ({ user }) => {
     <div className={s.root}>
       <div className={s.avatarSection}>
         <Avatar
-          imgUrl={user.picture || ""}
+          imgUrl={user.picture ?? ""}
           size="xl"
-          text={`${user.firstName[0]}${user.lastName[0]}`}
+          text={`${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}`}
         />
         <div className={s.nameSection}>
           <TextComponent variant="header-2" qa="user.info.fullName">
@@ -72,7 +72,7 @@ export const UserViewDisplay: React.FC<IUserViewDisplayProps> = ({ user }) => {
             URL фотографии:
           </TextComponent>
           <TextComponent variant="body-2" qa="user.info.picture">
-            {user.picture || "Не указано"}
+            {user.picture ?? "Не указано"}
           </TextComponent>
         </div>
 

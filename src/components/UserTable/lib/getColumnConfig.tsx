@@ -9,10 +9,10 @@ export const getColumnConfig = (): TableColumnConfig<IUserData>[] => {
       align: "start",
       template: (item: IUserData) => (
         <Avatar
-          imgUrl={item.picture || ""}
+          imgUrl={item.picture ?? ""}
           size="l"
           fallbackImgUrl=""
-          text={`${item.firstName[0]}${item.lastName[0]}`}
+          text={`${item.firstName?.[0] ?? ""}${item.lastName?.[0] ?? ""}`}
         />
       ),
     },
@@ -47,12 +47,14 @@ export const getColumnConfig = (): TableColumnConfig<IUserData>[] => {
       template: (item: IUserData) => (
         <Label
           theme={
-            USER_ROLE_COLOR_MAP[item.role as keyof typeof USER_ROLE_COLOR_MAP]
+            USER_ROLE_COLOR_MAP[
+              item.role as keyof typeof USER_ROLE_COLOR_MAP
+            ] ?? "utility"
           }
           interactive
           qa="users.table.label.role"
         >
-          {USER_ROLE_MAP[item.role as keyof typeof USER_ROLE_MAP]}
+          {USER_ROLE_MAP[item.role as keyof typeof USER_ROLE_MAP] ?? item.role}
         </Label>
       ),
     },

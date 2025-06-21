@@ -1,6 +1,7 @@
 import { getColumnConfig } from "@/components/UserTable/lib/getColumnConfig";
 import { getRowActions } from "@/components/UserTable/lib/getRowActions";
 import { adaptUserData, useUsersStore } from "@/entities/User";
+import { useUserStore } from "@/entities/User/useUserStore";
 import { UserInfo } from "@/components/UserInfo";
 import { IUserData } from "@/lib/types";
 import { Magnifier } from "@gravity-ui/icons";
@@ -50,7 +51,7 @@ export const UserTable = () => {
 
   // Адаптируем данные для отображения в таблице
   const adaptedData = React.useMemo(() => {
-    return data?.result?.map(adaptUserData) || [];
+    return data?.result?.map(adaptUserData) ?? [];
   }, [data?.result]);
   const handleOpenUser = (userId: string) => {
     setUserInfoId(userId);
@@ -75,8 +76,13 @@ export const UserTable = () => {
     }
   };
 
+  const currentUser = useUserStore((state) => state.data);
   const columns = getColumnConfig();
-  const rowActions = getRowActions(handleOpenUser, handleDeleteUserClick);
+  const rowActions = getRowActions(
+    handleOpenUser,
+    handleDeleteUserClick,
+    currentUser,
+  );
 
   const handleUpdate: PaginationProps["onUpdate"] = (page, pageSize) => {
     setPaginationState({ page, pageSize });
@@ -89,7 +95,7 @@ export const UserTable = () => {
   };
 
   const handleSearchChange = (value: string) => {
-    setSearch(value || undefined);
+    setSearch(value ?? undefined);
 
     // Очищаем предыдущий таймаут
     if (searchTimeout) {
@@ -109,7 +115,7 @@ export const UserTable = () => {
       searchUsers({
         page: newPaginationState.page,
         limit: newPaginationState.pageSize,
-        search: value || undefined,
+        search: value ?? undefined,
       });
     }, 1500);
 
@@ -158,7 +164,7 @@ export const UserTable = () => {
             size="l"
             label="Имя, фамилия или email:"
             startContent={<Icon data={Magnifier} size={18} />}
-            value={search || ""}
+            value={search ?? ""}
             onChange={(e) => handleSearchChange(e.target.value)}
             qa="users.table.search"
             hasClear
@@ -179,7 +185,7 @@ export const UserTable = () => {
         <Pagination
           page={paginationState.page}
           pageSize={paginationState.pageSize}
-          total={data?.total || 0}
+          total={data?.total ?? 0}
           onUpdate={handleUpdate}
           pageSizeOptions={[5, 10, 15, 25, 50]}
           showPages

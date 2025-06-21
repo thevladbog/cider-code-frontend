@@ -851,7 +851,15 @@ export interface components {
       limit: number;
       totalPage: number;
     };
-    UpdateUserDto: Record<string, never>;
+    UpdateUserDto: {
+      email?: string;
+      firstName?: string;
+      lastName?: string;
+      password?: string;
+      picture?: string;
+      /** @enum {string} */
+      role?: "ADMIN" | "SUPERVISOR" | "USER" | "GUEST";
+    };
     SignInDto: {
       /** Format: email */
       email: string;

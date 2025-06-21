@@ -1,6 +1,6 @@
 global:
   prompt: |
-    # General Copilot instructions for the cider-code-frontend project
+    # General Copilot instructions for the bottle-code-frontend project
 
     - Always write modern, strictly typed TypeScript code.
     - Use React 18 and functional components only; avoid class components.

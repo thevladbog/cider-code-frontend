@@ -40,22 +40,18 @@ export const useProductStore = createStore(
       setState({ isLoading: true });
       const { search } = getState();
 
-      try {
-        // eslint-disable-next-line new-cap
-        const { data } = await $api.GET("/product", {
-          params: {
-            query: {
-              page,
-              limit,
-              search,
-            },
+      // eslint-disable-next-line new-cap
+      const { data, error } = await $api.GET("/product", {
+        params: {
+          query: {
+            page,
+            limit,
+            search,
           },
-        });
+        },
+      });
 
-        setState({
-          data: data as IProductFindMany,
-        });
-      } catch (error) {
+      if (error) {
         toaster.add({
           name: "getProducts",
           title: "Что-то пошло не так ...",
@@ -63,24 +59,27 @@ export const useProductStore = createStore(
           isClosable: true,
           theme: "danger",
         });
-        throw new Error("Something went wrong: " + error);
-      } finally {
         setState({ isLoading: false });
+        throw new Error("Something went wrong: " + error);
       }
+
+      setState({
+        data: data as IProductFindMany,
+        isLoading: false,
+      });
     };
 
     const getOneProduct = async (id: string) => {
       setState({ isLoading: true });
-      try {
-        // eslint-disable-next-line new-cap
-        const { data } = await $api.GET("/product/{id}", {
-          params: {
-            path: { id },
-          },
-        });
 
-        setState({ oneProduct: data as SelectProductDto });
-      } catch (error) {
+      // eslint-disable-next-line new-cap
+      const { data, error } = await $api.GET("/product/{id}", {
+        params: {
+          path: { id },
+        },
+      });
+
+      if (error) {
         toaster.add({
           name: "getOneProduct",
           title: "Что-то пошло не так ...",
@@ -88,21 +87,18 @@ export const useProductStore = createStore(
           isClosable: true,
           theme: "danger",
         });
-        throw new Error("Something went wrong: " + error);
-      } finally {
         setState({ isLoading: false });
+        throw new Error("Something went wrong: " + error);
       }
+
+      setState({ oneProduct: data as SelectProductDto, isLoading: false });
     };
 
     const createProduct = async (body: CreateProductDto) => {
-      try {
-        // eslint-disable-next-line new-cap
-        await $api.POST("/product", { body });
+      // eslint-disable-next-line new-cap
+      const { error } = await $api.POST("/product", { body });
 
-        const currentState = getState();
-
-        await getProducts({ page: 1, limit: currentState.data?.limit ?? 5 });
-      } catch (error) {
+      if (error) {
         toaster.add({
           name: "createProduct",
           title: "Что-то пошло не так ...",
@@ -112,24 +108,24 @@ export const useProductStore = createStore(
         });
         throw new Error("Something went wrong: " + error);
       }
+
+      const currentState = getState();
+      await getProducts({ page: 1, limit: currentState.data?.limit ?? 5 });
     };
 
     const deleteProduct = async (id: string) => {
       setState({ isLoading: true });
-      try {
-        // eslint-disable-next-line new-cap
-        await $api.DELETE("/product/{id}", {
-          params: {
-            path: {
-              id,
-            },
+
+      // eslint-disable-next-line new-cap
+      const { error } = await $api.DELETE("/product/{id}", {
+        params: {
+          path: {
+            id,
           },
-        });
+        },
+      });
 
-        const currentState = getState();
-
-        await getProducts({ page: 1, limit: currentState.data?.limit ?? 5 });
-      } catch (error) {
+      if (error) {
         toaster.add({
           name: "deleteProduct",
           title: "Что-то пошло не так ...",
@@ -137,10 +133,13 @@ export const useProductStore = createStore(
           isClosable: true,
           theme: "danger",
         });
-        throw new Error("Something went wrong: " + error);
-      } finally {
         setState({ isLoading: false });
+        throw new Error("Something went wrong: " + error);
       }
+
+      const currentState = getState();
+      await getProducts({ page: 1, limit: currentState.data?.limit ?? 5 });
+      setState({ isLoading: false });
     };
 
     const setSearch = async (search: string) => {
@@ -155,19 +154,16 @@ export const useProductStore = createStore(
 
     const changeProduct = async (id: string, body: UpdateProductDto) => {
       setState({ isChangeLoading: true });
-      try {
-        // eslint-disable-next-line new-cap
-        const { data } = await $api.PATCH("/product/{id}", {
-          params: {
-            path: { id },
-          },
-          body,
-        });
 
-        const currentState = getState();
-        setState({ oneProduct: data as SelectProductDto });
-        await getProducts({ page: 1, limit: currentState.data?.limit ?? 5 });
-      } catch (error) {
+      // eslint-disable-next-line new-cap
+      const { data, error } = await $api.PATCH("/product/{id}", {
+        params: {
+          path: { id },
+        },
+        body,
+      });
+
+      if (error) {
         toaster.add({
           name: "changeProduct",
           title: "Что-то пошло не так ...",
@@ -175,10 +171,16 @@ export const useProductStore = createStore(
           isClosable: true,
           theme: "danger",
         });
-        throw new Error("Something went wrong: " + error);
-      } finally {
         setState({ isChangeLoading: false });
+        throw new Error("Something went wrong: " + error);
       }
+
+      const currentState = getState();
+      setState({
+        oneProduct: data as SelectProductDto,
+        isChangeLoading: false,
+      });
+      await getProducts({ page: 1, limit: currentState.data?.limit ?? 5 });
     };
 
     const changeProductStatus = async (
@@ -186,19 +188,16 @@ export const useProductStore = createStore(
       status: SelectProductDto["status"],
     ) => {
       setState({ isChangeLoading: true });
-      try {
-        // eslint-disable-next-line new-cap
-        const { data } = await $api.PATCH("/product/{id}/status", {
-          params: {
-            path: { id },
-          },
-          body: { status },
-        });
 
-        setState({ oneProduct: data as SelectProductDto });
-        const currentState = getState();
-        await getProducts({ page: 1, limit: currentState.data?.limit ?? 5 });
-      } catch (error) {
+      // eslint-disable-next-line new-cap
+      const { data, error } = await $api.PATCH("/product/{id}/status", {
+        params: {
+          path: { id },
+        },
+        body: { status },
+      });
+
+      if (error) {
         toaster.add({
           name: "changeProduct",
           title: "Что-то пошло не так ...",
@@ -206,10 +205,16 @@ export const useProductStore = createStore(
           isClosable: true,
           theme: "danger",
         });
-        throw new Error("Something went wrong: " + error);
-      } finally {
         setState({ isChangeLoading: false });
+        throw new Error("Something went wrong: " + error);
       }
+
+      setState({
+        oneProduct: data as SelectProductDto,
+        isChangeLoading: false,
+      });
+      const currentState = getState();
+      await getProducts({ page: 1, limit: currentState.data?.limit ?? 5 });
     };
 
     return {

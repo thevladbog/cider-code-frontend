@@ -1,0 +1,64 @@
+global:
+  prompt: |
+    # General Copilot instructions for the cider-code-frontend project
+
+    - Always write modern, strictly typed TypeScript code.
+    - Use React 18 and functional components only; avoid class components.
+    - Follow the project folder structure: src/components, src/entities, src/lib, src/routes, src/styles.
+    - For UI, use Gravity UI and SCSS modules with camelCase naming.
+    - For global state, use custom Zustand hooks (e.g., useUserStore, useProductStore).
+    - For server state and API requests, use TanStack Query and the typed API client from lib/api.ts.
+    - Do not implement authentication logic inside components — use existing hooks and redirects via TanStack Router.
+    - For new components/entities, follow the templates from the "How to add new functionality" section.
+    - Place local utilities and types in lib/ and types/ folders.
+    - Always type props and return values using interfaces or types.
+    - Use Zod for data validation.
+    - For styles, use only SCSS modules; import global variables from styles/variables.scss.
+    - Avoid using any/unknown and do not disable strict linter rules.
+    - Follow BEM naming for CSS classes (except global styles).
+    - Create all new routes in src/routes, name files according to their purpose.
+    - For tests, use Jest/Vitest and write isolated tests with external dependencies mocked.
+    - Consider SSR capabilities — avoid code that only works in the browser (window/document).
+
+overrides:
+  - path: "src/components/"
+    prompt: |
+      - Components must always be functional.
+      - Use only SCSS modules for styling.
+      - For complex components, use a local lib/ folder for helpers.
+      - Document the public API of the component (index.ts).
+  - path: "src/entities/"
+    prompt: |
+      - Follow partial Feature-Sliced Design: each entity in its own folder.
+      - Use Zustand for state, keep types in types.ts.
+      - Export all public functions and types via index.ts.
+  - path: "src/lib/"
+    prompt: |
+      - Only utilities, configuration, and types belong here.
+      - Do not place business logic or components in this folder.
+  - path: "src/routes/"
+    prompt: |
+      - Each file is a separate route or layout.
+      - Use typed routing with TanStack Router.
+      - For protected routes, check authentication via hooks.
+  - path: "*.test.ts"
+    prompt: |
+      - Write isolated unit tests using Jest or Vitest.
+      - Mock all external dependencies.
+      - Follow the AAA (Arrange-Act-Assert) pattern.
+  - path: "*.scss"
+    prompt: |
+      - Use camelCase and BEM for class names.
+      - Use variables from styles/variables.scss.
+      - Do not write global styles outside the styles/ folder.
+
+languages:
+  TypeScript:
+    prompt: |
+      - Always enforce strict typing.
+      - Avoid using any unless absolutely necessary.
+      - Use modern TS features: infer, utility types, generics.
+  SCSS:
+    prompt: |
+      - Use only SCSS Modules.
+      - Use variables and mixins from styles/variables.scss.

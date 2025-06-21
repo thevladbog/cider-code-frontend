@@ -7,9 +7,14 @@ const AuthLayout = () => {
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: async () => {
-    await user.getDataAboutMe();
-    const isAuth = user.isAuth();
-    if (!isAuth) {
+    try {
+      await user.getDataAboutMe();
+      const isAuth = user.isAuth();
+      if (!isAuth) {
+        throw redirect({ to: "/login" });
+      }
+    } catch {
+      // If getDataAboutMe fails (e.g., user not authenticated), redirect to login
       throw redirect({ to: "/login" });
     }
   },

@@ -12,8 +12,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
+    /**
+     * Get all products
+     * @description Retrieve a paginated list of all products with optional search capabilities
+     */
     get: operations["ProductController_findAll"];
     put?: never;
+    /**
+     * Create product
+     * @description Create a new product with all required details
+     */
     post: operations["ProductController_create"];
     delete?: never;
     options?: never;
@@ -28,12 +36,24 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
+    /**
+     * Get product by ID
+     * @description Retrieve detailed information about a specific product by its ID
+     */
     get: operations["ProductController_findOne"];
     put?: never;
     post?: never;
+    /**
+     * Delete product
+     * @description Remove a product from the system
+     */
     delete: operations["ProductController_remove"];
     options?: never;
     head?: never;
+    /**
+     * Update product
+     * @description Update an existing product information such as name, GTIN, alcohol code, etc.
+     */
     patch: operations["ProductController_update"];
     trace?: never;
   };
@@ -50,6 +70,10 @@ export interface paths {
     delete?: never;
     options?: never;
     head?: never;
+    /**
+     * Update product status
+     * @description Change product status (ACTIVE, INACTIVE, PAUSED, etc.)
+     */
     patch: operations["ProductController_updateStatus"];
     trace?: never;
   };
@@ -60,6 +84,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
+    /**
+     * Search products
+     * @description Search for products by name, GTIN, alcohol code or other attributes
+     */
     get: operations["ProductController_search"];
     put?: never;
     post?: never;
@@ -76,8 +104,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
+    /**
+     * Find all users
+     * @description Get paginated list of all registered users in the system
+     */
     get: operations["UserController_findAll"];
     put?: never;
+    /**
+     * Create user
+     * @description Register a new user in the system with email and password
+     */
     post: operations["UserController_create"];
     delete?: never;
     options?: never;
@@ -92,12 +128,24 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
+    /**
+     * Find user by ID
+     * @description Get detailed information about a specific user by their ID
+     */
     get: operations["UserController_findOne"];
     put?: never;
     post?: never;
+    /**
+     * Delete user
+     * @description Remove a user from the system
+     */
     delete: operations["UserController_remove"];
     options?: never;
     head?: never;
+    /**
+     * Update user
+     * @description Update user information such as name, email, or other profile data
+     */
     patch: operations["UserController_update"];
     trace?: never;
   };
@@ -110,6 +158,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
+    /**
+     * Sign in user
+     * @description Authenticate user with email and password and return JWT token
+     */
     post: operations["UserController_signIn"];
     delete?: never;
     options?: never;
@@ -126,6 +178,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
+    /**
+     * Reset password request
+     * @description Request a password reset by providing an email, sends reset link to user email
+     */
     post: operations["UserController_resetRequest"];
     delete?: never;
     options?: never;
@@ -142,6 +198,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
+    /**
+     * Reset password
+     * @description Reset user password using token received via email
+     */
     post: operations["UserController_resetPasswordAfterRequest"];
     delete?: never;
     options?: never;
@@ -158,6 +218,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
+    /**
+     * Revoke token
+     * @description Revoke the current JWT token (logout)
+     */
     post: operations["UserController_revokeToken"];
     delete?: never;
     options?: never;
@@ -172,6 +236,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
+    /**
+     * Get current user
+     * @description Get details of the currently authenticated user
+     */
     get: operations["UserController_getMe"];
     put?: never;
     post?: never;
@@ -190,6 +258,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
+    /**
+     * Create individual codes
+     * @description Create new individual product codes and store them in the database with product association
+     */
     post: operations["CodeController_writeIndividualCode"];
     delete?: never;
     options?: never;
@@ -206,7 +278,71 @@ export interface paths {
     };
     get?: never;
     put?: never;
+    /**
+     * Generate SSCC code
+     * @description Generate next SSCC code for boxes and store it in the database
+     */
     post: operations["CodeController_getNextSscc"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/code/pack": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Pack codes
+     * @description Pack individual codes into a box and generate a new SSCC code
+     */
+    post: operations["CodeController_packCodes"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/code/update-status": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Update codes status
+     * @description Update the status of multiple individual codes and link them to a shift
+     */
+    post: operations["CodeController_updateCodesStatus"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/code/download": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Download codes as text file
+     * @description Download codes for a specific shift as a text file. Can include box codes if requested.
+     */
+    get: operations["CodeController_downloadCodes"];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -220,8 +356,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
+    /**
+     * Get all operators
+     * @description Retrieve a paginated list of all operators in the system
+     */
     get: operations["OperatorController_findAll"];
     put?: never;
+    /**
+     * Create operator
+     * @description Create a new operator account in the system
+     */
     post: operations["OperatorController_createOperator"];
     delete?: never;
     options?: never;
@@ -242,6 +386,10 @@ export interface paths {
     delete?: never;
     options?: never;
     head?: never;
+    /**
+     * Update operator
+     * @description Update operator information such as name or barcode
+     */
     patch: operations["OperatorController_updateOperator"];
     trace?: never;
   };
@@ -254,6 +402,10 @@ export interface paths {
     };
     get?: never;
     put?: never;
+    /**
+     * Login operator
+     * @description Authenticate an operator using barcode and return JWT token
+     */
     post: operations["OperatorController_login"];
     delete?: never;
     options?: never;
@@ -268,6 +420,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
+    /**
+     * Get operator by ID
+     * @description Retrieve detailed information about a specific operator
+     */
     get: operations["OperatorController_findOne"];
     put?: never;
     post?: never;
@@ -284,6 +440,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
+    /**
+     * Get current operator
+     * @description Get details of the currently authenticated operator
+     */
     get: operations["OperatorController_getMe"];
     put?: never;
     post?: never;
@@ -300,9 +460,37 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
+    /**
+     * Get all shifts
+     * @description Retrieve a paginated list of all production shifts
+     */
     get: operations["ShiftController_findAll"];
     put?: never;
+    /**
+     * Create shift
+     * @description Create a new production shift with product and planning details
+     */
     post: operations["ShiftController_create"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/shift/operator": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get all shifts for operator
+     * @description Retrieve a paginated list of all production shifts accessible by operators
+     */
+    get: operations["ShiftController_findAllForApp"];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -316,13 +504,133 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
+    /**
+     * Get shift by ID
+     * @description Retrieve detailed information about a specific production shift
+     */
     get: operations["ShiftController_findOne"];
     put?: never;
     post?: never;
+    /**
+     * Delete shift
+     * @description Remove a production shift from the system
+     */
     delete: operations["ShiftController_remove"];
     options?: never;
     head?: never;
+    /**
+     * Update shift
+     * @description Update information about an existing production shift such as planned count, status, etc.
+     */
     patch: operations["ShiftController_update"];
+    trace?: never;
+  };
+  "/shift/operator/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get shift by ID for operator
+     * @description Retrieve detailed information about a specific production shift for operators
+     */
+    get: operations["ShiftController_findOneForApp"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/shift/operator/create": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Create shift by operator
+     * @description Create a new production shift by operator using EAN/GTIN code
+     */
+    post: operations["ShiftController_createByOperator"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/saby/order/delivery": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get all delivery orders
+     * @description Retrieves a paginated list of delivery orders from the SABY system with optional filtering
+     */
+    get: operations["SabyController_findAll"];
+    put?: never;
+    /**
+     * Create delivery order
+     * @description Creates a new delivery order in the SABY system
+     */
+    post: operations["SabyController_create"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/saby/order/delivery/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get delivery order by ID
+     * @description Retrieves a specific delivery order from the SABY system by its ID
+     */
+    get: operations["SabyController_findOne"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /**
+     * Update delivery order
+     * @description Updates an existing delivery order in the SABY system by its ID
+     */
+    patch: operations["SabyController_update"];
+    trace?: never;
+  };
+  "/saby/order/delivery/change": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * Update delivery order from SABY
+     * @description Updates a delivery order with information received from the SABY system
+     */
+    put: operations["SabyController_updateFromSaby"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
     trace?: never;
   };
 }
@@ -549,6 +857,9 @@ export interface components {
       email: string;
       password: string;
     };
+    UserLoginResponse: {
+      user: components["schemas"]["CreatedUserDto"];
+    };
     ResetPasswordRequestDto: {
       /** Format: email */
       email: string;
@@ -559,26 +870,15 @@ export interface components {
       token: string;
     };
     WriteIndividualCodeDto: {
-      code: string;
+      code: string[];
       /** @enum {string} */
       status: "NEW" | "USED";
       productId: string;
       boxesCodeId?: number;
       shiftId?: string;
     };
-    IndividualCodeDataDto: {
-      /** @enum {string} */
-      status: "NEW" | "USED";
-      id: number;
-      code: string;
-      productId: string;
-      created: unknown;
-      modified: unknown;
-      boxesCodeId: number | null;
-      shiftId: string | null;
-    };
     WriteBoxesCodeDto: {
-      gln: string;
+      gln?: string;
       productId: string;
       currentSscc?: string;
     };
@@ -591,6 +891,22 @@ export interface components {
       created: unknown;
       modified: unknown;
       shiftId: string | null;
+    };
+    PackCodesDto: {
+      id: number;
+      ssccCode: string;
+      codes: string[];
+      shiftId: string;
+      productId: string;
+    };
+    PackedCodesResponseDto: {
+      id: number;
+      ssccCode: string;
+    };
+    UpdateCodesStatusDto: {
+      codes: string[];
+      shiftId: string;
+      productId?: string;
     };
     CreateOperatorDto: {
       name: string;
@@ -612,6 +928,9 @@ export interface components {
     };
     LoginOperatorDto: {
       barcode: string;
+    };
+    OperatorLoginResponse: {
+      token: string;
     };
     IOperatorFindMany: {
       result: components["schemas"]["CreatedOperatorDto"][];
@@ -645,20 +964,102 @@ export interface components {
       created: unknown;
       modified: unknown;
     };
+    OperatorShiftDto: {
+      /** @enum {string} */
+      status: "PLANNED" | "INPROGRESS" | "PAUSED" | "DONE" | "CANCELED";
+      id: string;
+      plannedDate: unknown;
+      product: {
+        /** @enum {string} */
+        status: "ACTIVE" | "INACTIVE" | "PAUSED" | "REGISTRATION" | "ARCHIVED";
+        /** @description The unique identifier for the product */
+        id: string;
+        shortName: string;
+        fullName: string;
+        gtin: string;
+        alcoholCode: string;
+        expirationInDays: number;
+        volume: unknown;
+        pictureUrl: string | null;
+        created: unknown;
+        modified: unknown;
+      };
+      plannedCount: number | null;
+      factCount: number | null;
+      packing: boolean;
+      countInBox: number | null;
+      operatorId: string | null;
+      created: unknown;
+      modified: unknown;
+    };
     IShiftFindMany: {
-      result: components["schemas"]["ShiftDto"][];
+      result: components["schemas"]["OperatorShiftDto"][];
       total: number;
       page: number;
       limit: number;
       totalPage: number;
+      labelTemplate?: string;
     };
     IShiftFindOne: {
-      result: components["schemas"]["ShiftDto"];
+      result: components["schemas"]["OperatorShiftDto"];
     };
-    UpdateShiftDto: Record<string, never>;
+    UpdateShiftDto: {
+      plannedDate?: unknown;
+      plannedCount?: number;
+      packing?: boolean;
+      countInBox?: number;
+      /** @enum {string} */
+      status?: "PLANNED" | "INPROGRESS" | "PAUSED" | "DONE" | "CANCELED";
+    };
+    CreateShiftByOperatorDto: {
+      ean: string;
+      plannedDay?: unknown;
+    };
     IDeletedShift: {
       id: string;
       message: string;
+    };
+    CreateOrderToDeliveryDto: {
+      id?: string;
+      orderNumber: string;
+      deliveryDate: unknown;
+      /** @enum {string} */
+      status?: "NEW" | "ARCHIVE";
+      consignee: string;
+      address: string;
+      created?: unknown;
+      modified?: unknown;
+    };
+    CreatedOrderToDeliveryId: {
+      /** @description The unique identifier for the order */
+      id: string;
+    };
+    SelectOrderToDeliveryDto: {
+      /** @enum {string} */
+      status: "NEW" | "ARCHIVE";
+      id: string;
+      orderNumber: string;
+      deliveryDate: unknown;
+      consignee: string;
+      address: string;
+      created: unknown;
+      modified: unknown;
+    };
+    UpdateOrderToDeliveryDto: {
+      id: string;
+      orderNumber?: string;
+      deliveryDate?: unknown;
+      /** @enum {string} */
+      status?: "NEW" | "ARCHIVE";
+      consignee?: string;
+      address?: string;
+    };
+    IOrderToDeliveryFindMany: {
+      result: components["schemas"]["SelectOrderToDeliveryDto"][];
+      total: number;
+      page: number;
+      limit: number;
+      totalPage: number;
     };
   };
   responses: never;
@@ -760,6 +1161,13 @@ export interface operations {
         };
         content?: never;
       };
+      /** @description Product not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
   };
   ProductController_remove: {
@@ -773,7 +1181,22 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
+      /** @description Product successfully deleted */
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Forbidden. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Product not found. */
+      404: {
         headers: {
           [name: string]: unknown;
         };
@@ -812,6 +1235,13 @@ export interface operations {
         };
         content?: never;
       };
+      /** @description Product not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
   };
   ProductController_updateStatus: {
@@ -830,6 +1260,7 @@ export interface operations {
       };
     };
     responses: {
+      /** @description Product status successfully updated */
       200: {
         headers: {
           [name: string]: unknown;
@@ -840,6 +1271,13 @@ export interface operations {
       };
       /** @description Forbidden. */
       403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Product not found. */
+      404: {
         headers: {
           [name: string]: unknown;
         };
@@ -971,6 +1409,7 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
+      /** @description User successfully deleted */
       200: {
         headers: {
           [name: string]: unknown;
@@ -1001,6 +1440,7 @@ export interface operations {
       };
     };
     responses: {
+      /** @description User successfully updated */
       200: {
         headers: {
           [name: string]: unknown;
@@ -1031,7 +1471,17 @@ export interface operations {
       };
     };
     responses: {
+      /** @description User successfully signed in, JWT token set in cookies */
       201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UserLoginResponse"];
+        };
+      };
+      /** @description Invalid credentials */
+      401: {
         headers: {
           [name: string]: unknown;
         };
@@ -1052,6 +1502,7 @@ export interface operations {
       };
     };
     responses: {
+      /** @description Reset password request processed successfully */
       201: {
         headers: {
           [name: string]: unknown;
@@ -1080,6 +1531,7 @@ export interface operations {
       };
     };
     responses: {
+      /** @description Password has been successfully reset */
       201: {
         headers: {
           [name: string]: unknown;
@@ -1104,7 +1556,21 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
+      /** @description Token successfully revoked */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
       201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Token ID (jti) is missing */
+      400: {
         headers: {
           [name: string]: unknown;
         };
@@ -1121,6 +1587,7 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
+      /** @description Returns current user information */
       200: {
         headers: {
           [name: string]: unknown;
@@ -1128,6 +1595,13 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["IUserFindOne"];
         };
+      };
+      /** @description User ID (sub) is missing */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
@@ -1144,14 +1618,31 @@ export interface operations {
       };
     };
     responses: {
-      /** @description Code successfully created */
+      /** @description Codes successfully created and stored in database */
       201: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["IndividualCodeDataDto"];
+          "application/json": {
+            /** @description Number of codes created */
+            count?: number;
+            /** @description Array of created codes */
+            codes?: {
+              id?: number;
+              code?: string;
+              productId?: string;
+              status?: string;
+            }[];
+          };
         };
+      };
+      /** @description Invalid input format or validation error */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
@@ -1177,6 +1668,133 @@ export interface operations {
           "application/json": components["schemas"]["BoxesCodeDataDto"];
         };
       };
+      /** @description Invalid input data or SSCC format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description No previous SSCC codes found in database */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  CodeController_packCodes: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PackCodesDto"];
+      };
+    };
+    responses: {
+      /** @description Codes successfully packed and new SSCC code created */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PackedCodesResponseDto"];
+        };
+      };
+      /** @description Invalid input data format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Box code or individual codes not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  CodeController_updateCodesStatus: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateCodesStatusDto"];
+      };
+    };
+    responses: {
+      /** @description Codes status successfully updated */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Invalid input data format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Shift or individual codes not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  CodeController_downloadCodes: {
+    parameters: {
+      query: {
+        /** @description Whether to include box codes in the download */
+        includeBoxes?: boolean;
+        /** @description ID of the shift to download codes for */
+        shiftId: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Text file with codes successfully generated */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "text/plain": string;
+        };
+      };
+      /** @description Invalid input data format */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Shift not found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
     };
   };
   OperatorController_findAll: {
@@ -1193,7 +1811,7 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
-      /** @description Returns a list of users */
+      /** @description Returns a list of operators */
       200: {
         headers: {
           [name: string]: unknown;
@@ -1279,7 +1897,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": boolean;
+          "application/json": components["schemas"]["OperatorLoginResponse"];
         };
       };
     };
@@ -1295,7 +1913,7 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
-      /** @description Returns the requested user */
+      /** @description Returns the requested operator */
       200: {
         headers: {
           [name: string]: unknown;
@@ -1304,7 +1922,7 @@ export interface operations {
           "application/json": components["schemas"]["IOperatorFindOne"];
         };
       };
-      /** @description User can't be found or something went wrong */
+      /** @description Operator can't be found or something went wrong */
       404: {
         headers: {
           [name: string]: unknown;
@@ -1322,6 +1940,7 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
+      /** @description Returns current operator information */
       200: {
         headers: {
           [name: string]: unknown;
@@ -1329,6 +1948,13 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["IOperatorFindOne"];
         };
+      };
+      /** @description Unauthorized or operator token missing */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
@@ -1339,6 +1965,8 @@ export interface operations {
         page?: number;
         /** @description Items per page */
         limit?: number;
+        /** @description Search by shift ID, product short name, or product full name */
+        search?: string;
       };
       header?: never;
       path?: never;
@@ -1385,6 +2013,33 @@ export interface operations {
           [name: string]: unknown;
         };
         content?: never;
+      };
+    };
+  };
+  ShiftController_findAllForApp: {
+    parameters: {
+      query?: {
+        /** @description Page number */
+        page?: number;
+        /** @description Items per page */
+        limit?: number;
+        /** @description Search by shift ID, product short name, or product full name */
+        search?: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Returns a list of shifts */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["IShiftFindMany"];
+        };
       };
     };
   };
@@ -1455,12 +2110,14 @@ export interface operations {
       };
       cookie?: never;
     };
+    /** @description Json structure for updating shift */
     requestBody: {
       content: {
         "application/json": components["schemas"]["UpdateShiftDto"];
       };
     };
     responses: {
+      /** @description Shift successfully updated */
       200: {
         headers: {
           [name: string]: unknown;
@@ -1470,6 +2127,253 @@ export interface operations {
         };
       };
       /** @description Shift can't be found or something went wrong */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ShiftController_findOneForApp: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Returns the requested shift */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["IShiftFindOne"];
+        };
+      };
+      /** @description Shift can't be found or something went wrong */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  ShiftController_createByOperator: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateShiftByOperatorDto"];
+      };
+    };
+    responses: {
+      /** @description Shift successfully created by operator */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["IShiftFindOne"];
+        };
+      };
+      /** @description Invalid data or product not found */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Product with specified GTIN not found or not active */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  SabyController_findAll: {
+    parameters: {
+      query?: {
+        /** @description Page number */
+        page?: number;
+        /** @description Items per page */
+        limit?: number;
+        /** @description Order status filter */
+        status?: "NEW" | "ARCHIVE";
+        /** @description Search string */
+        search?: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["IOrderToDeliveryFindMany"];
+        };
+      };
+      /** @description Forbidden. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  SabyController_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** @description Json structure for order object */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateOrderToDeliveryDto"];
+      };
+    };
+    responses: {
+      /** @description The record has been successfully created. */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CreatedOrderToDeliveryId"];
+        };
+      };
+      /** @description Forbidden. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  SabyController_findOne: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SelectOrderToDeliveryDto"];
+        };
+      };
+      /** @description Forbidden. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Order not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  SabyController_update: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    /** @description Json structure for order object */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateOrderToDeliveryDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UpdateOrderToDeliveryDto"];
+        };
+      };
+      /** @description Forbidden. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Order not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  SabyController_updateFromSaby: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** @description Json structure for order object */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateOrderToDeliveryDto"];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UpdateOrderToDeliveryDto"];
+        };
+      };
+      /** @description Forbidden. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Order not found. */
       404: {
         headers: {
           [name: string]: unknown;

@@ -1,3 +1,22 @@
+# [1.0.0-beta.8](https://github.com/thevladbog/cider-code-frontend/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2025-06-21)
+
+
+### Bug Fixes
+
+* fixed minor issues ([40daa8d](https://github.com/thevladbog/cider-code-frontend/commit/40daa8d568043fecc5ca6853a147b3c883ccaefa))
+* fixed minor issues ([5d295d6](https://github.com/thevladbog/cider-code-frontend/commit/5d295d656bd207bd8d95695b2ddb223c75161213))
+* fixing minor issues ([93dfb0f](https://github.com/thevladbog/cider-code-frontend/commit/93dfb0f774962f904a9928a6e1944ab0f709d2f2))
+* minor fixes ([92f0da1](https://github.com/thevladbog/cider-code-frontend/commit/92f0da1211fd90884324a1b27e10e54b6c3410a6))
+* minor fixes ([b0a6eca](https://github.com/thevladbog/cider-code-frontend/commit/b0a6eca30ce587ef81f9bbbdf9bf184b829e0a93))
+
+
+### Features
+
+* added connection to API in products ([4dd2c1f](https://github.com/thevladbog/cider-code-frontend/commit/4dd2c1f95a9c340987a69ed8fbfa80f29384b061))
+* integrate Sentry error tracking and monitoring ([f6c3115](https://github.com/thevladbog/cider-code-frontend/commit/f6c3115785b5e9a5ce1b60709b39c55398a88c80))
+* major project rebrand and comprehensive feature additions ([8ca1bc8](https://github.com/thevladbog/cider-code-frontend/commit/8ca1bc85b26cb8ab5d481a15921fd5321904484e))
+* Refactor shift management system with timezone fixes and UI improvements ([c44180c](https://github.com/thevladbog/cider-code-frontend/commit/c44180c6cbec3db5f4b6bae0ff15c0cc1a790204))
+
 # [1.0.0-beta.7](https://github.com/thevladbog/cider-code-frontend/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2025-05-10)
 
 

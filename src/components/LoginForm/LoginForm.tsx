@@ -44,6 +44,7 @@ export const LoginForm = () => {
           title: "Что-то пошло не так ...",
           content: `При входе в систему произошла ошибка: ${JSON.stringify(error)}`,
           isClosable: true,
+          theme: "danger",
         });
       }
     },

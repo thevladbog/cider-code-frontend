@@ -3,10 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export type CreateProductDto = {
-  /**
-   * The unique identifier for the product
-   */
-  id?: string;
   shortName: string;
   fullName: string;
   gtin: string;
@@ -23,8 +19,6 @@ export type CreateProductDto = {
       };
   pictureUrl: string | null;
   status?: CreateProductDto.status;
-  created?: any;
-  modified: any;
 };
 export namespace CreateProductDto {
   export enum status {

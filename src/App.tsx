@@ -1,18 +1,18 @@
-import { Clock, Mug, Persons, Plus } from "@gravity-ui/icons";
-import { AsideHeader, MenuItem } from "@gravity-ui/navigation";
-import {
-  Icon,
-  ThemeProvider,
-  Toaster,
-  ToasterProvider,
-} from "@gravity-ui/uikit";
+import { Bug, Clock, Mug, Persons, Plus } from "@gravity-ui/icons";
+import { AsideHeader, FooterItem, MenuItem } from "@gravity-ui/navigation";
+import { Icon, ThemeProvider, ToasterProvider } from "@gravity-ui/uikit";
 import { Wrapper } from "@/components/Wrapper";
+import { ModalCreateShift } from "@/components/ModalCreateShift";
 import { useThemeStore } from "@/entities/Theme";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import React, { ReactNode, useEffect, useState } from "react";
 import { Logo, LogoIcon } from "./components/Icons";
 import { useUserStore } from "./entities/User/useUserStore";
 import { useShallow } from "zustand/shallow";
+import { CreatedUserDto } from "./lib/types/openapi";
+import { toaster } from "./lib/toaster";
+import * as Sentry from "@sentry/react";
+import { FooterWrapper } from "./components/Footer";
 
 interface AppProps {
   children: ReactNode;
@@ -21,8 +21,10 @@ interface AppProps {
 const App = ({ children }: AppProps) => {
   const [compact, setCompact] = useState<boolean>(true);
   const [authed, setAuthed] = useState<boolean>(false);
+  const [isCreateShiftModalVisible, setIsCreateShiftModalVisible] =
+    useState<boolean>(false);
 
-  const toaster = new Toaster();
+  const user = useUserStore((store) => store.data);
 
   const { theme } = useThemeStore();
   const location = useLocation();
@@ -41,6 +43,10 @@ const App = ({ children }: AppProps) => {
       to: href ?? "/",
     }).then();
   };
+
+  const isHiddenAdminMenu =
+    user?.role === CreatedUserDto.role.GUEST ||
+    user?.role === CreatedUserDto.role.USER;
 
   const menuItems: Array<MenuItem> = [
     {
@@ -66,6 +72,7 @@ const App = ({ children }: AppProps) => {
       link: "/users",
       onItemClick: (item, _, event) => handleClick(event, item.link),
       current: location.pathname === "/users",
+      hidden: isHiddenAdminMenu,
     },
     {
       id: "divider1",
@@ -78,13 +85,16 @@ const App = ({ children }: AppProps) => {
       type: "action",
       icon: Plus,
       afterMoreButton: true,
-      onItemClick: ({ id, title, current }) => {
-        alert(JSON.stringify({ id, title, current }));
+      onItemClick: () => {
+        setIsCreateShiftModalVisible(true);
       },
+      hidden: user?.role === CreatedUserDto.role.GUEST,
     },
   ];
 
   const userData = useUserStore(useShallow((state) => state.data));
+
+  const feedback = Sentry.getFeedback();
 
   useEffect(() => {
     setAuthed(Boolean(userData));
@@ -96,18 +106,52 @@ const App = ({ children }: AppProps) => {
         <AsideHeader
           logo={{
             icon: LogoIcon,
-            text: () => <Icon data={Logo} width={80} />,
+            text: () => <Icon data={Logo} width={80} height={60} />,
             onClick: () => navigate({ to: "/" }),
-            href: "/",
           }}
           hideCollapseButton={false}
           headerDecoration={true}
           onChangeCompact={toggleCompact}
           menuItems={authed ? menuItems : undefined}
-          compact={compact}
+          compact={!compact}
           renderContent={() => {
-            return <Wrapper>{children}</Wrapper>;
+            return (
+              <>
+                <Wrapper>{children}</Wrapper>
+                <FooterWrapper />
+              </>
+            );
           }}
+          renderFooter={({ compact: compactFooter }) => (
+            <>
+              <FooterItem
+                item={{
+                  id: "report-bug",
+                  title: "Ошибка?",
+                  tooltipText: (
+                    <div>
+                      <b>Ошибка?</b>
+                    </div>
+                  ),
+                  itemWrapper: (params, makeItem) =>
+                    makeItem({
+                      ...params,
+                      icon: <Icon data={Bug} />,
+                    }),
+                  onItemClick: async () => {
+                    const form = await feedback?.createForm();
+                    form?.appendToDom();
+                    form?.open();
+                  },
+                }}
+                compact={compactFooter}
+              />
+            </>
+          )}
+        />
+        <ModalCreateShift
+          visible={isCreateShiftModalVisible}
+          onClose={() => setIsCreateShiftModalVisible(false)}
         />
       </ToasterProvider>
     </ThemeProvider>

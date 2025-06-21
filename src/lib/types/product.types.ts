@@ -1,5 +1,5 @@
 import { LabelColorsType } from "@/lib/types/shift.types";
-import { SelectOption } from "@gravity-ui/uikit";
+import { ButtonView, SelectOption } from "@gravity-ui/uikit";
 import { CreateProductDto } from "./openapi";
 
 export const PRODUCT_STATUS_MAP: Record<CreateProductDto.status, string> = {
@@ -19,6 +19,17 @@ export const PRODUCT_STATUS_COLOR_MAP: Record<
   PAUSED: "warning",
   REGISTRATION: "info",
   ARCHIVED: "unknown",
+};
+
+export const PRODUCT_STATUS_COLOR_MAP_BUTTON: Record<
+  CreateProductDto.status,
+  ButtonView
+> = {
+  ACTIVE: "outlined-success",
+  INACTIVE: "outlined-danger",
+  PAUSED: "outlined-warning",
+  REGISTRATION: "outlined-info",
+  ARCHIVED: "normal",
 };
 
 export const PRODUCT_STATUS_SELECT_OPTIONS: SelectOption[] = [];

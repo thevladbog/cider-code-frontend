@@ -5,7 +5,7 @@ import {
   ResetPasswordDto,
 } from "@/lib/types/openapi";
 import { createStore } from "@/lib/zustand";
-import { Toaster } from "@gravity-ui/uikit";
+import { showErrorToast } from "@/lib/toaster";
 
 interface IUserState {
   data: CreatedUserDto | null;
@@ -21,142 +21,119 @@ const initialState: IUserState = {
   resetRequestSend: false,
 };
 
-const toaster = new Toaster();
-
 export const useUserStore = createStore(initialState, (setState, getState) => {
   const login = async (email: string, password: string) => {
     setState({ isLoading: true });
 
-    try {
-      // eslint-disable-next-line new-cap
-      const { data } = await $api.POST("/user/auth/sign-in", {
-        body: {
-          email,
-          password,
-        },
-      });
+    // eslint-disable-next-line new-cap
+    const { data, error } = await $api.POST("/user/auth/sign-in", {
+      body: {
+        email,
+        password,
+      },
+    });
 
-      setState({ data });
-
-      return data;
-    } catch (error) {
-      toaster.add({
-        name: "login",
-        title: "Что-то пошло не так ...",
-        content: `При входе в систему произошла ошибка. Пожалуйста, проверьте свои учетные данные и попробуйте еще раз.`,
-        isClosable: true,
-        theme: "danger",
-      });
-      throw new Error("Something went wrong: " + error);
-    } finally {
+    if (error) {
+      showErrorToast(
+        "При входе в систему произошла ошибка. Пожалуйста, проверьте свои учетные данные и попробуйте еще раз.",
+        new Error("Login error: " + JSON.stringify(error)),
+      );
       setState({ isLoading: false, resetRequestSend: false });
-    }
-  };
-
-  const register = async (props: CreateUserDto) => {
-    try {
-      // eslint-disable-next-line new-cap
-      const { data } = await $api.POST("/user", {
-        body: props,
-      });
-
-      setState({ data: data?.result });
-
-      return data;
-    } catch (error) {
-      toaster.add({
-        name: "register",
-        title: "Что-то пошло не так ...",
-        content: `При регистрации произошла ошибка. Пожалуйста, попробуйте еще раз.`,
-        isClosable: true,
-        theme: "danger",
-      });
       throw new Error("Something went wrong: " + error);
     }
+
+    setState({
+      data: data?.user as CreatedUserDto,
+      isLoading: false,
+      resetRequestSend: false,
+    });
+    return data;
+  };
+  const register = async (props: CreateUserDto) => {
+    // eslint-disable-next-line new-cap
+    const { data, error } = await $api.POST("/user", {
+      body: props,
+    });
+
+    if (error) {
+      showErrorToast(
+        "При регистрации произошла ошибка. Пожалуйста, попробуйте еще раз.",
+        new Error("Registration error: " + JSON.stringify(error)),
+      );
+      throw new Error("Something went wrong: " + error);
+    }
+
+    setState({ data: data?.result as CreatedUserDto });
+    return data;
   };
 
   const logout = async () => {
     setState({ isLogoutLoading: true });
-    try {
-      // eslint-disable-next-line new-cap
-      await $api.POST("/user/auth/revoke-token");
 
-      setState(initialState);
-    } catch (error) {
-      toaster.add({
-        name: "logout",
-        title: "Что-то пошло не так ...",
-        content: `При выходе из системы произошла ошибка. Пожалуйста, попробуйте еще раз.`,
-        isClosable: true,
-        theme: "danger",
-      });
-      throw new Error("Something went wrong: " + error);
-    } finally {
+    // eslint-disable-next-line new-cap
+    const { error } = await $api.POST("/user/auth/revoke-token");
+
+    if (error) {
+      showErrorToast(
+        "При выходе из системы произошла ошибка. Пожалуйста, попробуйте еще раз.",
+        new Error("Logout error: " + JSON.stringify(error)),
+      );
       setState({ isLogoutLoading: false });
-      document.location.assign("/");
+      throw new Error("Something went wrong: " + error);
     }
+
+    setState(initialState);
+    document.location.assign("/");
   };
 
   const getDataAboutMe = async () => {
     setState({ isLoading: true });
-    try {
-      // eslint-disable-next-line new-cap
-      const { data } = await $api.GET("/user/auth/me");
 
-      setState({ data: data?.result });
+    // eslint-disable-next-line new-cap
+    const { data, error } = await $api.GET("/user/auth/me");
 
-      return data;
-    } catch (error) {
-      toaster.add({
-        name: "getDataAboutMe",
-        title: "Что-то пошло не так ...",
-        content: `При получении данных произошла ошибка. Вы будете разлогинены!`,
-        isClosable: true,
-        theme: "danger",
-      });
+    if (error) {
+      setState({ isLoading: false, data: null });
       throw new Error("Something went wrong: " + error);
-    } finally {
-      setState({ isLoading: false });
     }
+
+    setState({ data: data?.result as CreatedUserDto, isLoading: false });
+    return data;
   };
 
   const sendResetRequest = async (email: string) => {
-    try {
-      // eslint-disable-next-line new-cap
-      await $api.POST("/user/auth/reset-password-request", {
-        body: { email },
-      });
-      setState({ resetRequestSend: true });
-    } catch (error) {
-      toaster.add({
-        name: "sendResetRequest",
-        title: "Что-то пошло не так ...",
-        content: `При запросе сброса пароля произошла ошибка`,
-        isClosable: true,
-        theme: "danger",
-      });
+    // eslint-disable-next-line new-cap
+    const { error } = await $api.POST("/user/auth/reset-password-request", {
+      body: { email },
+    });
+
+    if (error) {
+      showErrorToast(
+        "При запросе сброса пароля произошла ошибка",
+        new Error("Reset password request error: " + JSON.stringify(error)),
+      );
       throw new Error("Something went wrong: " + error);
     }
+
+    setState({ resetRequestSend: true });
   };
 
   const resetPassword = async (body: ResetPasswordDto) => {
-    try {
-      // eslint-disable-next-line new-cap
-      await $api.POST("/user/auth/reset-password", {
-        body,
-      });
-      setState({ resetRequestSend: false });
-      return true;
-    } catch (error) {
-      toaster.add({
-        name: "resetPassword",
-        title: "Что-то пошло не так ...",
-        content: `При сбросе пароля произошла ошибка`,
-        isClosable: true,
-        theme: "danger",
-      });
+    // eslint-disable-next-line new-cap
+    const { error } = await $api.POST("/user/auth/reset-password", {
+      body,
+    });
+
+    if (error) {
+      showErrorToast(
+        "При сбросе пароля произошла ошибка",
+        new Error("Reset password error: " + JSON.stringify(error)),
+      );
       throw new Error("Something went wrong: " + error);
     }
+
+    setState({ resetRequestSend: false });
+    return true;
   };
 
   const isAuth = () => {
